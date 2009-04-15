@@ -1,0 +1,2 @@
+The test directory name that you supplied as part of the command line or 
+in the environmental variable 'TEST_PHP_USER' is not a directory

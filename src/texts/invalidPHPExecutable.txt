@@ -1,0 +1,2 @@
+The PHP executable that you have supplied using either the command line option 
+-p or the environmental variable TEST_PHP_EXECUTABLE is not a valid executable.

@@ -1,0 +1,6 @@
++-----------------------------------------------------------+
+|                       !  ERROR  !                         |
+| You are running the test-suite with "safe_mode" ENABLED ! |
+|                                                           |
+|         Please disable safe_mode and re-start.            |
++-----------------------------------------------------------+

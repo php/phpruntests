@@ -1,0 +1,5 @@
++-----------------------------------------------------------+
+|                       ! ERROR !                           |
+| The test-suite requires that proc_open() is available.    |
+| Please check if you disabled it in php.ini.               |
++-----------------------------------------------------------+

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<project name="runtests" default="test" basedir=".">
+
+  <property name="build.dir" value="_build" />
+  
+  <target name="docs" description="Create API documentation.">
+    <delete dir="docs" />
+    <exec command="doxygen doxygen.conf" />
+  </target>
+
+  <target name="lint" description="Run a lint check on all PHP files.">
+    <phplint>
+      <fileset dir="src">
+        <include name="*.php"/>
+        <include name="**/*.php"/>
+      </fileset>
+    </phplint>
+  </target>
+
+  <target name="test" description="Run all unit tests.">
+    <delete dir="coverage" />
+    <exec command="phpunit --coverage-html coverage tests" passthru="true" />
+  </target>
+
+  <target name="sniff" description="Run all PHP_CodeSniffer sniffs.">
+    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/all src" passthru="true" />
+  </target>
+
+  <target name="sniff-compatibility" description="Run PHP_CodeSniffer compatibility sniffs.">
+    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/compatibility src" passthru="true" />
+  </target>
+
+  <target name="sniff-formatting" description="Run PHP_CodeSniffer formatting sniffs.">
+    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/formatting src" passthru="true" />
+  </target>
+
+  <target name="sniff-naming" description="Run PHP_CodeSniffer naming sniffs.">
+    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/naming src" passthru="true" />
+  </target>
+
+  <target name="sniff-documentation" description="Run PHP_CodeSniffer documentation sniffs.">
+    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/documentation src" passthru="true" />
+  </target>
+
+  <target name="sniff-guidelines" description="Run PHP_CodeSniffer guidelines sniffs.">
+    <exec command="phpcs -n  --extensions=php --standard=${project.basedir}/cs/guidelines src" passthru="true" />
+  </target>
+
+</project>

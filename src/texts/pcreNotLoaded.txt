@@ -1,0 +1,7 @@
++-----------------------------------------------------------+
+|                       ! ERROR !                           |
+| The test-suite requires that you have pcre extension      |
+| enabled. To enable this extension either compile your PHP |
+| with --with-pcre-regex or if you've compiled pcre as a    |
+| shared module load it via php.ini.                        |
++-----------------------------------------------------------+
