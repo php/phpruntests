@@ -37,12 +37,10 @@ class rtPhpTestGroup {
       $testFile->normaliseLineEndings();
 
       if($testFile->arePreconditionsMet() ) {
-
-
         //Create a new test case
         $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration);
       } else {
-        $this->results[] = new rtTestResults(null, $testFile->getExitMessage(), $testName);
+        $this->results[] = new rtTestResults(null, $testFile->getExitMessage(), $testFile->getTestName());
       }
     }
   }
