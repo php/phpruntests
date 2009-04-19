@@ -84,11 +84,12 @@ class rtPhpTestRun {
             $results->processResults($testCase, $runConfiguration);
 
 
-            $testOutputWriter = rtTestOutputWriter::getInstance(array($results), 'list');
-            $testOutputWriter->write();
+           
           } else {
-            echo "BORK ".$testFile->getExitMessage();
+            $results = new rtTestResults(null, $testFile->getExitMessage(), $testFile->getTestName());
           }
+          $testOutputWriter = rtTestOutputWriter::getInstance(array($results), 'list');
+            $testOutputWriter->write();
           
 
         }
