@@ -1,7 +1,6 @@
 <?php
 
-  class rtUnknownIniSettingException extends RuntimeException
-  {
-  }
-
+class rtUnknownIniSettingException extends RuntimeException
+{
+}
 ?>

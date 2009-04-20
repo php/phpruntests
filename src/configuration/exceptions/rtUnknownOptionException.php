@@ -1,7 +1,6 @@
 <?php
 
-  class rtUnknownOptionException extends RuntimeException
-  {
-  }
-
+class rtUnknownOptionException extends RuntimeException
+{
+}
 ?>

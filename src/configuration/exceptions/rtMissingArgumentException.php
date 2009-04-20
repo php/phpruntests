@@ -1,7 +1,6 @@
 <?php
 
-  class rtMissingArgumentException extends RuntimeException
-  {
-  }
-
+class rtMissingArgumentException extends RuntimeException
+{
+}
 ?>
