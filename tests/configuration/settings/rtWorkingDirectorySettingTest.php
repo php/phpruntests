@@ -1,24 +1,25 @@
 <?php
+
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
+class rtWorkingDirectorySettingTest extends PHPUnit_Framework_TestCase
+{
+    public function testSet()
+    {
+        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
+        $dirsetting = new rtWorkingDirectorySetting($configuration);
 
+        $this->assertEquals(getcwd(), $dirsetting->get());
+    }
 
-class rtWorkingDirectorySettingTest extends PHPUnit_Framework_TestCase {
+    public function testSetFromEnv()
+    {
+        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
+        $configuration->setEnvironmentVariable('TEST_PHP_SRCDIR', 'the-source-dir');
+        $dirsetting = new rtWorkingDirectorySetting($configuration);
 
-  public function testSet() {
-    $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
-    $dirsetting  = new rtWorkingDirectorySetting($configuration);
-    $this->assertEquals(getcwd(), $dirsetting->get());
-  }
-
-  public function testSetFromEnv() {
-    $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
-    $configuration->setEnvironmentVariable('TEST_PHP_SRCDIR', 'the-source-dir');
-    $dirsetting  = new rtWorkingDirectorySetting($configuration);
-
-    $this->assertEquals('the-source-dir', $dirsetting->get());
-  }
-
+        $this->assertEquals('the-source-dir', $dirsetting->get());
+    }
 }
 ?>
