@@ -7,7 +7,6 @@ blahblah=blah
 --FILE--
 <?php
 $content = file_get_contents('php://input');
-$string = gzdecode($content);
 
 if ($content != gzencode('blahblah=blah')) {
   echo "invalid gzipped content";
