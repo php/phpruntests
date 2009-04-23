@@ -7,7 +7,6 @@ echo 'hello world';
 ?>
 --EXPECTHEADERS--
 Status: 404 Not Found
-X-Powered-By: PHP/5.3.0RC2-dev
 Content-type: text/html
 
 --EXPECT--
