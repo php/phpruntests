@@ -9,9 +9,9 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->sections['ARGS'] = new rtArgsSection('ARGS',array('-vvv -a value -1111 -2 -v'));
-        $this->sections['ENV'] = new rtEnvSection('ENV',array('env1 = ENV1', 'env2=ENV2'));
-        $this->sections['INI'] = new rtIniSection('INI',array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));
+        $this->sections['ARGS'] = new rtArgsSection('ARGS', array('-vvv -a value -1111 -2 -v'));
+        $this->sections['ENV'] = new rtEnvSection('ENV', array('env1 = ENV1', 'env2=ENV2'));
+        $this->sections['INI'] = new rtIniSection('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));
     }
 
     public function testCreateInstance()
@@ -55,7 +55,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
         $testConfiguration = new rtTestConfiguration($config, $this->sections);
         $phpargs = $testConfiguration->getPhpCommandLineArguments();
-        $match = preg_match("/-d \"error_reporting=E_ALL | E_STRICT | E_DEPRECATED\" -d \"assert.active=1\"/",$phpargs);
+        $match = preg_match("/-d \"error_reporting=E_ALL | E_STRICT | E_DEPRECATED\" -d \"assert.active=1\"/", $phpargs);
 
         $this->assertEquals(1, $match);
     }

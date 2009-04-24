@@ -46,7 +46,7 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
 
         //..and that they have been successfully removed
         $this->assertEquals(preg_match("/\r\n/", $fileString), 0);
-     }
+    }
      
     public function testLinuxLineEndings()
     {
@@ -63,7 +63,7 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
 
         //..and that they have been successfully removed
         $this->assertEquals(preg_match("/\n/", $fileString), 0);
-     }
+    }
      
     public function testPreconditionCall()
     {
@@ -72,6 +72,6 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         $this->assertTrue($testFile->arePreConditionsMet());       
-     }    
-  }
+    }    
+}
 ?>

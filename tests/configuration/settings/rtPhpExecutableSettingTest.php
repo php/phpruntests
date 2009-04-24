@@ -11,7 +11,7 @@ class rtPhpExecutableSettingTest extends PHPUnit_Framework_TestCase
 
         $clisetting = new rtPhpExecutableSetting($configuration);
 
-        $this->assertEquals('a-php-executable',  $clisetting->get());
+        $this->assertEquals('a-php-executable', $clisetting->get());
     }
 
     public function testSetPhpExecutableEV()
@@ -21,7 +21,7 @@ class rtPhpExecutableSettingTest extends PHPUnit_Framework_TestCase
 
         $clisetting = new rtPhpExecutableSetting($configuration);
 
-        $this->assertEquals('a-php-executable',  $clisetting->get());
+        $this->assertEquals('a-php-executable', $clisetting->get());
     }
 
     public function testSetPhpExecutableEVAuto()

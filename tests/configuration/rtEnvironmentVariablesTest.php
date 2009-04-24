@@ -50,7 +50,7 @@ class rtEnvironmentVariablesTest extends PHPUnit_Framework_TestCase
         $ev->adaptEnvironment();
         $ev->getUserSuppliedVariables();
   
-      $this->assertEquals('some-windows-thing', $ev->getVariable('SystemRoot'));
+        $this->assertEquals('some-windows-thing', $ev->getVariable('SystemRoot'));
     }
 }
 ?>

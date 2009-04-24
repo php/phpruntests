@@ -1,21 +1,25 @@
 <?php
+
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
+class rtIsSectionImplementedTest extends PHPUnit_Framework_TestCase
+{
+    public function testIs()
+    {
+        $precondition = new rtIsSectionImplemented();
+        $test = array('TEST', 'FILE', 'EXPECT');
 
-class rtIsSectionImplementedTest extends PHPUnit_Framework_TestCase {
+        $this->assertTrue($precondition->isMet($test));
+    }
 
-  public function testIs() {
-    $precondition = new rtIsSectionImplemented();
-    $test = array('TEST', 'FILE', 'EXPECT');
-    $this->assertTrue($precondition->isMet($test));
-  }
+    public function testIsNot()
+    {
+        $precondition = new rtIsSectionImplemented();
+        $test = array('UEXPECT', 'FILE');
 
-  public function testIsNot() {
-    $precondition = new rtIsSectionImplemented();
-    $test = array('UEXPECT', 'FILE');
-    $this->assertEquals("The test contains a section which is not implemented yet", trim($precondition->getMessage()));
-    $this->assertFalse($precondition->isMet($test));
-  }
+        $this->assertEquals("The test contains a section which is not implemented yet", trim($precondition->getMessage()));
+        $this->assertFalse($precondition->isMet($test));
+    }
 }
 ?>

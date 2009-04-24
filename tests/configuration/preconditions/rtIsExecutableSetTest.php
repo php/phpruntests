@@ -24,7 +24,7 @@ class rtIsExecutableSetTest extends PHPUnit_Framework_TestCase
 
         $pre = new rtIsExecutableSet();
 
-        $this->assertTrue($pre->check($clo,$env));
+        $this->assertTrue($pre->check($clo, $env));
     }
 
     public function testGetText()

@@ -8,24 +8,24 @@ class rtDirectoryListTestTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $tmpDir = sys_get_temp_dir(). "/top";
-        mkdir ($tmpDir);
-        mkdir ($tmpDir. "/a");
-        mkdir ($tmpDir. "/b");
-        mkdir ($tmpDir. "/c");
+        mkdir($tmpDir);
+        mkdir($tmpDir. "/a");
+        mkdir($tmpDir. "/b");
+        mkdir($tmpDir. "/c");
         file_put_contents($tmpDir. "/c/afile", "hello"); 
-        mkdir ($tmpDir. "/c/d");  
+        mkdir($tmpDir. "/c/d");  
     }
         
     public function tearDown()
     {
         $tmpDir = sys_get_temp_dir(). "/top";
-        rmdir ($tmpDir. "/a");
-        rmdir ($tmpDir. "/b");
+        rmdir($tmpDir. "/a");
+        rmdir($tmpDir. "/b");
         
-        unlink ($tmpDir. "/c/afile");
-        rmdir ($tmpDir. "/c/d"); 
-        rmdir ($tmpDir. "/c");  
-        rmdir ($tmpDir);   
+        unlink($tmpDir. "/c/afile");
+        rmdir($tmpDir. "/c/d"); 
+        rmdir($tmpDir. "/c");  
+        rmdir($tmpDir);   
     }
     
     public function testNames()

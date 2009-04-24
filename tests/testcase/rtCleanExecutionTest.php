@@ -66,7 +66,7 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(),$testFile->getSectionHeadings(), $config);      
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);      
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);

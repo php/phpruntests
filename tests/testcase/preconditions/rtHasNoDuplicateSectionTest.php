@@ -1,24 +1,25 @@
 <?php
+
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
+class rtHasNoDuplicateSectionTest extends PHPUnit_Framework_TestCase
+{
+    public function testNoDup()
+    {
+        $precondition = new rtHasNoDuplicateSections();
+        $test = array('TEST', 'FILE');
 
-class rtHasNoDuplicateSectionTest extends PHPUnit_Framework_TestCase {
+        $this->assertTrue($precondition->isMet($test));
+    }
 
-  public function testNoDup() {
-    $precondition = new rtHasNoDuplicateSections();
-    $test = array('TEST', 'FILE');
+    public function testDup()
+    {
+        $precondition = new rtHasNoDuplicateSections();
+        $test = array('TEST', 'TEST');
 
-    $this->assertTrue($precondition->isMet($test));
-  }
-
-  public function testDup() {
-    $precondition = new rtHasNoDuplicateSections();
-    $test = array('TEST',  'TEST');
-    $this->assertEquals("The test has duplicate sections.", trim($precondition->getMessage()));
-    $this->assertFalse($precondition->isMet($test));
-  }
-
-
+        $this->assertEquals("The test has duplicate sections.", trim($precondition->getMessage()));
+        $this->assertFalse($precondition->isMet($test));
+    }
 }
 ?>

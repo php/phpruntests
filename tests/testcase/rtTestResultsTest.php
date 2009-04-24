@@ -45,7 +45,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(),$testFile->getSectionHeadings(), $config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -73,7 +73,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(),$testFile->getSectionHeadings(), $config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -101,7 +101,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(),$testFile->getSectionHeadings(), $config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -129,7 +129,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(),$config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -160,7 +160,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(),$config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -189,7 +189,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(),$config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -217,7 +217,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(),$config);
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
@@ -244,7 +244,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
 
-        if(!$testFile->arePreConditionsMet()) {
+        if (!$testFile->arePreConditionsMet()) {
 
             $results = new rtTestResults(null, "borked", $testFiles[0]);
 

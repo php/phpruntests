@@ -16,7 +16,7 @@ class rtIsTestFileSpecifiedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($pre->check($clo, $env));
     }
 
-    public function testCLOptionL(
+    public function testCLOptionL()
     {
         $env = rtEnvironmentVariables::getInstance();
         $clo = new rtCommandLineOptions();

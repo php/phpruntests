@@ -33,9 +33,9 @@ class rtPhpRunnerTest extends PHPUnit_Framework_TestCase
 
     public function testStdin()
     {
-      $PhpRunner = new rtPhpRunner($this->php .' -n /tmp/test2.php 2>&1', array(), '/tmp', 'hello');
+        $PhpRunner = new rtPhpRunner($this->php .' -n /tmp/test2.php 2>&1', array(), '/tmp', 'hello');
         
-      $this->assertEquals("hello", $PhpRunner->runphp());
+        $this->assertEquals("hello", $PhpRunner->runphp());
     }
 }
 

@@ -18,7 +18,7 @@ class rtTestFileSettingTest extends PHPUnit_Framework_TestCase
         $this->f1 = sys_get_temp_dir() . "/file1";
         $fh = fopen($this->f1, 'w');
 
-        foreach($this->testnames as $line) {
+        foreach ($this->testnames as $line) {
             fwrite($fh, sys_get_temp_dir() . $line . "\n");
         }
 

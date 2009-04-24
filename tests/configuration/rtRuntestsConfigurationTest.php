@@ -18,7 +18,7 @@ class rtRuntestsConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testCreateWin()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'),'Windows');
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'), 'Windows');
         $config->configure();
         
         $testFiles = $config->getSetting('TestFiles');

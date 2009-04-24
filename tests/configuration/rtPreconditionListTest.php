@@ -11,11 +11,11 @@ class rtPreCondtionListTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-       $this->clo = new rtCommandLineOptions();
-       $this->clo->parse(array('run-tests.php', '-p', 'some-php-exe', 'a-test.phpt'));
-       
-       $this->env = rtEnvironmentVariables::getInstance();
-       $this->env->getUserSuppliedVariables();      
+        $this->clo = new rtCommandLineOptions();
+        $this->clo->parse(array('run-tests.php', '-p', 'some-php-exe', 'a-test.phpt'));
+
+        $this->env = rtEnvironmentVariables::getInstance();
+        $this->env->getUserSuppliedVariables();      
     }
     
     public function testCheck()
