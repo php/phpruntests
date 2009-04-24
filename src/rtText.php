@@ -1,17 +1,18 @@
 <?php
-
 /**
  * rtText reads named texts from texts/ subdirectory.
  */
 class rtText
 {
     /**
-     * Get a named text from texts/ subdirectory.
+     * Get a named text from texts/ subdirectory
+     * and optionally replace placeholders %1 ... %n.
      *
-     * @param string $name Text name to return
+     * @param string $name         Text name to return
+     * @param array  $replacements Placeholder replacements
      * @return string
      */
-    public static function get($name)
+    public static function get($name, array $replacements = array())
     {
         $filename = dirname(__FILE__) . '/texts/' . $name . '.txt';
 
@@ -19,7 +20,14 @@ class rtText
             throw new LogicException('The text ' . $name . ' does not exist');
         }
 
-        return file_get_contents($filename);
+        $text = file_get_contents($filename);
+
+        // Replace %1 ... %n by the elements in replacements
+        for ($i = 0; $i < count($replacements); $i++) {
+            $text = str_replace('%' . ($i + 1), $replacements[$i], $text);
+        }
+
+        return $text;
     }
 }
 ?>

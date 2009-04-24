@@ -1,4 +1,4 @@
-i<?php
+<?php
 /**
  * Main class for a test run
  *
@@ -64,8 +64,7 @@ class rtPhpTestRun
                 foreach ($runConfiguration->getSetting('TestFiles') as $testName) {
 
                     if (!file_exists($testName)) {
-                        echo $testName . " ";
-                        echo rtText::get('invalidTestFileName');
+                        echo rtText::get('invalidTestFileName', array($testName));
                         exit();
                     }
 

@@ -22,8 +22,7 @@ class rtPhpTestGroup
         foreach ($this->testFiles as $testName) {
 
             if (!file_exists($testName)) {
-                echo $testName . " ";
-                echo rtText::get('invalidTestFileName');
+                echo rtText::get('invalidTestFileName', array($testName));
                 exit();
             }
 
