@@ -16,6 +16,13 @@
         <include name="**/*.php"/>
       </fileset>
     </phplint>
+
+    <phplint>
+      <fileset dir="tests">
+        <include name="*.php"/>
+        <include name="**/*.php"/>
+      </fileset>
+    </phplint>
   </target>
 
   <target name="test" description="Run all unit tests.">
