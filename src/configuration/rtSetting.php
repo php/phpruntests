@@ -6,7 +6,8 @@
  */
 abstract class rtSetting
 {
-    public function __construct(rtRuntestsConfiguration $configuration) {
+    public function __construct(rtRuntestsConfiguration $configuration)
+    {
         $this->init($configuration);
     }
     

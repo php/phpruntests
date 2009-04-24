@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class for checking that a test file, or directory has been specified
  *
@@ -25,20 +24,20 @@ class rtIsTestFileSpecified extends rtPreCondition
      */
     public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
     {
-        if($commandLine->hasOption('l')) {
-          return true;
+        if ($commandLine->hasOption('l')) {
+            return true;
         }
 
-        if($commandLine->hasOption('r')) {
-          return true;
+        if ($commandLine->hasOption('r')) {
+            return true;
         }
 
-        if($commandLine->getTestFilename() != null) {
-          return true;
+        if ($commandLine->getTestFilename() != null) {
+            return true;
         }
 
-        if($environmentVariables->hasVariable('TEST_PHP_USER')) {
-          return true;
+        if ($environmentVariables->hasVariable('TEST_PHP_USER')) {
+            return true;
         }
 
         return false;

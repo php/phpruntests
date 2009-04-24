@@ -15,7 +15,7 @@ class rtWorkingDirectorySetting extends rtSetting
      */
     public function init(rtRuntestsConfiguration $configuration)
     {
-        if($configuration->hasEnvironmentVariable('TEST_PHP_SRCDIR')) {
+        if ($configuration->hasEnvironmentVariable('TEST_PHP_SRCDIR')) {
             $this->workingDirectory = $configuration->getEnvironmentVariable('TEST_PHP_SRCDIR');
         } else {
             $this->workingDirectory = getcwd();

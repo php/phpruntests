@@ -1,88 +1,89 @@
 <?php
-
 /**
  * Class to deal with all file system operations for a test case
  *
  */
-class rtPhpTestFile {
+class rtPhpTestFile
+{
+    private $fileName;
+    private $testName;
+    private $testContents;
+    private $testExitMessage;
+    private $sectionHeadings = array();
 
-  private $fileName;
-  private $testName;
-  private $testContents;
-  private $testExitMessage;
-  private $sectionHeadings = array();
+    private $carriageReturn = "\r";
+    private $newLine = "\n";
 
+    private $preConditions = array (
+        'rtHasMandatorySections',
+        'rtHasNoDuplicateSections',
+        'rtIsValidSectionName',
+        'rtIsSectionImplemented'
+    );
 
-  private $carriageReturn = "\r";
-  private $newLine = "\n";
-
-
-  private $preConditions = array (
-      'rtHasMandatorySections',
-      'rtHasNoDuplicateSections',
-      'rtIsValidSectionName',
-      'rtIsSectionImplemented'
-      );
-
-
-      /**
-       * Reads the contents of the test file and creates an array of the contents.
-       *
-       * @param string $testFile (file name)
-       */
-      public function doRead($testFile) {
+    /**
+     * Reads the contents of the test file and creates an array of the contents.
+     *
+     * @param string $testFile (file name)
+     */
+    public function doRead($testFile)
+    {
         $this->testFileName = realpath($testFile);
         $this->testName= dirname($this->testFileName).DIRECTORY_SEPARATOR.basename($this->testFileName, ".phpt");
         $this->testContents = file($this->testFileName);
-      }
+    }
 
-      public function normaliseLineEndings() {
-
-        for($i=0; $i<count($this->testContents); $i++) {
-          //This is not nice but there are a huge number of tests with random spacs at the end of the section header
-          if(preg_match("/--([A-Z]+(_[A-Z]+|))--/", $this->testContents[$i], $matches)) {
-            $this->sectionHeadings[] = $matches[1];
-            $this->testContents[$i] = $matches[1];
-          } else {
-            $this->testContents[$i] = rtrim($this->testContents[$i], $this->carriageReturn.$this->newLine);
-          }
+    public function normaliseLineEndings()
+    {
+        for ($i=0; $i<count($this->testContents); $i++) {
+            //This is not nice but there are a huge number of tests with random spacs at the end of the section header
+            if (preg_match("/--([A-Z]+(_[A-Z]+|))--/", $this->testContents[$i], $matches)) {
+                $this->sectionHeadings[] = $matches[1];
+                $this->testContents[$i] = $matches[1];
+            } else {
+                $this->testContents[$i] = rtrim($this->testContents[$i], $this->carriageReturn.$this->newLine);
+            }
         }
-      }
-   
-      public function arePreConditionsMet() {
-        foreach($this->preConditions as $preCondition) {
-          $condition = new $preCondition;
-          if(!$condition->isMet($this->sectionHeadings)) {
-            $this->testExitMessage = $condition->getMessage();
-            return false;
-          }
+    }
+ 
+    public function arePreConditionsMet()
+    {
+        foreach ($this->preConditions as $preCondition) {
+            $condition = new $preCondition;
+            if (!$condition->isMet($this->sectionHeadings)) {
+                  $this->testExitMessage = $condition->getMessage();
+                  return false;
+            }
         }
         return true;
-      }
+    }
 
-      public function getContents() {
+    public function getContents()
+    {
         return $this->testContents;
-      }
-      
-      public function getSectionHeadings() {
+    }
+    
+    public function getSectionHeadings()
+    {
         return $this->sectionHeadings;
-      }
+    }
 
 
-      public function getTestName() {
+    public function getTestName()
+    {
         return $this->testName;
-      }
+    }
 
 
-      public function getTestFileName() {
+    public function getTestFileName()
+    {
         return $this->testFileName;
-      }
+    }
 
 
-      public function getExitMessage() {
+    public function getExitMessage()
+    {
         return $this->testExitMessage;
-      }
-
-
+    }
 }
 ?>

@@ -37,10 +37,11 @@ abstract class rtPreConditionList
      * @param rtEnvironmentVariables $environmentVariables
      * @return boolean
      */
-    public function check($commandLine, $environmentVariables) {
-        foreach($this->preConditions as $preCon) {
+    public function check($commandLine, $environmentVariables)
+    {
+        foreach ($this->preConditions as $preCon) {
             $p = new $preCon;
-            if(!$p->check($commandLine, $environmentVariables)) {
+            if (!$p->check($commandLine, $environmentVariables)) {
                 die($p->getMessage());
             }
         }
@@ -56,7 +57,7 @@ abstract class rtPreConditionList
      */
     public function hasPreCondition($pc)
     {
-        if(in_array($pc, $this->preConditions)) {
+        if (in_array($pc, $this->preConditions)) {
             return true;
         }
 

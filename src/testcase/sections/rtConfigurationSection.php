@@ -1,8 +1,8 @@
 <?php
-
-
-abstract class rtConfigurationSection extends rtSection {
-  
+/**
+ *
+ */
+abstract class rtConfigurationSection extends rtSection
+{  
 }
-
 ?>

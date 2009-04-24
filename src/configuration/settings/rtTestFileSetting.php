@@ -16,31 +16,32 @@ class rtTestFileSetting extends rtSetting
      * @param rtCommandLine $commandLine
      *
      */
-    public function init(rtRuntestsConfiguration $configuration) {
+    public function init(rtRuntestsConfiguration $configuration)
+    {
         $fileArray = $configuration->getTestFilename();
 
-        foreach($fileArray as $fn) {
-            if( !is_dir($fn) && substr($fn, -5) == ".phpt") {
+        foreach ($fileArray as $fn) {
+            if (!is_dir($fn) && substr($fn, -5) == ".phpt") {
                 $this->testFiles[] = $fn;
             }
         }
 
-        if($configuration->hasCommandLineOption('l')) {
+        if ($configuration->hasCommandLineOption('l')) {
             $fileArray = file($configuration->getCommandLineOption('l'));
-            foreach($fileArray as $file) {
-                if(substr(trim($file), -5) == ".phpt") {
+            foreach ($fileArray as $file) {
+                if (substr(trim($file), -5) == ".phpt") {
                     $this->testFiles[] = trim($file);
                 }
             }
         }
 
-        if($configuration->hasCommandLineOption('r')) {
-          $fileArray = file($configuration->getCommandLineOption('r'));
-          foreach($fileArray as $file) {
-            if(substr(trim($file), -5) == ".phpt") {
-              $this->testFiles[] = trim($file);
+        if ($configuration->hasCommandLineOption('r')) {
+            $fileArray = file($configuration->getCommandLineOption('r'));
+            foreach ($fileArray as $file) {
+                if (substr(trim($file), -5) == ".phpt") {
+                    $this->testFiles[] = trim($file);
+                }
             }
-          }
         }
     }
 
@@ -48,7 +49,8 @@ class rtTestFileSetting extends rtSetting
      * Reurns a list of test files
      *
      */
-    public function get() {
+    public function get()
+    {
         return $this->testFiles;
     }
 }

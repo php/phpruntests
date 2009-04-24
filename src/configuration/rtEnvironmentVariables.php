@@ -30,11 +30,11 @@ class rtEnvironmentVariables
 
     static public function getInstance ($os = 'Unix')
     {
-      if ($os == 'Windows') {
-        return new rtWinEnvironmentVariables();
-      } else {
-        return new rtUnixEnvironmentVariables();
-      }
+        if ($os == 'Windows') {
+            return new rtWinEnvironmentVariables();
+        } else {
+            return new rtUnixEnvironmentVariables();
+        }
     }
 
     public function getUserSuppliedVariables()
@@ -45,8 +45,8 @@ class rtEnvironmentVariables
             $this->environmentVariables = array();
         }
 
-        foreach($this->userSuppliedVariables as $variable) {
-            if(getenv($variable)) {
+        foreach ($this->userSuppliedVariables as $variable) {
+            if (getenv($variable)) {
                 $this->environmentVariables[$variable] = getenv($variable);
             }
         }

@@ -1,19 +1,18 @@
 <?php
-
 /**
  * Contains onfiguration for test run. Includes:
  * Command line option, environment variables, ini overrides and settings which are
  * derived from one or more command line options or environment variables.
  *
  */
-
 abstract class rtRuntestsConfiguration
 {
+    protected $commandLineArgs;
+
     private $settings;
     private $setters;
     private $environmentVariables;
     private $commandLine;
-    protected $commandLineArgs;
 
     private $settingNames = array (
         'CurrentDirectory' => 'rtCurrentDirectorySetting',
@@ -48,14 +47,12 @@ abstract class rtRuntestsConfiguration
         $preConditionList = rtPreConditionList::getInstance();
         $preConditionList->check($this->commandLine, $this->environmentVariables);
 
-
         //set configuration
-        foreach($this->settingNames as $name => $setting) {
+        foreach ($this->settingNames as $name => $setting) {
             $this->setters[$name] = new $setting($this);
         }
 
-
-        foreach($this->settingNames as $name => $setting) {
+        foreach ($this->settingNames as $name => $setting) {
             $methodName = 'set' . $name;
             $this->$methodName();
         }
@@ -79,7 +76,8 @@ abstract class rtRuntestsConfiguration
      * Sets the directory that run-tests was started from
      *
      */
-    private function setCurrentDirectory() {
+    private function setCurrentDirectory() 
+    {
         $this->settings['CurrentDirectory']= $this->setters['CurrentDirectory']->get();
     }
 
@@ -87,7 +85,8 @@ abstract class rtRuntestsConfiguration
      * Sets the directory that run-tests is run from
      *
      */
-    private function setWorkingDirectory() {
+    private function setWorkingDirectory()
+    {
         $this->settings['WorkingDirectory']= $this->setters['WorkingDirectory']->get();
     }
 
@@ -95,7 +94,8 @@ abstract class rtRuntestsConfiguration
      * Sets the PHP executable being used to run teh tests
      *
      */
-    private function setPhpExecutable() {
+    private function setPhpExecutable()
+    {
         $this->settings['PhpExecutable']= $this->setters['PhpExecutable']->get();
     }
 
@@ -103,7 +103,8 @@ abstract class rtRuntestsConfiguration
      * Sets the PHP GGI executable being used to run the tests
      *
      */
-    private function setPhpCgiExecutable() {
+    private function setPhpCgiExecutable()
+    {
         $this->settings['PhpCgiExecutable']= $this->setters['PhpCgiExecutable']->get();
     }
 
@@ -111,15 +112,17 @@ abstract class rtRuntestsConfiguration
      * Sets the log format
      *
      */
-    private function setLogFormat() {
-       $this->settings['LogFormat']= $this->setters['LogFormat']->get();
+    private function setLogFormat()
+    {
+        $this->settings['LogFormat']= $this->setters['LogFormat']->get();
     }
 
     /**
      * Sets the command line arguments for PHP
      *
      */
-    private function setPhpCommandLineArguments() {
+    private function setPhpCommandLineArguments()
+    {
         $this->settings['PhpCommandLineArguments']= $this->setters['PhpCommandLineArguments']->get();
     }
 
@@ -127,8 +130,9 @@ abstract class rtRuntestsConfiguration
      * Sets the names of directories to be tested
      *
      */
-    private function setTestDirectories() {
-       $this->settings['TestDirectories'] = $this->setters['TestDirectories']->get();
+    private function setTestDirectories()
+    {
+        $this->settings['TestDirectories'] = $this->setters['TestDirectories']->get();
     }
 
     /**
@@ -136,10 +140,10 @@ abstract class rtRuntestsConfiguration
      *
      * @param array $testFiles
      */
-    private function setTestFiles() {
-       $this->settings['TestFiles'] = $this->setters['TestFiles']->get();
+    private function setTestFiles()
+    {
+        $this->settings['TestFiles'] = $this->setters['TestFiles']->get();
     }
-
 
     /**
      * Returns the value of a setting
@@ -148,39 +152,44 @@ abstract class rtRuntestsConfiguration
      * @param mixed (may be array or string)
      */
 
-    public function getSetting($settingName) {
-      return $this->settings[$settingName];
+    public function getSetting($settingName)
+    {
+        return $this->settings[$settingName];
     }
-
 
     /**
      * Returns the entire settings array
      *
      * @return array $settings
      */
-    public function getSettings() {
-      return $this->settings;
+    public function getSettings()
+    {
+        return $this->settings;
     }
 
-    public function getEnvironmentVariable($name) {
-      return $this->environmentVariables->getVariable($name);
+    public function getEnvironmentVariable($name)
+    {
+        return $this->environmentVariables->getVariable($name);
     }
     
-    public function getEnvironmentVariables() {
-      return $this->environmentVariables->getVariables();
+    public function getEnvironmentVariables()
+    {
+        return $this->environmentVariables->getVariables();
     }
 
-    public function hasCommandLineOption($option) {
-      return $this->commandLine->hasOption($option);
+    public function hasCommandLineOption($option)
+    {
+        return $this->commandLine->hasOption($option);
     }
 
-    public function getCommandLineOption($option) {
-      return $this->commandLine->getOption($option);
+    public function getCommandLineOption($option)
+    {
+        return $this->commandLine->getOption($option);
     }
-
    
-    public function hasEnvironmentVariable($name) {
-      return $this->environmentVariables->hasVariable($name);
+    public function hasEnvironmentVariable($name)
+    {
+        return $this->environmentVariables->hasVariable($name);
     }
 
     /**
@@ -190,12 +199,14 @@ abstract class rtRuntestsConfiguration
      * @param unknown_type $value
      * @return unknown
      */
-    public function setEnvironmentVariable($name, $value) {
-      $this->environmentVariables->setVariable($name, $value);
+    public function setEnvironmentVariable($name, $value)
+    {
+        $this->environmentVariables->setVariable($name, $value);
     }
     
-    public function getTestFilename() {
-      return $this->commandLine->getTestFilename();
+    public function getTestFilename()
+    {
+        return $this->commandLine->getTestFilename();
     }
 }
 ?>

@@ -28,7 +28,8 @@ class rtPhpCommandLineArgSetting extends rtSetting
      * Supply commandline arguments setting to the run configuration
      *
      */
-    public function get() {
+    public function get()
+    {
         return $this->phpCommandLineArguments;
     }
 }

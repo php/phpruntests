@@ -1,11 +1,9 @@
 <?php
-
-
 /**
  * Class for --CREDITS-- section
  *
  */
-class rtCreditsSection extends rtInformationSection {
-  
+class rtCreditsSection extends rtInformationSection
+{
 }
 ?>

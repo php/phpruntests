@@ -1,11 +1,10 @@
 <?php
-
 /**
  * Parse command line options
  *
- * @package  control
- * @author   Zoe Slattery <zoe.slattery@googlemail.com>
- * @license  PHP http://www.php.net/license/3_01.txt
+ * @package control
+ * @author  Zoe Slattery <zoe.slattery@googlemail.com>
+ * @license PHP http://www.php.net/license/3_01.txt
  *
  */
 class rtCommandLineOptions
@@ -93,35 +92,35 @@ class rtCommandLineOptions
      */
     public function parseCommandLineOptions($argv)
     {
-      for ($i=0; $i<count($argv); $i++) {
+        for ($i=0; $i<count($argv); $i++) {
 
-        if (!$this->isShortOption($argv[$i]) && !$this->isLongOption($argv[$i])) {
-          $this->testFilename[] = $argv[$i];
-          continue;
+            if (!$this->isShortOption($argv[$i]) && !$this->isLongOption($argv[$i])) {
+                $this->testFilename[] = $argv[$i];
+                continue;
+            }
+
+            if ($this->isShortOption($argv[$i])) {
+                $option = substr($argv[$i], 1);
+            } else {
+                $option = substr($argv[$i], 2);
+            }
+
+            if (!in_array($option, array_merge($this->shortOptions, $this->shortOptionsWithArgs, $this->longOptions, $this->longOptionsWithArgs))) {
+                throw new rtUnknownOptionException('Unknown option ' . $argv[$i]);
+            }
+
+            if (in_array($option, array_merge($this->shortOptions, $this->longOptions))) {
+                $this->options[$option] = true;
+                continue;
+            }
+
+            if (!$this->isValidOptionArg($argv, $i + 1)) {
+                throw new rtMissingArgumentException('Missing argument for command line option ' . $argv[$i]);
+            }
+
+            $i++;
+            $this->options[$option] = $argv[$i];
         }
-
-        if ($this->isShortOption($argv[$i])) {
-          $option = substr($argv[$i], 1);
-        } else {
-          $option = substr($argv[$i], 2);
-        }
-
-        if (!in_array($option, array_merge($this->shortOptions, $this->shortOptionsWithArgs, $this->longOptions, $this->longOptionsWithArgs))) {
-          throw new rtUnknownOptionException('Unknown option ' . $argv[$i]);
-        }
-
-        if (in_array($option, array_merge($this->shortOptions, $this->longOptions))) {
-          $this->options[$option] = true;
-          continue;
-        }
-
-        if (!$this->isValidOptionArg($argv, $i + 1)) {
-          throw new rtMissingArgumentException('Missing argument for command line option ' . $argv[$i]);
-        }
-
-        $i++;
-        $this->options[$option] = $argv[$i];
-      }
     }
 
 
@@ -132,10 +131,11 @@ class rtCommandLineOptions
      */
     public function isValidOptionArg($array, $index)
     {
-      if (!isset($array[$index])) {
-        return false;
-      }
-      return substr($array[$index], 0, 1) != '-';
+        if (!isset($array[$index])) {
+            return false;
+        }
+
+        return substr($array[$index], 0, 1) != '-';
     }
 
 
@@ -146,14 +146,15 @@ class rtCommandLineOptions
      */
     protected function stripSpaces($argv)
     {
-      $result = array();
+        $result = array();
 
-      for ($i=1; $i<count($argv); $i++) {
-        if ($argv[$i] != "") {
-          $result[] = $argv[$i];
+        for ($i=1; $i<count($argv); $i++) {
+            if ($argv[$i] != "") {
+                $result[] = $argv[$i];
+            }
         }
-      }
-      return $result;
+
+        return $result;
     }
 
 
@@ -162,11 +163,11 @@ class rtCommandLineOptions
      */
     public function getOption($option)
     {
-      if (!isset($this->options[$option])) {
-          return false;
-      }
+        if (!isset($this->options[$option])) {
+            return false;
+        }
 
-      return $this->options[$option];
+        return $this->options[$option];
     }
 
 

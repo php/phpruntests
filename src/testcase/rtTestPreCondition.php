@@ -1,11 +1,10 @@
 <?php
 
+interface rtTestPreCondition
+{
+    public function isMet(array $testContents);    
 
-interface rtTestPreCondition {
-  
-  public function isMet(array $testContents);
-  
-  public function getMessage(); 
+    public function getMessage(); 
 }
 
 ?>

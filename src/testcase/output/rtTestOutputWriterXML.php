@@ -1,20 +1,15 @@
 <?php
-
-
-class rtTestOutputWriterXML extends rtTestOutputWriter {
+/**
+ *
+ */
+class rtTestOutputWriterXML extends rtTestOutputWriter
+{
+    public function assemble(rtPhpTest $testCase)
+    {
+    }
   
-  
-public function assemble(rtPhpTest $testCase) {
-    
-    
-  }
-  
-  public function write() {
-    
-    
-    
-  }
-  
-  
+    public function write()
+    {
+    }
 }
 ?>

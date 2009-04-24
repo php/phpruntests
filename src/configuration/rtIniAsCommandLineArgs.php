@@ -3,31 +3,31 @@
 class rtIniAsCommandLineArgs
 {
     protected $iniOverwrites = array(
-		    'output_handler=',
-		    'open_basedir=',
-		    'safe_mode=0',
-		    'disable_functions=',
-		    'output_buffering=Off',
-		    "error_reporting= 32767",
-		    'display_errors=1',
-		    'display_startup_errors=1',
-		    'log_errors=0',
-		    'html_errors=0',
-		    'track_errors=1',
-		    'report_memleaks=1',
-		    'report_zend_debug=0',
-		    'docref_root=',
-		    'docref_ext=.html',
-		    'error_prepend_string=',
-		    'error_append_string=',
-		    'auto_prepend_file=',
-		    'auto_append_file=',
-		    'magic_quotes_runtime=0',
-		    'ignore_repeated_errors=0',
-		    'unicode.runtime_encoding=ISO-8859-1',
-		    'unicode.script_encoding=UTF-8',
-		    'unicode.output_encoding=UTF-8',
-		    'unicode.from_error_mode=U_INVALID_SUBSTITUTE',
+        'output_handler=',
+        'open_basedir=',
+        'safe_mode=0',
+        'disable_functions=',
+        'output_buffering=Off',
+        "error_reporting= 32767",
+        'display_errors=1',
+        'display_startup_errors=1',
+        'log_errors=0',
+        'html_errors=0',
+        'track_errors=1',
+        'report_memleaks=1',
+        'report_zend_debug=0',
+        'docref_root=',
+        'docref_ext=.html',
+        'error_prepend_string=',
+        'error_append_string=',
+        'auto_prepend_file=',
+        'auto_append_file=',
+        'magic_quotes_runtime=0',
+        'ignore_repeated_errors=0',
+        'unicode.runtime_encoding=ISO-8859-1',
+        'unicode.script_encoding=UTF-8',
+        'unicode.output_encoding=UTF-8',
+        'unicode.from_error_mode=U_INVALID_SUBSTITUTE',
     );
 
     protected $basePhpDArgs;
@@ -50,8 +50,8 @@ class rtIniAsCommandLineArgs
      */
     public function settingsToArguments($array, $args="")
     {
-        foreach($array as $setting) {
-            if($this->isValidSetting($setting)) {
+        foreach ($array as $setting) {
+            if ($this->isValidSetting($setting)) {
                 $setting = $this->stripSpaces($setting);
                 $args .= " -d \"$setting\"";
             } else {
@@ -78,15 +78,15 @@ class rtIniAsCommandLineArgs
         }
 
         //test for ==
-        if(strncmp($parts[1], '=', 1) === 0) {
+        if (strncmp($parts[1], '=', 1) === 0) {
             return false;
         }
 
         //test for a=b=c
-        if(strstr($parts[1], '=') == false) {
-          return true;
+        if (strstr($parts[1], '=') == false) {
+            return true;
         } else {
-          return false;
+            return false;
         }
     }
 

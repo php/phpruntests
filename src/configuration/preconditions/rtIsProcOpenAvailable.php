@@ -13,7 +13,7 @@ class rtIsProcOpenAvailable extends rtPreCondition
      */
     public function getMessage()
     {
-      return rtText::get('procOpenNotAvailable');
+        return rtText::get('procOpenNotAvailable');
     }
 
     /**
@@ -24,7 +24,7 @@ class rtIsProcOpenAvailable extends rtPreCondition
     public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
     {
         if (function_exists('proc_open')) {
-          return true;
+            return true;
         }
 
         return false;

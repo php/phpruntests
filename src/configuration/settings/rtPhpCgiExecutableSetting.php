@@ -23,7 +23,7 @@ class rtPhpCgiExecutableSetting extends rtSetting
         }
         
         if ($configuration->hasEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE')) {
-            if($configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE') == 'auto') {
+            if ($configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE') == 'auto') {
                 $this->phpCgiExecutable = $workingDir . self::SAPI_CGI;
             } else {
                 $this->phpCgiExecutable = $configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE');

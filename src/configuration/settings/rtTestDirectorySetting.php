@@ -20,16 +20,16 @@ class rtTestDirectorySetting extends rtSetting
     {
         $fileArray = $configuration->getTestFilename();
 
-        foreach($fileArray as $file) {
-            if( is_dir($file)) {
+        foreach ($fileArray as $file) {
+            if (is_dir($file)) {
                 $this->testDir[]= $file;
             }
         }
 
-        if($configuration->hasEnvironmentVariable('TEST_PHP_USER')) {
+        if ($configuration->hasEnvironmentVariable('TEST_PHP_USER')) {
             $fileArray = trim($configuration->getEnvironmentVariable('TEST_PHP_USER'));
-            foreach($fileArray as $file) {
-                if( is_dir($file)) {
+            foreach ($fileArray as $file) {
+                if (is_dir($file)) {
                     $this->testDir[]= $file;
                 }
             }
@@ -42,7 +42,7 @@ class rtTestDirectorySetting extends rtSetting
      */
     public function get()
     {
-       return $this->testDir;
+        return $this->testDir;
     }  
 }
 ?>

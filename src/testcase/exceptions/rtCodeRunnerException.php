@@ -1,5 +1,8 @@
 <?php
-class rtPhpRunnerException extends RunTimeException {
-  
+/**
+ *
+ */
+class rtPhpRunnerException extends RunTimeException
+{ 
 }
 ?>

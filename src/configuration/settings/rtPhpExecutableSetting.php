@@ -24,7 +24,7 @@ class rtPhpExecutableSetting extends rtSetting
         
         if ($configuration->hasEnvironmentVariable('TEST_PHP_EXECUTABLE')) {
 
-            if($configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE') == 'auto') {
+            if ($configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE') == 'auto') {
                 $this->phpExecutable = $workingDir.self::SAPI_CLI;
             } else {
                 $this->phpExecutable = $configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE');
