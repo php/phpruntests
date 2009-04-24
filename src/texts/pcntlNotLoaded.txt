@@ -1,2 +1,2 @@
 You have asked to run tests in parallel, this requires that
-PHP has PCNTL loaded. 
+PHP has the PCNTL extension loaded. 

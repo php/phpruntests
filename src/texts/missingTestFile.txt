@@ -1,5 +1,4 @@
-You must specify the name of the test that you want to run. This may
-suplied at the command line as a file, a directory containing tests or 
- a list of tests in a file (-l or -r options).
-A directory name containing tests may also be given using the 
-environmental variable TEST_PHP_USER.
+You must specify the name of the test that you want to run.
+This may be suplied at the command line as a file, a directory containing tests
+or a list of tests in a file (-l or -r options). A directory name containing
+tests may also be given using the environmental variable TEST_PHP_USER.

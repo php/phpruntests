@@ -1,3 +1,3 @@
-The list of files supplied by the -r or -l command line opton is not valid.
+The list of files supplied by the -r or -l command line option is not valid.
 This may be because the list is not readable (-r), not readable and/or not 
-writeable (-l), of the list contains tests that do not have the qualifier .phpt
+writeable (-l), or the list contains tests that do not have the qualifier .phpt.

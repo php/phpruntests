@@ -1,3 +1,2 @@
-The name of the test file that you have supplied in not valid or cannot
-be found.
-Test files need to end with the .phpt qualifier.
+The name of the test file that you have supplied is not valid or cannot
+be found. Test files need to end with the .phpt qualifier.
