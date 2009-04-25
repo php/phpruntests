@@ -13,7 +13,7 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
         
         $pre = new rtIfParallelHasPcntl();
 
-        $this->assertTrue($pre->check($clo, $env));
+        $this->assertEquals(extension_loaded('pcntl'), $pre->check($clo, $env));
     }
     
     public function testLoaded2()
