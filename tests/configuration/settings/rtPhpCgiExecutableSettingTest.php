@@ -25,10 +25,18 @@ class rtPhpCgiExecutableSettingTest extends PHPUnit_Framework_TestCase
 
     public function testSetPhpCgiExecutableNotSet() {
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', 'test.phpt'));
-        
+
         $cgisetting = new rtPhpCgiExecutableSetting($configuration);
+
+        $this->assertEquals(null, $cgisetting->get());
+    }
+
+    public function testSetFromCliExecutableName() {
         
-        $this->assertEquals(null, $cgisetting->get());      
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', '/a/sapi/cli/a-php-exe', 'test.phpt'));
+        $config->configure();
+
+        $this->assertEquals('/a/sapi/cgi/php', $config->getSetting('PhpCgiExecutable'));
     }
 }
 ?>

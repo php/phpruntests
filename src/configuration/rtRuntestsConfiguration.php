@@ -104,7 +104,13 @@ abstract class rtRuntestsConfiguration
      *
      */
     private function setPhpCgiExecutable()
-    {
+    { 
+        //If the CGI executable hasn't been set using an environmental variable or 'auto', try and derive it from 
+        //the name of the cli executable.
+        //TODO This is *ix specific, need a WIN specific class PhpCgiExecutable setting class
+        if($this->setters['PhpCgiExecutable']->get() == null) {
+          $this->setters['PhpCgiExecutable']->setFromPhpCli($this->settings['PhpExecutable']);  
+        }
         $this->settings['PhpCgiExecutable']= $this->setters['PhpCgiExecutable']->get();
     }
 

@@ -33,6 +33,18 @@ class rtPhpCgiExecutableSetting extends rtSetting
         } 
     }
     
+    /**
+     * 
+     */
+    public function setFromPhpCli($phpCli)
+    {
+        if(substr(dirname($phpCli),-3) == 'cli') {
+            $pathLength = strlen(dirname($phpCli)) - 3;
+            $sapiDir = substr(dirname($phpCli), 0, $pathLength);          
+            $this->phpCgiExecutable = $sapiDir."cgi/php";
+        }
+    }
+    
     
     /**
      * Supply the setting to the configuration on request
