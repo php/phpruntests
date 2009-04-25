@@ -1,6 +1,29 @@
 <?php
 /**
- * rtText reads named texts from texts/ subdirectory.
+ * rtText
+ *
+ * @category  Testing
+ * @package   RUNTESTS
+ * @author    Zoe Slattery <zoe@php.net>
+ * @author    Stefan Priebsch <spriebsch@php.net>
+ * @copyright 2009 The PHP Group
+ * @license   http://www.php.net/license/3_01.txt PHP License 3.01
+ * @link      http://qa.php.net/
+ */
+
+/**
+ * Reads texts stored in texts/ subdirectory
+ *
+ * rtText reads named texts from texts/ subdirectory
+ * optionally replacing %n placeholders.
+ *
+ * @category  Testing
+ * @package   RUNTESTS
+ * @author    Zoe Slattery <zoe@php.net>
+ * @author    Stefan Priebsch <spriebsch@php.net>
+ * @copyright 2009 The PHP Group
+ * @license   http://www.php.net/license/3_01.txt PHP License 3.01
+ * @link      http://qa.php.net/
  */
 class rtText
 {
@@ -10,9 +33,10 @@ class rtText
      *
      * @param string $name         Text name to return
      * @param array  $replacements Placeholder replacements
+     *
      * @return string
      */
-    public static function get($name, array $replacements = array())
+    public static function get($name, $replacements = array())
     {
         $filename = dirname(__FILE__) . '/texts/' . $name . '.txt';
 
