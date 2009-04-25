@@ -24,9 +24,7 @@ class rtIfParallelHasPcntl extends rtPreCondition
     public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
     {
         if ($commandLine->hasOption('z') || $environmentVariables->hasVariable('TESTS_PHP_PARALLEL')) {
-            if (!extension_loaded('pcntl')) {
-                return false;
-            }
+            return extension_loaded('pcntl');
         }
 
         return true;
