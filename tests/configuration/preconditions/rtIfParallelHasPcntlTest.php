@@ -1,49 +1,83 @@
 <?php
+/**
+ * rtIfParallelHasPcntlTest
+ *
+ * @category  Testing
+ * @package   RUNTESTS
+ * @author    Zoe Slattery <zoe@php.net>
+ * @author    Stefan Priebsch <spriebsch@php.net>
+ * @copyright 2009 The PHP Group
+ * @license   http://www.php.net/license/3_01.txt PHP License 3.01
+ * @link      http://qa.php.net/
+ */
 
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
+/**
+ * Tests for rtIfParallelHasPcntlTest precondition.
+ *
+ * @category  Testing
+ * @package   RUNTESTS
+ * @author    Zoe Slattery <zoe@php.net>
+ * @author    Stefan Priebsch <spriebsch@php.net>
+ * @copyright 2009 The PHP Group
+ * @license   http://www.php.net/license/3_01.txt PHP License 3.01
+ * @link      http://qa.php.net/
+ */
 class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
 {
-    public function testLoaded()
+    protected function setUp()
     {
-        $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '-z'));
-        $env = rtEnvironmentVariables::getInstance();
-        
-        $pre = new rtIfParallelHasPcntl();
+        $this->preCondition = new rtIfParallelHasPcntl();
+        $this->commandLine  = new rtCommandLineOptions();
 
-        $this->assertEquals(extension_loaded('pcntl'), $pre->check($clo, $env));
-    }
-    
-    public function testLoaded2()
-    {
-        $clo = new rtCommandLineOptions();
-        $env = rtEnvironmentVariables::getInstance();
-        $env->setVariable('TEST_PHP_PARALLEL', true);
-        
-        $pre = new rtIfParallelHasPcntl();
-
-        $this->assertTrue($pre->check($clo, $env));
-    }
-    
-    public function testNotRequired()
-    {
-        $clo = new rtCommandLineOptions();
-        $env = rtEnvironmentVariables::getInstance();
-        
-        $pre = new rtIfParallelHasPcntl();
-
-        $this->assertTrue($pre->check($clo, $env));
+        $this->environment  = rtEnvironmentVariables::getInstance();
     }
 
+    protected function tearDown()
+    {
+        unset($this->preCondition);
+        unset($this->commandLine);
+        unset($this->environment);
+    }
+
+    /**
+     * Ensure that check (wether pcntl is loaded) works 
+     * when parallel test execution is requested by command line option.
+     */
+    public function testCheckWhenCommandLineOptionIsSet()
+    {
+        $this->commandLine->parse(array('run-tests.php', '-z'));
+        
+        $this->assertEquals(extension_loaded('pcntl'), $this->preCondition->check($this->commandLine, $this->environment));
+    }
+
+    /**
+     * Ensure that check (wether pcntl is loaded) works 
+     * when parallel test execution is requested by environment variable.
+     */
+    public function testCheckWhenEnvironmentVariableIsSet()
+    {
+        $this->environment->setVariable('TEST_PHP_PARALLEL', true);
+        
+        $this->assertTrue($this->preCondition->check($this->commandLine, $this->environment));
+    }
+
+    /**
+     * Ensure that check returns true when no parallel test execution is requested.
+     */    
+    public function testCheckWhenParallelExecutionIsNotRequired()
+    {
+        $this->assertTrue($this->preCondition->check($this->commandLine, $this->environment));
+    }
+
+    /**
+     * Ensure that the error message is correct.
+     */
     public function testgetMessage()
     {
-        $pre = new rtIfParallelHasPcntl();
-  
-        $this->assertEquals($pre->getMessage('pcntlNotLoaded'), rtText::get('pcntlNotLoaded'));
+        $this->assertEquals($this->preCondition->getMessage('pcntlNotLoaded'), rtText::get('pcntlNotLoaded'));
     }
-    
-    //Not sure how to check if it's not loaded?
 }
 ?>
