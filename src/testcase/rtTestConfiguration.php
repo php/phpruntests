@@ -1,36 +1,57 @@
 <?php
 /**
- * Needs to set up teh configuration fo rthe test. This comes from
- * 	1. RuntestsConfiguration
- *  2. Sections which modify the Runtests configuration
+ *
+ * This class holds confiurtaion settings that are specific to a single test.
+ * Test sections which adjust the confiuration for single test include ARGS, ENV, INI
+ *
+ * @category   Quality Assurance
+ * @package    run-tests
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ *
  */
+
+
 class rtTestConfiguration
 {
     private $environmentVariables;
     private $phpCommandLineArguments;
     private $testCommandLineArguments;
+    private $phpExecutable;
+    private $cgiSections = array(
+                            'GET',
+                            'POST',
+                            'POST_RAW',
+                            'GZIP_POST',
+                            'DEFLATE_POST',
+                            'EXPECTHEADERS',
+                            'COOKIE',
+    );
 
-    public function __construct(rtRuntestsConfiguration $runConfiguration, $sections)
+    public function __construct(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings)
     {
-        $this->init($runConfiguration, $sections);
+        $this->init($runConfiguration, $sections, $sectionHeadings);
     }
 
-    private function init(rtRuntestsConfiguration $runConfiguration, $sections)
+    private function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings)
     {
         $this->setEnvironmentVariables($runConfiguration, $sections);
         $this->setPhpCommandLineArguments($runConfiguration, $sections);
         $this->setTestCommandLineArguments($sections);
+        $this->setPhpExecutable($runConfiguration, $sectionHeadings);
     }
 
     private function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections)
     {
         $this->environmentVariables = $runConfiguration->getEnvironmentVariables();
-        if (array_key_exists('ENV', $sections)) {    
+        if (array_key_exists('ENV', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['ENV']->getTestEnvironmentVariables());
         }
     }
 
-    private function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections) 
+    private function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections)
     {
         $this->phpCommandLineArguments = $runConfiguration->getSetting('PhpCommandLineArguments');
         if (array_key_exists('INI', $sections)) {
@@ -47,6 +68,21 @@ class rtTestConfiguration
         if (array_key_exists('ARGS', $sections)) {
             $this->testCommandLineArguments = $sections['ARGS']->getTestCommandLineArguments();
         }
+    }
+
+    private function setPhpExecutable($runConfiguration, $sectionHeadings)
+    {
+        $tempArray = array_diff($this->cgiSections, $sectionHeadings);
+        if (count($tempArray) < count($this->cgiSections)) {
+            $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable');
+        } else {
+            $this->phpExecutable = $runConfiguration->getSetting('PhpExecutable');
+        }
+    }
+
+    public function getPhpExecutable()
+    {
+        return $this->phpExecutable;
     }
 
     public function getEnvironmentVariables()

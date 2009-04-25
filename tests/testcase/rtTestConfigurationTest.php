@@ -19,7 +19,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections);
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
 
         $this->assertEquals('rtTestConfiguration', get_class($testConfiguration));
     }
@@ -29,7 +29,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections);
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
 
         $envVars = $testConfiguration->getEnvironmentVariables();
 
@@ -41,7 +41,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections);
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
 
         $args = $testConfiguration->getTestCommandLineArguments();
 
@@ -53,11 +53,35 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections);
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
         $phpargs = $testConfiguration->getPhpCommandLineArguments();
         $match = preg_match("/-d \"error_reporting=E_ALL | E_STRICT | E_DEPRECATED\" -d \"assert.active=1\"/", $phpargs);
 
         $this->assertEquals(1, $match);
+    }
+
+    public function testPHPExecutable()
+    {
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
+        $config->configure();
+ 
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
+        $phpExe = $testConfiguration->getPhpExecutable();
+
+        $this->assertEquals('a-php-exe', $phpExe);
+    }
+
+    public function testPHPCgiExecutable()
+    {
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
+        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', 'a-php-cgi-exe');
+        $config->configure();
+  
+
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array('GET'));
+        $phpExe = $testConfiguration->getPhpExecutable();
+
+        $this->assertEquals('a-php-cgi-exe', $phpExe);
     }
 }
 ?>
