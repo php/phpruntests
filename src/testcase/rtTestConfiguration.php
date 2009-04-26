@@ -50,6 +50,10 @@ class rtTestConfiguration
         if (array_key_exists('ENV', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['ENV']->getTestEnvironmentVariables());
         }
+        if (array_key_exists('GET', $sections)) {
+            $this->environmentVariables = array_merge($this->environmentVariables, $sections['GET']->getGetVariables());
+        }
+
     }
 
     private function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections)
