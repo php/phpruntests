@@ -12,6 +12,8 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $this->sections['ARGS'] = new rtArgsSection('ARGS', array('-vvv -a value -1111 -2 -v'));
         $this->sections['ENV'] = new rtEnvSection('ENV', array('env1 = ENV1', 'env2=ENV2'));
         $this->sections['INI'] = new rtIniSection('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));
+        $this->sections['FILE'] = new rtFileSection('FILE', array('blah'));
+        
     }
 
     public function testCreateInstance()
@@ -19,7 +21,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
 
         $this->assertEquals('rtTestConfiguration', get_class($testConfiguration));
     }
@@ -29,7 +31,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array(), $this->sections['FILE']);
 
         $envVars = $testConfiguration->getEnvironmentVariables();
 
@@ -41,7 +43,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
 
         $args = $testConfiguration->getTestCommandLineArguments();
 
@@ -53,7 +55,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
         $phpargs = $testConfiguration->getPhpCommandLineArguments();
         $match = preg_match("/-d \"error_reporting=E_ALL | E_STRICT | E_DEPRECATED\" -d \"assert.active=1\"/", $phpargs);
 
@@ -65,7 +67,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $config->configure();
  
-        $testConfiguration = new rtTestConfiguration($config, $this->sections, array());
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
         $phpExe = $testConfiguration->getPhpExecutable();
 
         $this->assertEquals('a-php-exe', $phpExe);
@@ -78,10 +80,10 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $config->configure();
   
 
-        $testConfiguration = new rtTestConfiguration($config, $this->sections, array('GET'));
+        $testConfiguration = new rtTestConfiguration($config, $this->sections, array('GET'),$this->sections['FILE']);
         $phpExe = $testConfiguration->getPhpExecutable();
 
-        $this->assertEquals('a-php-cgi-exe', $phpExe);
+        $this->assertEquals('a-php-cgi-exe -C', $phpExe);
     }
 }
 ?>

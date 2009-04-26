@@ -21,6 +21,7 @@ class rtTestConfiguration
     private $phpCommandLineArguments;
     private $testCommandLineArguments;
     private $phpExecutable;
+    private $isCgiTest = false;
     private $cgiSections = array(
                             'GET',
                             'POST',
@@ -31,20 +32,29 @@ class rtTestConfiguration
                             'COOKIE',
     );
 
-    public function __construct(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings)
+    public function __construct(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings, $fileSection)
     {
-        $this->init($runConfiguration, $sections, $sectionHeadings);
+        $this->init($runConfiguration, $sections, $sectionHeadings, $fileSection);
     }
 
-    private function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings)
+    private function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings, $fileSection)
     {
-        $this->setEnvironmentVariables($runConfiguration, $sections);
+        $this->queryCgiTest($sectionHeadings);
+
+        $this->setEnvironmentVariables($runConfiguration, $sections, $fileSection);
         $this->setPhpCommandLineArguments($runConfiguration, $sections);
         $this->setTestCommandLineArguments($sections);
         $this->setPhpExecutable($runConfiguration, $sectionHeadings);
+
+        if($this->isCgiTest) {
+            $this->environmentVariables['SCRIPT_FILENAME'] = $fileSection->getFileName();
+            $this->environmentVariables['PATH_TRANSLATED'] = $fileSection->getFileName();
+            //Required by when the cgi has been compiled with force-cgi-redirect.
+            $this->environmentVariables['REDIRECT_STATUS'] = '1';
+        }
     }
 
-    private function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections)
+    private function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
     {
         $this->environmentVariables = $runConfiguration->getEnvironmentVariables();
         if (array_key_exists('ENV', $sections)) {
@@ -77,11 +87,18 @@ class rtTestConfiguration
 
     private function setPhpExecutable($runConfiguration, $sectionHeadings)
     {
-        $tempArray = array_diff($this->cgiSections, $sectionHeadings);
-        if (count($tempArray) < count($this->cgiSections)) {
-            $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable');
+        if ($this->isCgiTest) {
+            $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable'). " -C";
         } else {
             $this->phpExecutable = $runConfiguration->getSetting('PhpExecutable');
+        }
+    }
+
+    private function queryCgiTest($sectionHeadings)
+    {
+        $tempArray = array_diff($this->cgiSections, $sectionHeadings);
+        if (count($tempArray) < count($this->cgiSections)) {
+            $this->isCgiTest = true;
         }
     }
 
@@ -93,6 +110,7 @@ class rtTestConfiguration
     public function getEnvironmentVariables()
     {
         return $this->environmentVariables;
+         
     }
 
     public function getPhpCommandLineArguments()

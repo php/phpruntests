@@ -60,11 +60,13 @@ class rtPhpTest
         //Identify the file and expect section types
         $this->fileSection = $this->setFileSection();
         $this->expectSection = $this->setExpectSection();
+        
+        $this->fileSection->setExecutableFileName($this->getName());
     }
 
     public function init(rtRuntestsConfiguration $runConfiguration)
     {
-        $this->testConfiguration = new rtTestConfiguration($runConfiguration, $this->sections, $this->sectionHeadings);
+        $this->testConfiguration = new rtTestConfiguration($runConfiguration, $this->sections, $this->sectionHeadings, $this->fileSection);
     }
 
     //run

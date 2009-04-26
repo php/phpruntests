@@ -30,6 +30,7 @@ class rtGetSection extends rtConfigurationSection
     protected function init()
     {
         $this->getVariables['QUERY_STRING'] = $this->sectionContents[0];
+        $this->getVariables['REQUEST_METHOD'] = 'GET';
     }
 
     /**

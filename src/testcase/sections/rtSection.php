@@ -18,6 +18,7 @@ abstract class rtSection
         'CREDITS'     => 'rtCreditsSection',
         'CLEAN'       => 'rtCleanSection',
         'XFAIL'       => 'rtXfailSection',
+        'GET'         => 'rtGetSection',
     );
 
     protected $sectionName;
