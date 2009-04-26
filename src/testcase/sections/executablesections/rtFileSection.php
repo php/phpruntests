@@ -16,22 +16,29 @@ class rtFileSection extends rtExecutableSection
         $this->setExecutableFileName($testCase->getName());
         $this->writeExecutableFile();
 
-        $phpCommand = $runConfiguration->getSetting('PhpExecutable');
-        $phpCommand .= ' '.$testCase->testConfiguration->getPhpCommandLineArguments();
-        $phpCommand .= ' -f '.$this->fileName;
-        $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
+        $phpExecutable = $testCase->testConfiguration->getPhpExecutable();
         
-        $PhpRunner = new rtPhpRunner($phpCommand,
-            $testCase->testConfiguration->getEnvironmentVariables(), 
+        // The CGI excutable is null if it is not available, check and SKIP if appropriate
+        if ($phpExecutable != null) {
+            $phpCommand = $phpExecutable;
+            $phpCommand .= ' '.$testCase->testConfiguration->getPhpCommandLineArguments();
+            $phpCommand .= ' -f '.$this->fileName;
+            $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
+
+            $PhpRunner = new rtPhpRunner($phpCommand,
+            $testCase->testConfiguration->getEnvironmentVariables(),
             $runConfiguration->getSetting('WorkingDirectory')
-        );
-        
-        try {
-            $this->output = $PhpRunner->runphp();
-        } catch (rtPhpRunnerException $e) {
-            $this->status['fail'] = $e->getMessage();
+            );
+
+            try {
+                $this->output = $PhpRunner->runphp();
+            } catch (rtPhpRunnerException $e) {
+                $this->status['fail'] = $e->getMessage();
+            }
+        } else {
+            $this->status['skip'] = 'The CGI executable is unavailable';
         }
-        
+
         return $this->status;
     }
 }
