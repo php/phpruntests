@@ -4,9 +4,9 @@
 
   <property name="build.dir" value="_build" />
   
-  <target name="docs" description="Create API documentation.">
+  <target name="doc" description="Create API documentation in docs/html/.">
     <delete dir="docs" />
-    <exec command="doxygen doxygen.conf" />
+    <exec command="doxygen" />
   </target>
 
   <target name="lint" description="Run a lint check on all PHP files.">
