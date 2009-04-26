@@ -9,23 +9,18 @@ class rtPhpExecutableSetting extends rtSetting
     const SAPI_CLI =  "/sapi/cli/php";
 
     private $phpExecutable;
-    
+
     /**
      * Sets the PHP executable, note the dependency on working directory
      *
      */
     public function init(rtRuntestsConfiguration $configuration)
     {
-        if (is_null($configuration->getSetting('workingDirectory'))) {
-            $workingDir = 'WORKING_DIR';
-        } else {
-            $workingDir = $configuration->getSetting('workingDirectory');
-        }
-        
+
         if ($configuration->hasEnvironmentVariable('TEST_PHP_EXECUTABLE')) {
 
-            if ($configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE') == 'auto') {
-                $this->phpExecutable = $workingDir.self::SAPI_CLI;
+            if ($configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE') == 'auto') {                
+                $this->phpExecutable = $configuration->getSetting('WorkingDirectory').self::SAPI_CLI;
             } else {
                 $this->phpExecutable = $configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE');
             }
@@ -43,7 +38,7 @@ class rtPhpExecutableSetting extends rtSetting
     public function get()
     {
         return $this->phpExecutable;
-    }  
+    }
 }
 
 ?>

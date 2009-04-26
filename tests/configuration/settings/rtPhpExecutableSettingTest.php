@@ -24,14 +24,22 @@ class rtPhpExecutableSettingTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('a-php-executable', $clisetting->get());
     }
 
-    public function testSetPhpExecutableEVAuto()
+    public function testSetPhpExecutableEvAuto()
     {
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', 'test.phpt'));
         $configuration->setEnvironmentVariable('TEST_PHP_EXECUTABLE', 'auto');
+        $configuration->setEnvironmentVariable('TEST_PHP_SRCDIR', '/some/directory');
+        $configuration->configure();
+        $this->assertEquals('/some/directory/sapi/cli/php', $configuration->getSetting('PhpExecutable'));
+    }
 
-        $clisetting = new rtPhpExecutableSetting($configuration);
+    public function testSetPhpExecutableCwdAuto()
+    {
+        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', 'test.phpt'));
+        $configuration->setEnvironmentVariable('TEST_PHP_EXECUTABLE', 'auto');
+        $configuration->configure();
 
-        $this->assertEquals('WORKING_DIR/sapi/cli/php', $clisetting->get());      
+        $this->assertEquals(realpath(getcwd()).'/sapi/cli/php', $configuration->getSetting('PhpExecutable'));
     }
 }
 ?>

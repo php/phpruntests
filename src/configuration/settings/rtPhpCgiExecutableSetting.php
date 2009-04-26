@@ -16,15 +16,11 @@ class rtPhpCgiExecutableSetting extends rtSetting
      */
     public function init(rtRuntestsConfiguration $configuration)
     {
-        if (is_null($configuration->getSetting('workingDirectory'))) {
-            $workingDir = 'WORKING_DIR';
-        } else {
-            $workingDir = $configuration->getSetting('workingDirectory');
-        }
+      
         
         if ($configuration->hasEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE')) {
             if ($configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE') == 'auto') {
-                $this->phpCgiExecutable = $workingDir . self::SAPI_CGI;
+                $this->phpCgiExecutable = $configuration->getSetting('WorkingDirectory') . self::SAPI_CGI;
             } else {
                 $this->phpCgiExecutable = $configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE');
             }

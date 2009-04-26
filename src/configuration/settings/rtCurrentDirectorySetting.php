@@ -14,7 +14,7 @@ class rtCurrentDirectorySetting extends rtSetting
      */
     public function init(rtRuntestsConfiguration $configuration)
     {
-        $this->currentDirectory = getcwd();
+        $this->currentDirectory = realpath(getcwd());
     }
 
     /**

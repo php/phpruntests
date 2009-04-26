@@ -10,7 +10,7 @@ class rtCurrentDirectorySettingTest extends PHPUnit_Framework_TestCase
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $dirsetting  = new rtCurrentDirectorySetting($configuration);
 
-        $this->assertEquals(getcwd(), $dirsetting->get());
+        $this->assertEquals(realpath(getcwd()), $dirsetting->get());
     }   
 }
 ?>
