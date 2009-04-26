@@ -1,0 +1,54 @@
+Introduction to run-tests
+-------------------------
+
+runtests is a test environment written in PHP. It is used to tests PHP itself.
+It is not a replacement for unit test frameworks like PHPUnit.
+
+The basic principle of automated tests is very simple. Compare a computed
+result with some pre-calculated "known good", expected value.
+If both match, the test has passed. If they do not match, the tests failes, and
+there is probably a bug in PHP, or some precondition for the test was not met.
+
+Testing PHP is a far more complex issue than it may seem at first glance,
+because each test may require an individual PHP configuration, certain settings
+at operting system level (for example environment variables), or even external
+services (like databases, LDAP servers or IMAP servers).
+
+A test that requires external services can be complex to set up, but there is 
+no way around that. How could you make sure that running a SQL statement against
+a database works without actually running it against a database?
+
+Since a failing test will probably leave its environment in an unpredictable
+state, a high level of test isolation is required. In other words, this means
+that we need to set up a new preconfigured PHP process for each test. This is 
+the only way to ensure that every test runs in a clean environment.
+
+So, to execute each test, runtests must set up a PHP process, have it run the
+test, collect the output, and compare it to the pre-calculated "known good"
+expected output. That spawned PHP process (hopefully) terminates, so at the
+process level, we do not have to worry about the potential mess that a test has
+left behind. Still, if the test has created files, databases, or modified the
+global system environment, additional work may be required to clean up after
+the test.
+
+Since PHP runs on most of the available platforms, runtests must also run on 
+all these platforms. From an implementation point of view, this means that
+runtests must work on a minimal, stock PHP installation, and should make as 
+few as possible assumptions on the system environment. All the more or less
+known cross-platform issues like different line endings, directory separators, 
+case handling, as well as limits of different operating system families
+(file name path length, include path length) have to be taken into account and 
+being dealt with in runtests.
+
+Since runtests spawns off a separate PHP process to run a test, it is not
+necessary to run each test in the same PHP version that runtests runs on.
+In other words, that means that you can test a different PHP version than
+you are actually running - and in fact, it may be a good idea to use a
+"known good" PHP version to test a new, less tested PHP version. After all,
+bugs in the PHP version runtests itself is running on might affect runtests
+itself, and thus make the test results less reliable.
+
+We have already mentioned that tests need an individual environment. Not all 
+tests can be run at the command line, for example. If a test need to make
+sure that PHP returns correct HTTP header, or processes GET or POST input,
+the test probably requires the CGI SAPI to run.
