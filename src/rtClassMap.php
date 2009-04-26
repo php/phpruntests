@@ -57,6 +57,7 @@
     'rtTestResults'                            => 'testcase/rtTestResults.php',
     'rtArgsSection'                            => 'testcase/sections/configurationsections/rtArgsSection.php',
     'rtEnvSection'                             => 'testcase/sections/configurationsections/rtEnvSection.php',
+    'rtGetSection'                             => 'testcase/sections/configurationsections/rtGetSection.php',
     'rtIniSection'                             => 'testcase/sections/configurationsections/rtIniSection.php',
     'rtCleanSection'                           => 'testcase/sections/executablesections/rtCleanSection.php',
     'rtFileSection'                            => 'testcase/sections/executablesections/rtFileSection.php',
