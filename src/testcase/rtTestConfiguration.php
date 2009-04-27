@@ -21,6 +21,7 @@ class rtTestConfiguration
     private $phpCommandLineArguments;
     private $testCommandLineArguments;
     private $phpExecutable;
+    private $inputFileString;
     private $isCgiTest = false;
     private $cgiSections = array(
                             'GET',
@@ -45,7 +46,8 @@ class rtTestConfiguration
         $this->setPhpCommandLineArguments($runConfiguration, $sections);
         $this->setTestCommandLineArguments($sections);
         $this->setPhpExecutable($runConfiguration, $sectionHeadings);
-
+        $this->setInputFileString($runConfiguration, $sections, $sectionHeadings);
+        
         if($this->isCgiTest) {
             $this->environmentVariables['SCRIPT_FILENAME'] = $fileSection->getFileName();
             $this->environmentVariables['PATH_TRANSLATED'] = $fileSection->getFileName();
@@ -57,6 +59,7 @@ class rtTestConfiguration
     private function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
     {
         $this->environmentVariables = $runConfiguration->getEnvironmentVariables();
+
         if (array_key_exists('ENV', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['ENV']->getTestEnvironmentVariables());
         }
@@ -91,6 +94,14 @@ class rtTestConfiguration
             $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable'). " -C";
         } else {
             $this->phpExecutable = $runConfiguration->getSetting('PhpExecutable');
+        }
+    }
+
+    private function setInputFileString($runConfiguration, $sections, $sectionHeadings)
+    {
+        $this->inputFileString = '';
+        if(in_array('POST', $sectionHeadings)) {
+            $this->inputFileString = '< '.$sections['POST']->getPostFileName();
         }
     }
 
