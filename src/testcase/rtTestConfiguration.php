@@ -22,7 +22,7 @@ class rtTestConfiguration
     private $testCommandLineArguments;
     private $phpExecutable;
     private $inputFileString;
-    private $isCgiTest = false;
+    private $cgiTest = false;
     private $cgiSections = array(
                             'GET',
                             'POST',
@@ -40,15 +40,15 @@ class rtTestConfiguration
 
     private function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings, $fileSection)
     {
-        $this->queryCgiTest($sectionHeadings);
+        $this->isCgiTest($sectionHeadings);
 
         $this->setEnvironmentVariables($runConfiguration, $sections, $fileSection);
         $this->setPhpCommandLineArguments($runConfiguration, $sections);
         $this->setTestCommandLineArguments($sections);
         $this->setPhpExecutable($runConfiguration, $sectionHeadings);
         $this->setInputFileString($runConfiguration, $sections, $sectionHeadings);
-        
-        if($this->isCgiTest) {
+
+        if($this->cgiTest) {
             $this->environmentVariables['SCRIPT_FILENAME'] = $fileSection->getFileName();
             $this->environmentVariables['PATH_TRANSLATED'] = $fileSection->getFileName();
             //Required by when the cgi has been compiled with force-cgi-redirect.
@@ -90,7 +90,7 @@ class rtTestConfiguration
 
     private function setPhpExecutable($runConfiguration, $sectionHeadings)
     {
-        if ($this->isCgiTest) {
+        if ($this->cgiTest) {
             $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable'). " -C";
         } else {
             $this->phpExecutable = $runConfiguration->getSetting('PhpExecutable');
@@ -105,11 +105,11 @@ class rtTestConfiguration
         }
     }
 
-    private function queryCgiTest($sectionHeadings)
+    private function isCgiTest($sectionHeadings)
     {
         $tempArray = array_diff($this->cgiSections, $sectionHeadings);
         if (count($tempArray) < count($this->cgiSections)) {
-            $this->isCgiTest = true;
+            $this->cgiTest = true;
         }
     }
 
@@ -132,6 +132,11 @@ class rtTestConfiguration
     public function getTestCommandLineArguments()
     {
         return $this->testCommandLineArguments;
+    }
+
+    public function getInputFileString()
+    {
+        return $this->inputFileString;
     }
 }
 ?>
