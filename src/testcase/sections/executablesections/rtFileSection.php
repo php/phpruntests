@@ -34,6 +34,7 @@ class rtFileSection extends rtExecutableSection
             $phpCommand .= ' '. $testCase->testConfiguration->getPhpCommandLineArguments();
             $phpCommand .= ' -f '.$this->fileName;
             $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
+            $phpCommand .= ' '.$testCase->testConfiguration->getInputFileString();
              
 
             $PhpRunner = new rtPhpRunner($phpCommand,
