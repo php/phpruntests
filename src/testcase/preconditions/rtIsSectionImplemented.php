@@ -18,6 +18,7 @@ class rtIsSectionImplemented implements rtTestPreCondition
         'CLEAN'       => 'rtCleanSection',
         'XFAIL'       => 'rtXfailSection',
         'GET'         => 'rtGetSection',
+        'POST'       => 'rtPostSection'
     );    
 
     /** Return the message associated with an unimplemented test section

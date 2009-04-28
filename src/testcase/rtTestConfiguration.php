@@ -66,6 +66,9 @@ class rtTestConfiguration
         if (array_key_exists('GET', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['GET']->getGetVariables());
         }
+       if (array_key_exists('POST', $sections)) {
+            $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST']->getPostVariables());
+        }
 
     }
 

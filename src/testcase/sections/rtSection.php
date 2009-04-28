@@ -19,6 +19,7 @@ abstract class rtSection
         'CLEAN'       => 'rtCleanSection',
         'XFAIL'       => 'rtXfailSection',
         'GET'         => 'rtGetSection',
+        'POST'         => 'rtPostSection',
     );
 
     protected $sectionName;

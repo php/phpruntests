@@ -18,12 +18,14 @@ class rtPostSection extends rtConfigurationSection
     private $postFileName;
 
     protected function init()
-    {
+    { 
+        $postString = implode('\n', $this->sectionContents);
         $this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+        $this->postVariables['CONTENT_LENGTH'] = strlen($postString);
         $this->postVariables['REQUEST_METHOD'] = 'POST';
 
-        $postString = implode('\n', $this->sectionContents);
         $this->postFileName = tempnam(sys_get_temp_dir(), 'post');
+        
         file_put_contents($this->postFileName, $postString);
     }
 
