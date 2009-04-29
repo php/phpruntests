@@ -1,7 +1,7 @@
 <?php
 /**
  * rtPostSection
- * Sets environment variables for GET section
+ * Sets environment variables for POST section
  *
  *
  * @category  Testing
@@ -30,7 +30,7 @@ class rtPostSection extends rtConfigurationSection
     }
 
     /**
-     * Additional GET environment variables required by the test
+     * Additional POST environment variables required by the test
      *
      * @return array
      */
@@ -39,6 +39,10 @@ class rtPostSection extends rtConfigurationSection
         return $this->postVariables;
     }
 
+    /**
+     * return the name of teh file containing post data
+     * 
+     */
     public function getPostFileName()
     {
         return $this->postFileName;
