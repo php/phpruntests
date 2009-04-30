@@ -66,11 +66,14 @@ class rtTestConfiguration
         if (array_key_exists('GET', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['GET']->getGetVariables());
         }
-       if (array_key_exists('POST', $sections)) {
+        if (array_key_exists('POST', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST']->getPostVariables());
         }
-       if (array_key_exists('GZIP_POST', $sections)) {
+        if (array_key_exists('GZIP_POST', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['GZIP_POST']->getPostVariables());
+        }
+        if (array_key_exists('DEFLATE_POST', $sections)) {
+            $this->environmentVariables = array_merge($this->environmentVariables, $sections['DEFLATE_POST']->getPostVariables());
         }
 
     }
@@ -111,6 +114,9 @@ class rtTestConfiguration
         }
         if(in_array('GZIP_POST', $sectionHeadings)) {
             $this->inputFileString = '< '.$sections['GZIP_POST']->getPostFileName();
+        }
+        if(in_array('DEFLATE_POST', $sectionHeadings)) {
+            $this->inputFileString = '< '.$sections['DEFLATE_POST']->getPostFileName();
         }
     }
 
