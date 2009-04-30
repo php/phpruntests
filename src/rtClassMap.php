@@ -56,6 +56,7 @@
     'rtTestPreCondition'                       => 'testcase/rtTestPreCondition.php',
     'rtTestResults'                            => 'testcase/rtTestResults.php',
     'rtArgsSection'                            => 'testcase/sections/configurationsections/rtArgsSection.php',
+    'rtDeflatePostSection'                     => 'testcase/sections/configurationsections/rtDeflatePostSection.php',
     'rtEnvSection'                             => 'testcase/sections/configurationsections/rtEnvSection.php',
     'rtGetSection'                             => 'testcase/sections/configurationsections/rtGetSection.php',
     'rtGzipPostSection'                        => 'testcase/sections/configurationsections/rtGzipPostSection.php',
