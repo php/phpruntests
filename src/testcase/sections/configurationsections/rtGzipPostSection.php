@@ -12,7 +12,7 @@
  * @license   http://www.php.net/license/3_01.txt PHP License 3.01
  * @link      http://qa.php.net/
  */
-class rtPostSection extends rtConfigurationSection
+class rtGzipPostSection extends rtConfigurationSection
 {
     private $postVariables = array();
     private $postFileName;
@@ -21,13 +21,14 @@ class rtPostSection extends rtConfigurationSection
     { 
         $postString = implode('\n', $this->sectionContents);
         $gzipPostString = gzencode($postString);
+        
         $this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
         $this->postVariables['CONTENT_LENGTH'] = strlen($gzipPostString);
         $this->postVariables['REQUEST_METHOD'] = 'POST';
 
         $this->postFileName = tempnam(sys_get_temp_dir(), 'post');
         
-        file_put_contents($this->postFileName, $postString);
+        file_put_contents($this->postFileName, $gzipPostString);
     }
 
     /**

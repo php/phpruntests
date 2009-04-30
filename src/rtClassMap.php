@@ -58,6 +58,7 @@
     'rtArgsSection'                            => 'testcase/sections/configurationsections/rtArgsSection.php',
     'rtEnvSection'                             => 'testcase/sections/configurationsections/rtEnvSection.php',
     'rtGetSection'                             => 'testcase/sections/configurationsections/rtGetSection.php',
+    'rtGzipPostSection'                        => 'testcase/sections/configurationsections/rtGzipPostSection.php',
     'rtIniSection'                             => 'testcase/sections/configurationsections/rtIniSection.php',
     'rtPostSection'                            => 'testcase/sections/configurationsections/rtPostSection.php',
     'rtCleanSection'                           => 'testcase/sections/executablesections/rtCleanSection.php',
