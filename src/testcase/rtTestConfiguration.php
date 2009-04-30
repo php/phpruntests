@@ -69,6 +69,9 @@ class rtTestConfiguration
        if (array_key_exists('POST', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST']->getPostVariables());
         }
+       if (array_key_exists('GZIP_POST', $sections)) {
+            $this->environmentVariables = array_merge($this->environmentVariables, $sections['GZIP_POST']->getPostVariables());
+        }
 
     }
 
@@ -105,6 +108,9 @@ class rtTestConfiguration
         $this->inputFileString = '';
         if(in_array('POST', $sectionHeadings)) {
             $this->inputFileString = '< '.$sections['POST']->getPostFileName();
+        }
+        if(in_array('GZIP_POST', $sectionHeadings)) {
+            $this->inputFileString = '< '.$sections['GZIP_POST']->getPostFileName();
         }
     }
 

@@ -1,9 +1,7 @@
 --TEST--
 Sample test for GZIP_POST
---POST--
-blahblah=blah
 --GZIP_POST--
-1
+blahblah=blah
 --FILE--
 <?php
 $content = file_get_contents('php://input');

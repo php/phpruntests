@@ -19,7 +19,8 @@ abstract class rtSection
         'CLEAN'       => 'rtCleanSection',
         'XFAIL'       => 'rtXfailSection',
         'GET'         => 'rtGetSection',
-        'POST'         => 'rtPostSection',
+        'POST'        => 'rtPostSection',
+        'GZIP_POST'   => 'rtGzipPostSection',
     );
 
     protected $sectionName;
