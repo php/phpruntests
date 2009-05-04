@@ -6,7 +6,7 @@
  */
 class rtPhpCgiExecutableSetting extends rtSetting
 {
-    const SAPI_CGI = "/sapi/cgi/php";
+    const SAPI_CGI = "/sapi/cgi/php-cgi";
 
     private $phpCgiExecutable;
     
@@ -37,7 +37,7 @@ class rtPhpCgiExecutableSetting extends rtSetting
         if(substr(dirname($phpCli),-3) == 'cli') {
             $pathLength = strlen(dirname($phpCli)) - 3;
             $sapiDir = substr(dirname($phpCli), 0, $pathLength);          
-            $this->phpCgiExecutable = $sapiDir."cgi/php";
+            $this->phpCgiExecutable = $sapiDir."cgi/php-cgi";
         }
     }
     
