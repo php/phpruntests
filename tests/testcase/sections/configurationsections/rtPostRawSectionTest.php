@@ -20,7 +20,7 @@ class rtPostRawSectionTest extends PHPUnit_Framework_TestCase
         
         $fileName = $postSection->getPostFileName();
         $string = file_get_contents($fileName);        
-        $this->assertEquals('fred\njoe\nContent-Type:the second\nmary', $string);
+        $this->assertEquals("fred\njoe\nContent-Type:the second\nmary", $string);
     }
 }
 ?>
