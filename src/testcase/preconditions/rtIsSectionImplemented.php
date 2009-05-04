@@ -22,6 +22,7 @@ class rtIsSectionImplemented implements rtTestPreCondition
         'GZIP_POST'       => 'rtGzipPostSection',
         'DEFLATE_POST'       => 'rtDeflatePostSection',
         'POST_RAW'    => 'rtPostRawSection',
+        'COOKIE'    => 'rtCookieSection',
     );    
 
     /** Return the message associated with an unimplemented test section

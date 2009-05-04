@@ -23,6 +23,7 @@ abstract class rtSection
         'GZIP_POST'   => 'rtGzipPostSection',
         'DEFLATE_POST'  => 'rtDeflatePostSection',
         'POST_RAW'  => 'rtPostRawSection',
+        'COOKIE'    => 'rtCookieSection',
     );
 
     protected $sectionName;

@@ -48,12 +48,6 @@ class rtTestConfiguration
         $this->setPhpExecutable($runConfiguration, $sectionHeadings);
         $this->setInputFileString($runConfiguration, $sections, $sectionHeadings);
 
-        if($this->cgiTest) {
-            $this->environmentVariables['SCRIPT_FILENAME'] = $fileSection->getFileName();
-            $this->environmentVariables['PATH_TRANSLATED'] = $fileSection->getFileName();
-            //Required by when the cgi has been compiled with force-cgi-redirect.
-            $this->environmentVariables['REDIRECT_STATUS'] = '1';
-        }
     }
 
     private function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
@@ -63,20 +57,33 @@ class rtTestConfiguration
         if (array_key_exists('ENV', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['ENV']->getTestEnvironmentVariables());
         }
-        if (array_key_exists('GET', $sections)) {
-            $this->environmentVariables = array_merge($this->environmentVariables, $sections['GET']->getGetVariables());
-        }
-        if (array_key_exists('POST', $sections)) {
-            $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST']->getPostVariables());
-        }
-        if (array_key_exists('GZIP_POST', $sections)) {
-            $this->environmentVariables = array_merge($this->environmentVariables, $sections['GZIP_POST']->getPostVariables());
-        }
-        if (array_key_exists('DEFLATE_POST', $sections)) {
-            $this->environmentVariables = array_merge($this->environmentVariables, $sections['DEFLATE_POST']->getPostVariables());
-        }
-        if (array_key_exists('POST_RAW', $sections)) {
-            $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST_RAW']->getPostVariables());
+
+        if($this->cgiTest) {
+            $this->environmentVariables['SCRIPT_FILENAME'] = $fileSection->getFileName();
+            $this->environmentVariables['PATH_TRANSLATED'] = $fileSection->getFileName();
+            //Required by when the cgi has been compiled with force-cgi-redirect.
+            $this->environmentVariables['REDIRECT_STATUS'] = '1';
+            //Default is GET
+            $this->environmentVariables['REQUEST_METHOD'] = 'GET';
+
+            if (array_key_exists('GET', $sections)) {
+                $this->environmentVariables = array_merge($this->environmentVariables, $sections['GET']->getGetVariables());
+            }
+            if (array_key_exists('POST', $sections)) {
+                $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST']->getPostVariables());
+            }
+            if (array_key_exists('GZIP_POST', $sections)) {
+                $this->environmentVariables = array_merge($this->environmentVariables, $sections['GZIP_POST']->getPostVariables());
+            }
+            if (array_key_exists('DEFLATE_POST', $sections)) {
+                $this->environmentVariables = array_merge($this->environmentVariables, $sections['DEFLATE_POST']->getPostVariables());
+            }
+            if (array_key_exists('POST_RAW', $sections)) {
+                $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST_RAW']->getPostVariables());
+            }
+            if (array_key_exists('COOKIE', $sections)) {
+                $this->environmentVariables = array_merge($this->environmentVariables, $sections['COOKIE']->getCookieVariables());
+            }
         }
 
     }
