@@ -75,6 +75,9 @@ class rtTestConfiguration
         if (array_key_exists('DEFLATE_POST', $sections)) {
             $this->environmentVariables = array_merge($this->environmentVariables, $sections['DEFLATE_POST']->getPostVariables());
         }
+        if (array_key_exists('POST_RAW', $sections)) {
+            $this->environmentVariables = array_merge($this->environmentVariables, $sections['POST_RAW']->getPostVariables());
+        }
 
     }
 
@@ -117,6 +120,9 @@ class rtTestConfiguration
         }
         if(in_array('DEFLATE_POST', $sectionHeadings)) {
             $this->inputFileString = '< '.$sections['DEFLATE_POST']->getPostFileName();
+        }
+        if(in_array('POST_RAW', $sectionHeadings)) {
+            $this->inputFileString = '< '.$sections['POST_RAW']->getPostFileName();
         }
     }
 
