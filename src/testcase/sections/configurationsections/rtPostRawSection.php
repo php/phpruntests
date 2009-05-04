@@ -32,7 +32,7 @@ class rtPostRawSection extends rtConfigurationSection
             }
         }
 
-    $postString = implode('\n', $postContents);
+    $postString = implode("\n", $postContents);
     $this->postVariables['CONTENT_LENGTH'] = strlen($postString);
     $this->postVariables['REQUEST_METHOD'] = 'POST';
 

@@ -19,7 +19,7 @@ class rtGzipPostSection extends rtConfigurationSection
 
     protected function init()
     { 
-        $postString = implode('\n', $this->sectionContents);
+        $postString = implode("\n", $this->sectionContents);
         $gzipPostString = gzencode($postString);
         
         $this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';

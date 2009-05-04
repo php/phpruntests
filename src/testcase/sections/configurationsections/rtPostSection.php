@@ -19,7 +19,7 @@ class rtPostSection extends rtConfigurationSection
 
     protected function init()
     { 
-        $postString = implode('\n', $this->sectionContents);
+        $postString = implode("\n", $this->sectionContents);
         $this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
         $this->postVariables['CONTENT_LENGTH'] = strlen($postString);
         $this->postVariables['REQUEST_METHOD'] = 'POST';

@@ -19,7 +19,7 @@ class rtDeflatePostSection extends rtConfigurationSection
 
     protected function init()
     { 
-        $postString = implode('\n', $this->sectionContents);
+        $postString = implode("\n", $this->sectionContents);
         $compressedPostString = gzcompress($postString);
         
         $this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
