@@ -43,6 +43,7 @@ $rtClassMap = array(
 	'rtHasNoDuplicateSections'	 => 'testcase/preconditions/rtHasNoDuplicateSections.php',
 	'rtIsSectionImplemented'	 => 'testcase/preconditions/rtIsSectionImplemented.php',
 	'rtIsValidSectionName'		 => 'testcase/preconditions/rtIsValidSectionName.php',
+	'rtVersionCheckTest'         =>  'configuration/preconditions/rtVersionCheckTest.php'.
 	'rtPhpRunner'			 => 'testcase/rtPhpRunner.php',
 	'rtPhpTest'			 => 'testcase/rtPhpTest.php',
 	'rtPhpTestFile'			 => 'testcase/rtPhpTestFile.php',
@@ -73,4 +74,5 @@ $rtClassMap = array(
 	'rtDirectoryList'		 => 'testrun/rtDirectoryList.php',
 	'rtPhpTestRun'			 => 'testrun/rtPhpTestRun.php',
 	'rtPhptDirectoryFilterIterator'	 => 'testrun/rtPhptDirectoryFilterIterator.php',
+	
 );

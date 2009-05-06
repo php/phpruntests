@@ -13,6 +13,7 @@ abstract class rtPreConditionList
         'rtIsProcOpenAvailable',
         'rtIsSafeModeDisabled',
         'rtIsTestFileSpecified',
+        'rtIsPhpVersionCorrect',
     );
 
     /**
@@ -37,11 +38,13 @@ abstract class rtPreConditionList
      * @param rtEnvironmentVariables $environmentVariables
      * @return boolean
      */
-    public function check($commandLine, $environmentVariables)
+    public function check(rtRuntestsConfiguration $config)
     {
         foreach ($this->preConditions as $preCon) {
             $p = new $preCon;
-            if (!$p->check($commandLine, $environmentVariables)) {
+            
+            // if (!$p->check($commandLine, $environmentVariables)) {
+            if (!$p->check($config)) {
                 die($p->getMessage());
             }
         }

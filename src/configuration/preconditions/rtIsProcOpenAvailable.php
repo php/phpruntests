@@ -18,9 +18,18 @@ class rtIsProcOpenAvailable extends rtPreCondition
 
     /**
      * Check that proc_open() is available
-     *
+     *   
+     * @param  rtRuntestsConfiguration $config
      * @return boolean
+     * @access public
      */
+    public function check(rtRuntestsConfiguration $config)
+    {
+    	return function_exists('proc_open');
+    }
+    
+    
+    /*
     public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
     {
         if (function_exists('proc_open')) {
@@ -29,5 +38,6 @@ class rtIsProcOpenAvailable extends rtPreCondition
 
         return false;
     }
+    */
 }
 ?>

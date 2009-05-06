@@ -18,10 +18,33 @@ class rtIsTestFileSpecified extends rtPreCondition
     /**
      * Check that a test file or directory has been given
      *
-     * @param rtCommandLine $commandLine
-     * @param rtEnvironmentVariables $environmentVariables
+     * @param  rtRuntestsConfiguration $config
      * @return boolean
+     * @access public
      */
+    public function check(rtRuntestsConfiguration $config)
+    {
+    	if ($config->hasCommandLineOption('l')) {
+            return true;
+        }
+
+        if ($config->hasCommandLineOption('r')) {
+            return true;
+        }
+
+        if ($config->getTestFilename() != null) {
+            return true;
+        }
+
+        if ($config->hasEnvironmentVariable('TEST_PHP_USER')) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    
+    /*
     public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
     {
         if ($commandLine->hasOption('l')) {
@@ -41,6 +64,7 @@ class rtIsTestFileSpecified extends rtPreCondition
         }
 
         return false;
-    }  
+    }
+    */ 
 }
 ?>

@@ -1,0 +1,3 @@
+This version of run-tests requires PHP 5.3 or higher.
+The PHP executable that you have supplied using either the command line option 
+-p or the environmental variable TEST_PHP_EXECUTABLE does not fulfill this requirement.

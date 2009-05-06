@@ -64,17 +64,22 @@ abstract class rtRuntestsConfiguration
         $options = new rtAddToCommandLine();
         $options->parseAdditionalOptions($this->commandLine, $this->environmentVariables);
 
-        //check configuration preconditions
-        $preConditionList = rtPreConditionList::getInstance();
-        $preConditionList->check($this->commandLine, $this->environmentVariables);
-
         //set configuration
         foreach ($this->settingNames as $name => $setting) {
             $this->setters[$name] = new $setting($this);
             $methodName = 'set' . $name;
             $this->$methodName();
         }
-
+        
+        //check configuration preconditions
+        $preConditionList = rtPreConditionList::getInstance();
+        
+        // $preConditionList->check($this->commandLine, $this->environmentVariables);
+        
+         $preConditionList->check($this);
+        
+        
+        
     }
 
     /**

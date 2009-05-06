@@ -15,14 +15,30 @@ class rtIsExecutableSet extends rtPreCondition
     {
         return rtText::get('missingPHPExecutable');
     }
-
+    
+    
     /**
      * Check that the PHP executable is a valid executable
      *
-     * @param rtCommandLine $commandLine
-     * @param rtEnvironmentVariables $environment
+     * @param  rtRuntestsConfiguration $config
      * @return boolean
+     * @access public
      */
+    public function check(rtRuntestsConfiguration $config)
+    {
+        if ($config->hasCommandLineOption('p')) {
+            return true;
+        }
+
+        if ($config->hasEnvironmentVariable('TEST_PHP_EXECUTABLE')) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    
+    /*
     public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
     {
         if ($commandLine->hasOption('p')) {
@@ -34,6 +50,7 @@ class rtIsExecutableSet extends rtPreCondition
         }
 
         return false;
-    }  
+    }
+    */  
 }
 ?>
