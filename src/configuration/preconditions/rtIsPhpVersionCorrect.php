@@ -51,19 +51,6 @@ class rtIsPhpVersionCorrect extends rtPreCondition
      */
     public function check(rtRuntestsConfiguration $config)
     {
-        return ($this->checkRunVersion() && $this->checkExecVersion($config));
-    }
-
-    /**
-     * check that executing php-version matches the precondition
-     *
-     * @param rtRuntestsConfiguration $config
-     * 
-     * @return boolean
-     * @access private
-     */
-    private function checkExecVersion(rtRuntestsConfiguration $config)
-    {
         $exec = escapeshellcmd($config->getSetting('PhpExecutable').' -v');
 
         $pipe = popen($exec, "r");
@@ -71,17 +58,6 @@ class rtIsPhpVersionCorrect extends rtPreCondition
         pclose($pipe);
             
         return $this->parseVersionString($output);
-    }
-
-    /**
-     * check that running php-version matches the precondition
-     *
-     * @return boolean
-     * @access private
-     */
-    private function checkRunVersion()
-    {	
-    	return $this->parseVersionString('PHP '.phpversion());
     }
 
     /**
@@ -94,8 +70,8 @@ class rtIsPhpVersionCorrect extends rtPreCondition
      */
     public function parseVersionString($versionStr)
     {
-        $major = substr($versionStr, 4,1);
-        $minor = substr($versionStr, 6,1);
+        $major = substr($versionStr, 4, 1);
+        $minor = substr($versionStr, 6, 1);
 
         if ($major > $this->requiredMajorVersion) {
             return true;
