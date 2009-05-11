@@ -49,7 +49,5 @@ class rtDeflatePostExecutionTest extends PHPUnit_Framework_TestCase
         
 
     }
-}
-    
-?>
+}  
 ?>

@@ -76,6 +76,5 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(file_exists($fileName));          
     }
-}
-    
+}  
 ?>

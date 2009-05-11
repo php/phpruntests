@@ -50,7 +50,5 @@ class rtCookieExecutionTest extends PHPUnit_Framework_TestCase
         
 
     }
-}
-    
-?>
+}  
 ?>

@@ -50,6 +50,4 @@ class rtPostExecutionTest extends PHPUnit_Framework_TestCase
 
     }
 }
-    
-?>
 ?>

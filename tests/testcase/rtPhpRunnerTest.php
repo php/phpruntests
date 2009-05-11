@@ -38,5 +38,4 @@ class rtPhpRunnerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("hello", $PhpRunner->runphp());
     }
 }
-
 ?>

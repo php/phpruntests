@@ -50,6 +50,4 @@ class rtGzipPostExecutionTest extends PHPUnit_Framework_TestCase
 
     }
 }
-    
-?>
 ?>

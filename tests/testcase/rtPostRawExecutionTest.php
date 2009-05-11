@@ -50,6 +50,4 @@ class rtPostRawExecutionTest extends PHPUnit_Framework_TestCase
 
     }
 }
-    
-?>
 ?>
