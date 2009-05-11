@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This is stand alone code to build the file rtClassMap used by rtAutoload to find classes.
  * It assumes that all classes have the same name at the file name (less .php)  and all are prefixed by 'rt'
  * 
@@ -16,8 +16,16 @@ class BuildClassMap
 
         $sourceFiles = $this->getSourceList($thisDir);
 
-        $mapString = '<?php'."\n";
-        $mapString .= '  $rtClassMap = array('."\n";
+        $mapString = '<?php' . "\n";
+        $mapString .= '/**' . "\n";
+        $mapString .= ' * Autoload Class Map' . "\n";
+        $mapString .= ' *' . "\n";
+        $mapString .= ' * This is a generated file. Do not edit!' . "\n";
+        $mapString .= ' *' . "\n";
+        $mapString .= ' * To re-generate this file, run the script ' . basename(__FILE__) . '.' . "\n";
+        $mapString .= ' */' . "\n";
+
+        $mapString .= '$rtClassMap = array('."\n";
 
         sort($sourceFiles);
 
@@ -31,7 +39,7 @@ class BuildClassMap
             $mapString .= "    ".'\''.$className.'\''. $spaces. " => ".'\''.$relativeLocation.'\','."\n";
         }
 
-        $mapString .= '  );'."\n";
+        $mapString .= ');'."\n";
         $mapString .= '?>'."\n";
 
         file_put_contents($thisDir.'/rtClassMap.php', $mapString);
