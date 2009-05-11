@@ -18,7 +18,7 @@ class rtPreCondition
      *
      * @return boolean
      */
-    public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
+    public function check(rtRuntestsConfiguration $config)
     {
         return true;
     }
