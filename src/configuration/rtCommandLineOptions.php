@@ -10,7 +10,7 @@
 class rtCommandLineOptions
 {
     /**
-     * 
+     * @var array
      */
     protected $shortOptions = array(
         'n',
@@ -22,6 +22,9 @@ class rtCommandLineOptions
         'z',  //parallel - run out of obvious letters
     );
 
+    /**
+     * @var array
+     */
     protected $shortOptionsWithArgs = array(
         'l',
         'r',
@@ -33,6 +36,9 @@ class rtCommandLineOptions
         's',
     );
 
+    /**
+     * @var array
+     */
     protected $longOptions = array(
         'verbose',
         'help',
@@ -52,6 +58,9 @@ class rtCommandLineOptions
         'no-clean',
     );
 
+    /**
+     * @var array
+     */
     protected $longOptionsWithArgs = array(
         'html',
         'temp-source',
@@ -59,24 +68,54 @@ class rtCommandLineOptions
         'set-timeout',
     );
                               
+    /**
+     * @var array
+     */
     protected $options = array();
 
+    /**
+     * @var array
+     */
     protected $testFilename = array();
 
+    /**
+     * Constructs the object
+     */
     public function __construct()
     {
     }
 
+    /**
+     * Parse the command line options
+     *
+     * @param array $argv Command line arguments
+     * @return void
+     */
     public function parse($argv)
     {
         $this->parseCommandLineOptions($this->stripSpaces($argv));
     }
   
+    /**
+     * Returns true when argument is a short option,
+     * i.e. begins with -. To differentiate from long option (--)
+     * we also look at the second character, which may not be a - character.
+     *
+     * @param string $arg Single command line argument
+     * @return bool
+     */
     protected function isShortOption($arg)
     {
         return (substr($arg, 0, 1) == '-') && (substr($arg, 1, 1) != '-');
     }
 
+    /**
+     * Returns true when argument is a long option,
+     * i.e. begins with --
+     *
+     * @param string $arg Single command line argument
+     * @return bool
+     */
     protected function isLongOption($arg)
     {
         return substr($arg, 0, 2) == '--';
@@ -89,6 +128,9 @@ class rtCommandLineOptions
      *	--{longOption}
      *	--{longOptionWithArg} {arg}
      * 	file name|directory name
+     *
+     * @param array $argv Command line arguments
+     * @return void
      */
     public function parseCommandLineOptions($argv)
     {
@@ -123,10 +165,11 @@ class rtCommandLineOptions
         }
     }
 
-
     /**
      * Checks to make sure that the arument following does not begin with "-"
-     * @param string - argument
+     *
+     * @param array  $array arguments
+     * @param string $index array index
      * @return bool
      */
     public function isValidOptionArg($array, $index)
@@ -159,7 +202,9 @@ class rtCommandLineOptions
 
 
     /**
+     * Returns the value of given option.
      *
+     * @param string $option option name
      */
     public function getOption($option)
     {
@@ -172,7 +217,10 @@ class rtCommandLineOptions
 
 
     /**
-     * Check whether an option exists
+     * Check whether an option exists.
+     *
+     * @param string $option option name
+     * @return bool
      */
     public function hasOption($option)
     {
@@ -181,7 +229,9 @@ class rtCommandLineOptions
 
 
     /**
-     * Return the array containing file names or directory names to be tested
+     * Return the array containing file names or directory names to be tested.
+     *
+     * @return string
      */
     public function getTestFilename()
     {
