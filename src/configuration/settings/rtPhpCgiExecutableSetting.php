@@ -10,29 +10,31 @@ class rtPhpCgiExecutableSetting extends rtSetting
 
     private $phpCgiExecutable;
     
+    private $configuration;
+    
     /**
      * Sets the PHP CGI executable. Note the dependency on having a working directory setting
      *
      */
     public function init(rtRuntestsConfiguration $configuration)
     {
-      
+        $this->configuration = $configuration;
         
         if ($configuration->hasEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE')) {
             if ($configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE') == 'auto') {
-                $this->phpCgiExecutable = $configuration->getSetting('WorkingDirectory') . self::SAPI_CGI;
+
+                $rtWorkingDirectorySetting = new rtWorkingDirectorySetting($configuration);
+                $this->phpCgiExecutable = $rtWorkingDirectorySetting->get() . self::SAPI_CGI;
             } else {
                 $this->phpCgiExecutable = $configuration->getEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE');
             }
-        } else {
-            $this->phpCgiExecutable = null;
         } 
     }
     
     /**
-     * 
+     * @todo spriebsch: does this method need to be public, is it only called from get()?
      */
-    public function setFromPhpCli($phpCli)
+    public function guessFromPhpCli($phpCli)
     {
         if(substr(dirname($phpCli),-3) == 'cli') {
             $pathLength = strlen(dirname($phpCli)) - 3;
@@ -40,15 +42,23 @@ class rtPhpCgiExecutableSetting extends rtSetting
             $this->phpCgiExecutable = $sapiDir."cgi/php-cgi";
         }
     }
-    
-    
+
     /**
-     * Supply the setting to the configuration on request
+     * Returns path to PHP CGI executable.
+     * If not set, we guess based on the path to the PHP CLI executable.
      *
+     * @return string
      */
     public function get() 
     {
+        if (is_null($this->phpCgiExecutable)) {
+
+            // We ask rtPhpExecutableSetting for the path to the PHP executable.
+            $rtPhpExecutableSetting = new rtPhpExecutableSetting($this->configuration);
+            $this->guessFromPhpCli($rtPhpExecutableSetting->get());
+        }
+    
         return $this->phpCgiExecutable;
     }  
-} 
+}
 ?>

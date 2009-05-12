@@ -17,12 +17,9 @@ class rtTestDirectorySettingsTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', $this->d1, $this->d2));
-        $testdirsetting = new rtTestDirectorySetting($configuration);
+        $setting = new rtTestDirectorySetting($configuration);
          
-        $dirlist = $testdirsetting->get();
-
-        $this->assertEquals($dirlist[0], $this->d1);
-        $this->assertEquals($dirlist[1], $this->d2);
+        $this->assertEquals($setting->get(), array($this->d1, $this->d2));
     }
 }
 ?>

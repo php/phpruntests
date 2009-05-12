@@ -31,19 +31,18 @@ abstract class rtRuntestsConfiguration
     protected $commandLineArgs;
 
     private $settings;
-    private $setters;
     private $environmentVariables;
     private $commandLine;
 
     private $settingNames = array (
-        'CurrentDirectory' => 'rtCurrentDirectorySetting',
-        'WorkingDirectory' => 'rtWorkingDirectorySetting',
-        'LogFormat' => 'rtLogFormatSetting',
-        'PhpExecutable' => 'rtPhpExecutableSetting',
-        'PhpCgiExecutable' => 'rtPhpCgiExecutableSetting',
-        'TestFiles' => 'rtTestFileSetting',
-        'TestDirectories' => 'rtTestDirectorySetting',
-        'PhpCommandLineArguments' => 'rtPhpCommandLineArgSetting',
+        'rtCurrentDirectorySetting',
+        'rtWorkingDirectorySetting',
+        'rtLogFormatSetting',
+        'rtPhpExecutableSetting',
+        'rtPhpCgiExecutableSetting',
+        'rtTestFileSetting',
+        'rtTestDirectorySetting',
+        'rtPhpCommandLineArgSetting',
     );
 
     protected function init()
@@ -57,7 +56,9 @@ abstract class rtRuntestsConfiguration
         $this->environmentVariables->getUserSuppliedVariables();
     }
 
-
+    /**
+     * @todo spriebsch: is configure() the right name for this method, it checks preconditions?
+     */
     public function configure()
     {
         //extend test command line using TEST_PHP_ARGS
@@ -65,10 +66,9 @@ abstract class rtRuntestsConfiguration
         $options->parseAdditionalOptions($this->commandLine, $this->environmentVariables);
 
         //set configuration
-        foreach ($this->settingNames as $name => $setting) {
-            $this->setters[$name] = new $setting($this);
-            $methodName = 'set' . $name;
-            $this->$methodName();
+        foreach ($this->settingNames as $className) {
+            $object = new $className($this);
+            $this->settings[$className] = $object->get();
         }
         
         //check configuration preconditions
@@ -76,10 +76,7 @@ abstract class rtRuntestsConfiguration
         
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
         
-         $preConditionList->check($this);
-        
-        
-        
+        $preConditionList->check($this);
     }
 
     /**
@@ -94,85 +91,6 @@ abstract class rtRuntestsConfiguration
         } else {
             return new rtUnixConfiguration($commandLineArgs);
         }
-    }
-
-    /**
-     * Sets the directory that run-tests was started from
-     *
-     */
-    private function setCurrentDirectory()
-    {
-        $this->settings['CurrentDirectory']= $this->setters['CurrentDirectory']->get();
-    }
-
-    /**
-     * Sets the directory that run-tests is run from
-     *
-     */
-    private function setWorkingDirectory()
-    {
-        $this->settings['WorkingDirectory']= $this->setters['WorkingDirectory']->get();
-    }
-
-    /**
-     * Sets the PHP executable being used to run teh tests
-     *
-     */
-    private function setPhpExecutable()
-    {
-        $this->settings['PhpExecutable']= $this->setters['PhpExecutable']->get();
-    }
-
-    /**
-     * Sets the PHP GGI executable being used to run the tests
-     *
-     */
-    private function setPhpCgiExecutable()
-    {
-        //If the CGI executable hasn't been set using an environmental variable or 'auto', try and derive it from
-        //the name of the cli executable.
-        //TODO This is *ix specific, need a WIN specific class PhpCgiExecutable setting class
-        if($this->setters['PhpCgiExecutable']->get() == null) {
-            $this->setters['PhpCgiExecutable']->setFromPhpCli($this->settings['PhpExecutable']);
-        }
-        $this->settings['PhpCgiExecutable']= $this->setters['PhpCgiExecutable']->get();
-    }
-
-    /**
-     * Sets the log format
-     *
-     */
-    private function setLogFormat()
-    {
-        $this->settings['LogFormat']= $this->setters['LogFormat']->get();
-    }
-
-    /**
-     * Sets the command line arguments for PHP
-     *
-     */
-    private function setPhpCommandLineArguments()
-    {
-        $this->settings['PhpCommandLineArguments']= $this->setters['PhpCommandLineArguments']->get();
-    }
-
-    /**
-     * Sets the names of directories to be tested
-     *
-     */
-    private function setTestDirectories()
-    {
-        $this->settings['TestDirectories'] = $this->setters['TestDirectories']->get();
-    }
-
-    /**
-     * Sets the names of files to be tested
-     *
-     * @param array $testFiles
-     */
-    private function setTestFiles()
-    {
-        $this->settings['TestFiles'] = $this->setters['TestFiles']->get();
     }
 
     /**

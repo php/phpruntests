@@ -9,16 +9,16 @@ class rtLogFormatSettingTest extends PHPUnit_Framework_TestCase
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $configuration->setEnvironmentVariable('TEST_PHP_LOG_FORMAT', 'some-log-format');
 
-        $logsetting = new rtLogFormatSetting($configuration);
+        $setting = new rtLogFormatSetting($configuration);
 
-        $this->assertEquals('SOME-LOG-FORMAT', $logsetting->get());
+        $this->assertEquals('SOME-LOG-FORMAT', $setting->get());
     }
 
     public function testSetLEOD() {
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
-        $logsetting = new rtLogFormatSetting($configuration);
+        $setting = new rtLogFormatSetting($configuration);
 
-        $this->assertEquals('LEOD', $logsetting->get());
+        $this->assertEquals('LEOD', $setting->get());
     }
 }
 ?>

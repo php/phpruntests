@@ -16,11 +16,12 @@ class rtPhpExecutableSetting extends rtSetting
      */
     public function init(rtRuntestsConfiguration $configuration)
     {
-
         if ($configuration->hasEnvironmentVariable('TEST_PHP_EXECUTABLE')) {
 
-            if ($configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE') == 'auto') {                
-                $this->phpExecutable = $configuration->getSetting('WorkingDirectory').self::SAPI_CLI;
+            if ($configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE') == 'auto') {
+
+                $rtWorkingDirectorySetting = new rtWorkingDirectorySetting($configuration);
+                $this->phpExecutable = $rtWorkingDirectorySetting->get() . self::SAPI_CLI;
             } else {
                 $this->phpExecutable = $configuration->getEnvironmentVariable('TEST_PHP_EXECUTABLE');
             }
@@ -40,5 +41,4 @@ class rtPhpExecutableSetting extends rtSetting
         return $this->phpExecutable;
     }
 }
-
 ?>

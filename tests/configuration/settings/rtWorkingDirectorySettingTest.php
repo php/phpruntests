@@ -8,18 +8,18 @@ class rtWorkingDirectorySettingTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
-        $dirsetting = new rtWorkingDirectorySetting($configuration);
+        $setting = new rtWorkingDirectorySetting($configuration);
 
-        $this->assertEquals(getcwd(), $dirsetting->get());
+        $this->assertEquals(getcwd(), $setting->get());
     }
 
     public function testSetFromEnv()
     {
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
         $configuration->setEnvironmentVariable('TEST_PHP_SRCDIR', 'the-source-dir');
-        $dirsetting = new rtWorkingDirectorySetting($configuration);
+        $setting = new rtWorkingDirectorySetting($configuration);
 
-        $this->assertEquals('the-source-dir', $dirsetting->get());
+        $this->assertEquals('the-source-dir', $setting->get());
     }
 }
 ?>
