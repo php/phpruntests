@@ -73,7 +73,7 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
     /**
      * Ensure that the error message is correct.
      */
-    public function testgetMessage()
+    public function testGetMessage()
     {
         $this->assertEquals($this->preCondition->getMessage('pcntlNotLoaded'), rtText::get('pcntlNotLoaded'));
     }
