@@ -37,7 +37,7 @@ class rtIsPcreLoadedTest extends PHPUnit_Framework_TestCase
         unset($this->preCondition);
     }
 
-    public function testLoaded()
+    public function testCheck()
     {
         $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array());
 
