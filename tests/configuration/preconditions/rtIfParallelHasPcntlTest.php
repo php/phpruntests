@@ -30,16 +30,11 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->preCondition = new rtIfParallelHasPcntl();
-        $this->commandLine  = new rtCommandLineOptions();
-
-        $this->environment  = rtEnvironmentVariables::getInstance();
     }
 
     protected function tearDown()
     {
         unset($this->preCondition);
-        unset($this->commandLine);
-        unset($this->environment);
     }
 
     /**
@@ -48,9 +43,9 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
      */
     public function testCheckWhenCommandLineOptionIsSet()
     {
-        $this->commandLine->parse(array('run-tests.php', '-z'));
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-z'));
         
-        $this->assertEquals(extension_loaded('pcntl'), $this->preCondition->check($this->commandLine, $this->environment));
+        $this->assertEquals(extension_loaded('pcntl'), $this->preCondition->check($runtestsConfiguration));
     }
 
     /**
@@ -59,9 +54,10 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
      */
     public function testCheckWhenEnvironmentVariableIsSet()
     {
-        $this->environment->setVariable('TEST_PHP_PARALLEL', true);
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array());
+        $runtestsConfiguration->setEnvironmentVariable('TEST_PHP_PARALLEL', true);
         
-        $this->assertTrue($this->preCondition->check($this->commandLine, $this->environment));
+        $this->assertTrue($this->preCondition->check($runtestsConfiguration));
     }
 
     /**
@@ -69,7 +65,9 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
      */    
     public function testCheckWhenParallelExecutionIsNotRequired()
     {
-        $this->assertTrue($this->preCondition->check($this->commandLine, $this->environment));
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array());
+
+        $this->assertTrue($this->preCondition->check($runtestsConfiguration));
     }
 
     /**
