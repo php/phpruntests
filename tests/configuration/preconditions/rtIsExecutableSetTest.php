@@ -5,33 +5,34 @@ require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
 class rtIsExecutableSetTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->preCondition = new rtIsExecutableSet();
+    }
+
+    protected function tearDown()
+    {
+        unset($this->preCondition);
+    }
+
     public function testClOption()
     {
-        $env = rtEnvironmentVariables::getInstance();
-        $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '-p', 'some-file'));
-
-        $pre = new rtIsExecutableSet();
-
-        $this->assertTrue($pre->check($clo, $env));
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'some-file'));
+        
+        $this->assertTrue($this->preCondition->check($runtestsConfiguration));
     }
 
     public function testEVOption()
     {
-        $env = rtEnvironmentVariables::getInstance();
-        $clo = new rtCommandLineOptions();
-        $env->setVariable('TEST_PHP_EXECUTABLE', 'some-executable');
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'some-file'));
+        $runtestsConfiguration->setEnvironmentVariable('TEST_PHP_EXECUTABLE', 'some-executable');
 
-        $pre = new rtIsExecutableSet();
-
-        $this->assertTrue($pre->check($clo, $env));
+        $this->assertTrue($this->preCondition->check($runtestsConfiguration));
     }
 
     public function testGetText()
     {
-        $pre = new rtIsExecutableSet();
-
-        $this->assertEquals($pre->getMessage('missingPHPExecutable'), rtText::get('missingPHPExecutable'));
+        $this->assertEquals($this->preCondition->getMessage('missingPHPExecutable'), rtText::get('missingPHPExecutable'));
     } 
 }
 ?>
