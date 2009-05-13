@@ -51,7 +51,7 @@ class rtIsPhpVersionCorrect extends rtPreCondition
      */
     public function check(rtRuntestsConfiguration $config)
     {
-        $exec = escapeshellcmd($config->getSetting('rtPhpExecutableSetting').' -v');
+        $exec = escapeshellcmd($config->getSetting('PhpExecutable').' -v');
 
         $pipe = popen($exec, "r");
         $output = fread($pipe, 1024);
