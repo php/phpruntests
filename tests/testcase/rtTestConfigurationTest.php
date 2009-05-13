@@ -72,7 +72,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
         $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
         $phpExe = $testConfiguration->getPhpExecutable();
 
-        $this->assertEquals('/usr/local/bin/php', $phpExe);
+        $this->assertEquals($this->php, $phpExe);
     }
 
     public function testPHPCgiExecutable()

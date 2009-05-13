@@ -17,7 +17,7 @@ class rtRuntestsConfigurationTest extends PHPUnit_Framework_TestCase
         
         $testFiles = $config->getSetting('TestFiles');
 
-        $this->assertEquals('/usr/local/bin/php', $config->getSetting('PhpExecutable'));
+        $this->assertEquals($this->php, $config->getSetting('PhpExecutable'));
         $this->assertEquals('test.phpt', $testFiles[0]);
     }  
 
@@ -28,7 +28,7 @@ class rtRuntestsConfigurationTest extends PHPUnit_Framework_TestCase
         
         $testFiles = $config->getSetting('TestFiles');
 
-        $this->assertEquals('/usr/local/bin/php', $config->getSetting('PhpExecutable'));
+        $this->assertEquals($this->php, $config->getSetting('PhpExecutable'));
         $this->assertEquals('test.phpt', $testFiles[0]);
     } 
 }
