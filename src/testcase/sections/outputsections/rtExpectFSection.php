@@ -9,18 +9,19 @@ class rtExpectFSection extends rtOutputSection
         parent::createPattern();
         $this->createPattern();
     }
-   
+     
     /**
      * Create the pattern used to match against actual output
      *
      */
     protected function createPattern()
-    {
-        $this->expectedPattern = preg_quote($this->expectedPattern, '/'); 
-        $this->expectedPattern = $this->expectfUnicodeSubstitutions ($this->expectedPattern);   
-        $this->expectedPattern = $this->expectfRegexSubstitutions($this->expectedPattern);  
+    {  
+       
+        $this->expectedPattern = $this->expectfEmbeddedRegex($this->expectedPattern);
+        $this->expectedPattern = $this->expectfUnicodeSubstitutions ($this->expectedPattern);
+        $this->expectedPattern = $this->expectfRegexSubstitutions($this->expectedPattern);
     }
-    
+
     /*
      * Replaces string with unicode and vice versa. Allows same tests for PHP5 and PHP6
      * @param string
@@ -29,25 +30,25 @@ class rtExpectFSection extends rtOutputSection
     private function expectfUnicodeSubstitutions($string)
     {
         $string = str_replace(
-            array('%unicode_string_optional%'),
-            version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? 'string' : 'Unicode string', $string
+        array('%unicode_string_optional%'),
+        version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? 'string' : 'Unicode string', $string
         );
-        
+
         $string = str_replace(
-            array('%unicode\|string%', '%string\|unicode%'),
-            version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? 'string' : 'unicode',
-            $string
+        array('%unicode\|string%', '%string\|unicode%'),
+        version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? 'string' : 'unicode',
+        $string
         );
-        
+
         $string = str_replace(
-            array('%u\|b%', '%b\|u%'),
-            version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? '' : 'u',
-            $string
+        array('%u\|b%', '%b\|u%'),
+        version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? '' : 'u',
+        $string
         );
 
         return $string;
     }
-    
+
     /*
      * Substitute the %strings used in EXPECTF sections with a regular expression
      * @param string
@@ -68,7 +69,40 @@ class rtExpectFSection extends rtOutputSection
         $string = str_replace('%c', '.', $string);
 
         return $string;
-    }  
+    }
+    
+    /*
+     * Deal with embedded regular expressions between %r tags. 
+     * @param string
+     * @return string
+     */
+    private function expectfEmbeddedRegex($string) {
+        $temp = "";
+        $r = "%r";
+        $startOffset = 0;
+        
+        $length = strlen($string);
+        while($startOffset < $length) {
+            $start = strpos($string, $r, $startOffset);
+            if ($start !== false) {
+                // we have found a start tag
+                $end = strpos($string, $r, $start+2);
+                if ($end === false) {
+                    // unbalanced tag, ignore it.
+                    $end = $start = $length;
+                }
+            } else {
+                // no more %r sections
+                $start = $end = $length;
+            }
+            // quote a non re portion of the string
+            $temp = $temp . preg_quote(substr($string, $startOffset, ($start - $startOffset)),  '/');
+            // add the re unquoted.
+            $temp = $temp . '(' .substr($string, $start+2, ($end - $start-2)) . ')';
+            $startOffset = $end + 2;
+        }
+        return substr($temp, 0, -2);
+    }
 
     /**
      * Compare the test output with the expected pattern
@@ -79,14 +113,14 @@ class rtExpectFSection extends rtOutputSection
     public function compare($testOutput)
     {
         $testOutput = trim(preg_replace("/$this->carriageReturnLineFeed/", $this->lineFeed, $testOutput));
-        
+
         /*For debugging:
-        
+
         file_put_contents(sys_get_temp_dir().'/zrtexp',$this->expectedPattern );
         file_put_contents(sys_get_temp_dir().'/zrtout', $testOutput );
 
         */
-        
+
         if (preg_match((binary) "/^$this->expectedPattern\$/s", $testOutput)) {
             return true;
         } else {

@@ -76,6 +76,14 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('Hello [+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?', $pattern);
     }
+    
+    public function testPercentR() 
+    {
+        $expectFSection = new rtExpectFSection('EXPECTF', array('%unicode|string%(18) "%r\0%rMyClass%r\0%rpri_value%r\0%r"'));
+        $pattern = $expectFSection->getPattern();
+
+        $this->assertEquals('string\(18\) "(\0)MyClass(\0)pri_value(\0)"', $pattern);
+    }
 
     public function testPercentC() 
     {
