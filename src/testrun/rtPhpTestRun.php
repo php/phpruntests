@@ -24,7 +24,7 @@ class rtPhpTestRun
         $preConditionList = rtPreConditionList::getInstance();
 
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
-        $preConditionList->check($this);
+        $preConditionList->check($runConfiguration);
 
         if ($runConfiguration->getSetting('TestDirectories') != null) {
 
