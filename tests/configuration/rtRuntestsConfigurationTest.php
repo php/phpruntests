@@ -9,14 +9,15 @@ class rtRuntestsConfigurationTest extends PHPUnit_Framework_TestCase
     public function setUp() {
         $this->php = trim(shell_exec("which php"));
     }
+    
     public function testCreateUnix()
     {
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
         $config->configure();
         
-        $testFiles = $config->getSetting('rtTestFileSetting');
+        $testFiles = $config->getSetting('TestFiles');
 
-        $this->assertEquals('/usr/local/bin/php', $config->getSetting('rtPhpExecutableSetting'));
+        $this->assertEquals('/usr/local/bin/php', $config->getSetting('PhpExecutable'));
         $this->assertEquals('test.phpt', $testFiles[0]);
     }  
 
@@ -25,9 +26,9 @@ class rtRuntestsConfigurationTest extends PHPUnit_Framework_TestCase
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'), 'Windows');
         $config->configure();
         
-        $testFiles = $config->getSetting('rtTestFileSetting');
+        $testFiles = $config->getSetting('TestFiles');
 
-        $this->assertEquals('/usr/local/bin/php', $config->getSetting('rtPhpExecutableSetting'));
+        $this->assertEquals('/usr/local/bin/php', $config->getSetting('PhpExecutable'));
         $this->assertEquals('test.phpt', $testFiles[0]);
     } 
 }
