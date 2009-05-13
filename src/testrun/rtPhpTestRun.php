@@ -20,6 +20,12 @@ class rtPhpTestRun
         $runConfiguration = rtRuntestsConfiguration::getInstance($this->commandLineArguments);
         $runConfiguration->configure();
 
+        //Check the preconditions
+        $preConditionList = rtPreConditionList::getInstance();
+
+        // $preConditionList->check($this->commandLine, $this->environmentVariables);
+        $preConditionList->check($this);
+
         if ($runConfiguration->getSetting('TestDirectories') != null) {
 
             foreach ($runConfiguration->getSetting('TestDirectories') as $testDirectory) {
@@ -76,7 +82,7 @@ class rtPhpTestRun
                     if ($testFile->arePreconditionsMet()) {
 
                         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration);
-                       
+                         
                         //Setup and set the local environment for the test case
                         $testCase->executeTest($runConfiguration);
 
