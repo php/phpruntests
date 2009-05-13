@@ -41,7 +41,6 @@ class rtVersionCheckTest extends PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->versionCheck->parseVersionString("5.3.0"));
         $this->assertFalse($this->versionCheck->parseVersionString("PHP 5.2 PHP 6.0"));
-        $this->assertFalse($this->versionCheck->parseVersionString("PHP 6"));
     }
 }
 ?>
