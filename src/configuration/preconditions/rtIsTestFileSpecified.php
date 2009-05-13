@@ -20,7 +20,6 @@ class rtIsTestFileSpecified extends rtPreCondition
      *
      * @param  rtRuntestsConfiguration $config
      * @return boolean
-     * @access public
      */
     public function check(rtRuntestsConfiguration $config)
     {
@@ -42,29 +41,5 @@ class rtIsTestFileSpecified extends rtPreCondition
 
         return false;
     }
-    
-    
-    /*
-    public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
-    {
-        if ($commandLine->hasOption('l')) {
-            return true;
-        }
-
-        if ($commandLine->hasOption('r')) {
-            return true;
-        }
-
-        if ($commandLine->getTestFilename() != null) {
-            return true;
-        }
-
-        if ($environmentVariables->hasVariable('TEST_PHP_USER')) {
-            return true;
-        }
-
-        return false;
-    }
-    */ 
 }
 ?>

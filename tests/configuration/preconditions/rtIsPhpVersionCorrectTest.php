@@ -3,7 +3,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
-class rtVersionCheckTest extends PHPUnit_Framework_TestCase
+class rtIsPhpVersionCorrectTest extends PHPUnit_Framework_TestCase
 {
     private $versionCheck = null;
 

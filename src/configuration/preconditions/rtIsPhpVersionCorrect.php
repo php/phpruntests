@@ -17,15 +17,11 @@
 class rtIsPhpVersionCorrect extends rtPreCondition
 {
     /**
-     * the required major-version of the php-executeable 
-     * 
      * @var int
      */
     private $requiredMajorVersion = 5;
 
     /**
-     * the required minor-version of the php-executeable 
-     * 
      * @var int
      */
     private $requiredMinorVersion = 3;
@@ -34,7 +30,6 @@ class rtIsPhpVersionCorrect extends rtPreCondition
      * Return the message associated with an invalid php-version
      *
      * @return text
-     * @access public
      */
     public function getMessage()
     {
@@ -47,7 +42,6 @@ class rtIsPhpVersionCorrect extends rtPreCondition
      * @param rtRuntestsConfiguration $config
      * 
      * @return boolean
-     * @access public
      */
     public function check(rtRuntestsConfiguration $config)
     {
@@ -66,7 +60,6 @@ class rtIsPhpVersionCorrect extends rtPreCondition
      * @param string $versionStr output of "php -v"
      * 
      * @return boolean
-     * @access public
      */
     public function parseVersionString($versionStr)
     {

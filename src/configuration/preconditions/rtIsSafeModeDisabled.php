@@ -21,7 +21,6 @@ class rtIsSafeModeDisabled extends rtPreCondition
      *
      * @param  rtRuntestsConfiguration $config
      * @return boolean
-     * @access public
      */
     public function check(rtRuntestsConfiguration $config)
     {
@@ -31,17 +30,5 @@ class rtIsSafeModeDisabled extends rtPreCondition
 
         return false;
     }
-    
-    
-    /*
-    public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
-    {
-        if (!ini_get('safe_mode')) {
-            return true;
-        }
-
-        return false;
-    }
-    */
 }
 ?>

@@ -21,7 +21,6 @@ class rtIfParallelHasPcntl extends rtPreCondition
      *
      * @param  rtRuntestsConfiguration $config
      * @return boolean
-     * @access public
      */
     public function check(rtRuntestsConfiguration $config)
     {
@@ -31,17 +30,5 @@ class rtIfParallelHasPcntl extends rtPreCondition
 
         return true;
     }
-    
-    
-    /*
-    public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
-    {
-        if ($commandLine->hasOption('z') || $environmentVariables->hasVariable('TESTS_PHP_PARALLEL')) {
-            return extension_loaded('pcntl');
-        }
-
-        return true;
-    }
-    */
 }
 ?>

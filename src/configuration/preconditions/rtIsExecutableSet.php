@@ -22,7 +22,6 @@ class rtIsExecutableSet extends rtPreCondition
      *
      * @param  rtRuntestsConfiguration $config
      * @return boolean
-     * @access public
      */
     public function check(rtRuntestsConfiguration $config)
     {
@@ -36,21 +35,5 @@ class rtIsExecutableSet extends rtPreCondition
 
         return false;
     }
-    
-    
-    /*
-    public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
-    {
-        if ($commandLine->hasOption('p')) {
-            return true;
-        }
-
-        if ($environmentVariables->hasVariable('TEST_PHP_EXECUTABLE')) {
-            return true;
-        }
-
-        return false;
-    }
-    */  
 }
 ?>

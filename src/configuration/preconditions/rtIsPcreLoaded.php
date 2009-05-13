@@ -20,23 +20,10 @@ class rtIsPcreLoaded extends rtPreCondition
      *    
      * @param  rtRuntestsConfiguration $config
      * @return boolean
-     * @access public
      */
     public function check(rtRuntestsConfiguration $config)
     {
         return extension_loaded('pcre');
     }
-    
-    
-    /*
-    public function check(rtCommandLineOptions $commandLine = null, rtEnvironmentVariables $environmentVariables = null)
-    {
-        if (extension_loaded('pcre')) {
-            return true;
-        }
-
-        return false;
-    }
-    */
 }
 ?>
