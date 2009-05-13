@@ -1,9 +1,7 @@
 --TEST--
 Sample test for DEFLATE_POST
---POST--
-blahblah=blah
 --DEFLATE_POST--
-1
+blahblah=blah
 --FILE--
 <?php
 $content = file_get_contents('php://input');
