@@ -1,36 +1,65 @@
 <?php
+/**
+ * rtPreCondtionListTest
+ *
+ * @category  Testing
+ * @package   RUNTESTS
+ * @author    Zoe Slattery <zoe@php.net>
+ * @author    Stefan Priebsch <spriebsch@php.net>
+ * @copyright 2009 The PHP Group
+ * @license   http://www.php.net/license/3_01.txt PHP License 3.01
+ * @link      http://qa.php.net/
+ */
 
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
 
+/**
+ * Tests for rtPreCondtionListTest precondition.
+ *
+ * @category  Testing
+ * @package   RUNTESTS
+ * @author    Zoe Slattery <zoe@php.net>
+ * @author    Stefan Priebsch <spriebsch@php.net>
+ * @copyright 2009 The PHP Group
+ * @license   http://www.php.net/license/3_01.txt PHP License 3.01
+ * @link      http://qa.php.net/
+ */
 class rtPreCondtionListTest extends PHPUnit_Framework_TestCase
 {
-    protected $clo;
-    protected $env;
-    protected $ge;
-    
-    public function setUp()
+    protected function setUp()
     {
-        $this->clo = new rtCommandLineOptions();
-        $this->clo->parse(array('run-tests.php', '-p', 'some-php-exe', 'a-test.phpt'));
+        $this->preConditionList = rtPreConditionList::getInstance();
+    }
 
-        $this->env = rtEnvironmentVariables::getInstance();
-        $this->env->getUserSuppliedVariables();      
+    protected function tearDown()
+    {
+        unset($this->preConditionList);
     }
     
     public function testCheck()
     {
-        $sl = rtPreConditionList::getInstance();
+        $php = trim(shell_exec("which php"));
+        
+        $preConditionList = rtPreConditionList::getInstance();
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $php, 'a-test.phpt'));
+        $runtestsConfiguration->configure();
 
-        $this->assertTrue($sl->check($this->clo, $this->env));
+        $this->assertTrue($preConditionList->check($runtestsConfiguration));
+    }
+
+    public function testGetInstanceOnUnix()
+    {
+        $preConditionList = rtPreConditionList::getInstance('Unix');
+
+        $this->assertTrue($preConditionList instanceOf rtUnixPreConditionList);
     }
     
-    public function testUnix()
+    public function testGetInstanceOnWindows()
     {
-        $sl = rtPreConditionList::getInstance();
-        $sl->adaptList();
+        $preConditionList = rtPreConditionList::getInstance('Windows');
 
-        $this->assertTrue($sl->hasPreCondition('rtIfParallelHasPcntl'));
+        $this->assertTrue($preConditionList instanceOf rtWinPreConditionList);
     }
 }
 ?>

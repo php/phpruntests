@@ -25,7 +25,7 @@ abstract class rtPreConditionList
     static public function getInstance($os = 'Unix')
     {
         if ($os == 'Windows') {
-            return new rtWinPreconditionList('Windows');
+            return new rtWinPreConditionList();
         } else {
             return new rtUnixPreConditionList();
         }
@@ -37,34 +37,19 @@ abstract class rtPreConditionList
      * @param rtCommandLineOptions $commandLine
      * @param rtEnvironmentVariables $environmentVariables
      * @return boolean
+     * @todo modify to check all preconditions, and return a list of failed ones
      */
     public function check(rtRuntestsConfiguration $config)
     {
         foreach ($this->preConditions as $preCon) {
             $p = new $preCon;
             
-            // if (!$p->check($commandLine, $environmentVariables)) {
             if (!$p->check($config)) {
-                die($p->getMessage());
+                throw new Exception($p->getMessage());
             }
         }
 
         return true;
-    }
-
-    /**
-     * Test to ensure that a particular pre-condition exists (used in testing)
-     *
-     * @param string $pc
-     * @return boolean
-     */
-    public function hasPreCondition($pc)
-    {
-        if (in_array($pc, $this->preConditions)) {
-            return true;
-        }
-
-        return false;
     }
 }
 ?>
