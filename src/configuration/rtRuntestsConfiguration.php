@@ -46,6 +46,20 @@ abstract class rtRuntestsConfiguration
         'PhpCommandLineArguments' => 'rtPhpCommandLineArgSetting',
     );
 
+    /**
+     * Factory: returns rtRuntestsConfiguration subclass for the given os.
+     *
+     * @returns rtEnvironment
+     */
+    static public function getInstance ($commandLineArgs, $os = 'Unix')
+    {
+        if ($os == 'Windows') {
+            return new rtWinConfiguration($commandLineArgs);
+        } else {
+            return new rtUnixConfiguration($commandLineArgs);
+        }
+    }
+
     protected function init()
     {
         //parse command line
@@ -58,7 +72,7 @@ abstract class rtRuntestsConfiguration
     }
 
     /**
-     * @todo spriebsch: is configure() the right name for this method, it checks preconditions?
+     *
      */
     public function configure()
     {
@@ -70,28 +84,6 @@ abstract class rtRuntestsConfiguration
         foreach ($this->settingNames as $name => $className) {
             $object = new $className($this);
             $this->settings[$name] = $object->get();
-        }
-       //1 var_dump($this->settings);
-        
-        //check configuration preconditions
-        $preConditionList = rtPreConditionList::getInstance();
-        
-        // $preConditionList->check($this->commandLine, $this->environmentVariables);
-        
-        $preConditionList->check($this);
-    }
-
-    /**
-     * Factory: returns rtRuntestsConfiguration subclass for the given os.
-     *
-     * @returns rtEnvironment
-     */
-    static public function getInstance ($commandLineArgs, $os = 'Unix')
-    {
-        if ($os == 'Windows') {
-            return new rtWinConfiguration($commandLineArgs);
-        } else {
-            return new rtUnixConfiguration($commandLineArgs);
         }
     }
 
