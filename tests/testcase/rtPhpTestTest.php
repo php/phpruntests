@@ -7,6 +7,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
+        $this->php = trim(shell_exec("which php"));
         $this->testCase = array (
                             'TEST', 
                             'This is a test',
@@ -21,7 +22,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
 
     public function testCreateInstance()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
         $config->configure();
 
         $test = new rtPhpTest($this->testCase, 'nameOfTest', array('TEST', 'FILE', 'EXPECTF'), $config);
@@ -31,7 +32,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
 
     public function testSections()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', 'a-php-exe', 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
         $config->configure();
 
         $test = new rtPhpTest($this->testCase, 'nameOfTest', array('TEST', 'FILE', 'EXPECTF'), $config);
