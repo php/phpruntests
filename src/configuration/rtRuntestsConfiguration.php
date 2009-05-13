@@ -35,14 +35,15 @@ abstract class rtRuntestsConfiguration
     private $commandLine;
 
     private $settingNames = array (
-        'rtCurrentDirectorySetting',
-        'rtWorkingDirectorySetting',
-        'rtLogFormatSetting',
-        'rtPhpExecutableSetting',
-        'rtPhpCgiExecutableSetting',
-        'rtTestFileSetting',
-        'rtTestDirectorySetting',
-        'rtPhpCommandLineArgSetting',
+    
+        'CurrentDirectory' => 'rtCurrentDirectorySetting',
+        'WorkingDirectory' => 'rtWorkingDirectorySetting',
+        'LogFormat' => 'rtLogFormatSetting',
+        'PhpExecutable' => 'rtPhpExecutableSetting',
+        'PhpCgiExecutable' => 'rtPhpCgiExecutableSetting',
+        'TestFiles' => 'rtTestFileSetting',
+        'TestDirectories' => 'rtTestDirectorySetting',
+        'PhpCommandLineArguments' => 'rtPhpCommandLineArgSetting',
     );
 
     protected function init()
@@ -66,10 +67,11 @@ abstract class rtRuntestsConfiguration
         $options->parseAdditionalOptions($this->commandLine, $this->environmentVariables);
 
         //set configuration
-        foreach ($this->settingNames as $className) {
+        foreach ($this->settingNames as $name => $className) {
             $object = new $className($this);
-            $this->settings[$className] = $object->get();
+            $this->settings[$name] = $object->get();
         }
+       //1 var_dump($this->settings);
         
         //check configuration preconditions
         $preConditionList = rtPreConditionList::getInstance();
@@ -102,6 +104,8 @@ abstract class rtRuntestsConfiguration
 
     public function getSetting($settingName)
     {
+       //echo "$settingName $this->settings[$settingName] \n";
+        //var_dump($this->settings);
         return $this->settings[$settingName];
     }
 
