@@ -33,10 +33,12 @@ class rtPhpCgiExecutableSetting extends rtSetting
     
     /**
      * @todo spriebsch: does this method need to be public, is it only called from get()?
+     * @todo zoe:This method only works if we are running from a PHP source tree, do we need to 
+     * cope with /usr/local/bin/php for example?
      */
     public function guessFromPhpCli($phpCli)
     {
-        if(substr(dirname($phpCli),-3) == 'cli') {
+        if(substr(dirname($phpCli),-3) == 'cli') {           
             $pathLength = strlen(dirname($phpCli)) - 3;
             $sapiDir = substr(dirname($phpCli), 0, $pathLength);          
             $this->phpCgiExecutable = $sapiDir."cgi/php-cgi";
@@ -57,7 +59,7 @@ class rtPhpCgiExecutableSetting extends rtSetting
             $rtPhpExecutableSetting = new rtPhpExecutableSetting($this->configuration);
             $this->guessFromPhpCli($rtPhpExecutableSetting->get());
         }
-    
+        
         return $this->phpCgiExecutable;
     }  
 }

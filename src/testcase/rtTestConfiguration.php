@@ -40,7 +40,7 @@ class rtTestConfiguration
 
     private function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings, $fileSection)
     {
-        $this->isCgiTest($sectionHeadings);
+        $this->setCgiTest($sectionHeadings);
 
         $this->setEnvironmentVariables($runConfiguration, $sections, $fileSection);
         $this->setPhpCommandLineArguments($runConfiguration, $sections);
@@ -110,7 +110,11 @@ class rtTestConfiguration
     private function setPhpExecutable($runConfiguration, $sectionHeadings)
     {
         if ($this->cgiTest) {
-            $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable'). " -C";
+            if($runConfiguration->getSetting('PhpCgiExecutable') != null) {
+                $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable'). " -C";
+            } else {
+                $this->phpExecutable = null;
+            }
         } else {
             $this->phpExecutable = $runConfiguration->getSetting('PhpExecutable');
         }
@@ -133,7 +137,7 @@ class rtTestConfiguration
         }
     }
 
-    private function isCgiTest($sectionHeadings)
+    private function setCgiTest($sectionHeadings)
     {
         $tempArray = array_diff($this->cgiSections, $sectionHeadings);
         if (count($tempArray) < count($this->cgiSections)) {
@@ -165,6 +169,11 @@ class rtTestConfiguration
     public function getInputFileString()
     {
         return $this->inputFileString;
+    }
+
+    public function isCgiTest()
+    {
+        return $this->cgiTest;;
     }
 }
 ?>

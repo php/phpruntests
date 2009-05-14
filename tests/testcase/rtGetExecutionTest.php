@@ -24,7 +24,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
     }
 
     public function testFileRun()
-    { 
+    {
         //Create a new test configuration
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
         $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE',$this->php_cgi);
@@ -39,16 +39,47 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);      
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
         $output = $testCase->getOutput();
         $status = $testCase->getStatus();
-   
+         
         $this->assertEquals('85', strlen($output));
         $this->assertEquals('', $status['pass']);
+
+
+    }
+
+    public function testNoCGI()
+    {
+        //Create a new test configuration
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config->configure();
+
+        //Retrieve the array of test file names
+        $testFiles = $config->getSetting('TestFiles');
+
+        //Read the test file
+        $testFile = new rtPhpTestFile();
+        $testFile->doRead($testFiles[0]);
+        $testFile->normaliseLineEndings();
+
+        //Create a new test case
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
+
+        //Setup and set the local environment for the test case
+        $testCase->executeTest($config);
+        $output = $testCase->getOutput();
+        //var_dump($output);
         
+        $status = $testCase->getStatus();
+     
+         
+        $this->assertEquals(0, strlen($output));
+        $this->assertEquals('The CGI executable is unavailable', $status['skip']);
+
 
     }
 }

@@ -60,7 +60,7 @@ class rtPhpTest
         //Identify the file and expect section types
         $this->fileSection = $this->setFileSection();
         $this->expectSection = $this->setExpectSection();
-        
+
         $this->fileSection->setExecutableFileName($this->getName());
     }
 
@@ -80,8 +80,11 @@ class rtPhpTest
 
         if (!array_key_exists('skip', $this->status) && !array_key_exists('bork', $this->status)) {
             $this->status = array_merge($this->status, $this->fileSection->run($this, $runConfiguration));
-            $this->output = $this->fileSection->getOutput();
-            $this->compareOutput();
+            //The test can be skipped by file sections if the CGI executable is not available
+            if(!array_key_exists('skip', $this->status)) {
+                $this->output = $this->fileSection->getOutput();
+                $this->compareOutput();
+            }
              
 
             if (array_key_exists('CLEAN', $this->sections)) {

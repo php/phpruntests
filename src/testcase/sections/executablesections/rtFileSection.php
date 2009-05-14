@@ -15,7 +15,8 @@
 class rtFileSection extends rtExecutableSection
 {
     private $twoBlankLines = '\r?\n\r?\n';
-    
+    private $headers;
+
     public function setExecutableFileName($testName)
     {
         $this->fileName = $testName.".php";
@@ -44,15 +45,16 @@ class rtFileSection extends rtExecutableSection
 
             try {
                 $this->output = $PhpRunner->runphp();
-                
-                //If it's a CGI test sort the headers out here
-                if(substr($phpExecutable, -2) == '-C') {
-                    
+
+                //If it's a CGI test and separate the headers from the output
+                if($testCase->testConfiguration->isCgiTest()) {
+                    // Would this be better done with substr/strpos, not sure how to cope with \n
+                    // Do Web servers alsways send \n\r\n\r? I *think* so but need to check
+
                     if (preg_match("/^(.*?)$this->twoBlankLines(.*)/s", $this->output, $match)) {
                         $this->output = $match[2];
                         $this->headers = $match[1];
-                    }
-                     
+                    }                     
                 }
 
 
@@ -62,8 +64,17 @@ class rtFileSection extends rtExecutableSection
         } else {
             $this->status['skip'] = 'The CGI executable is unavailable';
         }
-
         return $this->status;
     }
+
+    /**
+     *
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+
 }
 ?>
