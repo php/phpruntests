@@ -84,6 +84,11 @@ class rtPhpTest
             if(!array_key_exists('skip', $this->status)) {
                 $this->output = $this->fileSection->getOutput();
                 $this->compareOutput();
+
+                if(array_key_exists('EXPECTHEADERS', $this->sections)) {
+                    $this->headers = $this->fileSection->getHeaders();
+                    $this->compareHeaders();
+                }
             }
              
 
@@ -101,7 +106,18 @@ class rtPhpTest
         if ($result) {
             $this->status['pass'] = '';
         } else {
-            $this->status['fail'] = '';
+            $this->status['fail'] = 'output';
+        }
+    }
+
+    public function compareHeaders()
+    {
+        $result = $this->sections['EXPECTHEADERS']->compare($this->headers);
+
+        if ($result) {
+            $this->status['pass'] = '';
+        } else {
+            $this->status['fail'] = 'headers';
         }
     }
 
@@ -152,6 +168,11 @@ class rtPhpTest
     public function getOutput()
     {
         return $this->output;
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     public function hasSection($sectionKey)

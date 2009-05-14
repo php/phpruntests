@@ -1,5 +1,12 @@
 <?php
-  $rtClassMap = array(
+/**
+ * Autoload Class Map
+ *
+ * This is a generated file. Do not edit!
+ *
+ * To re-generate this file, run the script BuildClassMap.php.
+ */
+$rtClassMap = array(
     'rtEnvironmentException'                   => 'configuration/exceptions/rtEnvironmentException.php',
     'rtMissingArgumentException'               => 'configuration/exceptions/rtMissingArgumentException.php',
     'rtUnknownIniSettingException'             => 'configuration/exceptions/rtUnknownIniSettingException.php',
@@ -72,6 +79,7 @@
     'rtTestHeaderSection'                      => 'testcase/sections/informationsections/rtTestHeaderSection.php',
     'rtXfailSection'                           => 'testcase/sections/informationsections/rtXfailSection.php',
     'rtExpectFSection'                         => 'testcase/sections/outputsections/rtExpectFSection.php',
+    'rtExpectHeadersSection'                   => 'testcase/sections/outputsections/rtExpectHeadersSection.php',
     'rtExpectRegexSection'                     => 'testcase/sections/outputsections/rtExpectRegexSection.php',
     'rtExpectSection'                          => 'testcase/sections/outputsections/rtExpectSection.php',
     'rtConfigurationSection'                   => 'testcase/sections/rtConfigurationSection.php',
@@ -81,5 +89,5 @@
     'rtSection'                                => 'testcase/sections/rtSection.php',
     'rtPhpTestGroup'                           => 'testgroup/rtPhpTestGroup.php',
     'rtPhpTestRun'                             => 'testrun/rtPhpTestRun.php',
-  );
+);
 ?>
