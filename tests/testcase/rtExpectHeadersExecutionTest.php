@@ -51,9 +51,7 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
 
          
         $this->assertEquals('', $status['pass']);
-        $this->assertEquals(78, strlen($headers));
-        $this->assertEquals(11, strlen($output));
-
+      
 
     }
     public function testForFail()

@@ -56,6 +56,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
     {
         //Create a new test configuration
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', null);
         $config->configure();
 
         //Retrieve the array of test file names
