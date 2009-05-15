@@ -57,6 +57,7 @@ $rtClassMap = array(
 	'rtIniSection'			 => 'testcase/sections/configurationsections/rtIniSection.php',
 	'rtCleanSection'		 => 'testcase/sections/executablesections/rtCleanSection.php',
 	'rtFileSection'			 => 'testcase/sections/executablesections/rtFileSection.php',
+	'rtFileExternalSection'             => 'testcase/sections/executablesections/rtFileExternalSection.php',
 	'rtSkipIfSection'		 => 'testcase/sections/executablesections/rtSkipIfSection.php',
 	'rtCreditsSection'		 => 'testcase/sections/informationsections/rtCreditsSection.php',
 	'rtTestHeaderSection'		 => 'testcase/sections/informationsections/rtTestHeaderSection.php',
