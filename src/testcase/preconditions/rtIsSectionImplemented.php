@@ -23,6 +23,7 @@ class rtIsSectionImplemented implements rtTestPreCondition
         'DEFLATE_POST'       => 'rtDeflatePostSection',
         'POST_RAW'    => 'rtPostRawSection',
         'COOKIE'    => 'rtCookieSection',
+        'FILE_EXTERNAL' =>  'rtFileExternalSection',
         'EXPECTHEADERS' => 'rtExpectHeadersSection',
     );    
 

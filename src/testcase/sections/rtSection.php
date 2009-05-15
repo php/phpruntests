@@ -24,6 +24,7 @@ abstract class rtSection
         'DEFLATE_POST'  => 'rtDeflatePostSection',
         'POST_RAW'  => 'rtPostRawSection',
         'COOKIE'    => 'rtCookieSection',
+        'FILE_EXTERNAL' =>  'rtFileExternalSection',
         'EXPECTHEADERS' => 'rtExpectHeadersSection',
     );
 

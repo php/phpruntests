@@ -73,6 +73,7 @@ $rtClassMap = array(
     'rtPostRawSection'                         => 'testcase/sections/configurationsections/rtPostRawSection.php',
     'rtPostSection'                            => 'testcase/sections/configurationsections/rtPostSection.php',
     'rtCleanSection'                           => 'testcase/sections/executablesections/rtCleanSection.php',
+    'rtFileExternalSection'                    => 'testcase/sections/executablesections/rtFileExternalSection.php',
     'rtFileSection'                            => 'testcase/sections/executablesections/rtFileSection.php',
     'rtSkipIfSection'                          => 'testcase/sections/executablesections/rtSkipIfSection.php',
     'rtCreditsSection'                         => 'testcase/sections/informationsections/rtCreditsSection.php',
