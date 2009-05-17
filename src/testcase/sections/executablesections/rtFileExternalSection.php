@@ -52,5 +52,9 @@ class rtFileExternalSection extends rtFileSection
         
         return false;
     }
+    
+    public function writeExecutableFile() {
+        file_put_contents($this->fileName,  (binary) $this->sectionContents[0]);
+    }
 }
 ?>

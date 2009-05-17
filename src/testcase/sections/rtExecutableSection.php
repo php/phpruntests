@@ -14,7 +14,7 @@ abstract class rtExecutableSection extends rtSection
      
     protected function writeExecutableFile()
     {        
-        $contentsAsString = implode("\n", $this->sectionContents);
+        $contentsAsString = implode("\n", $this->sectionContents) . "\n";
         file_put_contents($this->fileName,  (binary) $contentsAsString);
     }
 
