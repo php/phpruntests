@@ -6,7 +6,7 @@ class rtGzipPostSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance() 
     {
-        $postSection = new rtGzipPostSection('GZIP_POST', array('hello=World&goodbye=MrChips'));  
+        $postSection = rtGzipPostSection::getInstance('GZIP_POST', array('hello=World&goodbye=MrChips'));  
         
         $envVars = $postSection->getPostVariables();
         $this->assertEquals('POST', $envVars['REQUEST_METHOD']);

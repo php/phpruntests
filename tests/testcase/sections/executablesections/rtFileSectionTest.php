@@ -7,14 +7,14 @@ class rtFileSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance()
     {
-        $fileSection = new rtFileSection('FILE', array('<?php', 'echo "hello world";', '?>'));
+        $fileSection = rtFileSection::getInstance('FILE', array('<?php', 'echo "hello world";', '?>'));
         $code = $fileSection->getContents();
 
         $this->assertEquals('<?php', $code[0]);
     }
     public function testDone()
     {
-        $fileSection = new rtFileSection('FILE', array('<?php', 'echo "hello world";', '?>', '===DONE===', 'ignore-me'));
+        $fileSection = rtFileSection::getInstance('FILE', array('<?php', 'echo "hello world";', '?>', '===DONE===', 'ignore-me'));
         $code = $fileSection->getContents();
         $last = count($code) - 1;
 
@@ -23,7 +23,7 @@ class rtFileSectionTest extends PHPUnit_Framework_TestCase
 
     public function testDone2()
     {
-        $fileSection = new rtFileSection('FILE', array('<?php', 'echo "hello world";', '?>', '===DoNe===', 'ignore-me'));
+        $fileSection = rtFileSection::getInstance('FILE', array('<?php', 'echo "hello world";', '?>', '===DoNe===', 'ignore-me'));
         $code = $fileSection->getContents();
         $last = count($code) - 1;
 

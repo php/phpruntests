@@ -7,7 +7,7 @@ class rtCreditsSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance()
     {
-        $creditsSection = new rtCreditsSection('CREDITS', array('Test from Fred', 'PHP London test fest'));  
+        $creditsSection = rtCreditsSection::getInstance('CREDITS', array('Test from Fred', 'PHP London test fest'));  
         $creditslist = $creditsSection->getContents();
 
         $this->assertEquals('Test from Fred', $creditslist[0]);

@@ -7,7 +7,7 @@ class rtXfailSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance()
     {
-        $xfailSection = new rtXfailSection('XFAIL', array('Bug number 12345'));  
+        $xfailSection = rtXfailSection::getInstance('XFAIL', array('Bug number 12345'));  
         $xfail = $xfailSection->getReason();
 
         $this->assertEquals('Bug number 12345', $xfail);

@@ -6,7 +6,7 @@ class rtPostSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance() 
     {
-        $postSection = new rtPostSection('POST', array('hello=World&goodbye=MrChips'));  
+        $postSection = rtPostSection::getInstance('POST', array('hello=World&goodbye=MrChips'));  
         
         $envVars = $postSection->getPostVariables();
         $this->assertEquals('POST', $envVars['REQUEST_METHOD']);

@@ -7,7 +7,7 @@ class rtIniSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance()
     {
-        $iniSection = new rtIniSection('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));  
+        $iniSection = rtIniSection::getInstance('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));  
         $inilist = $iniSection->getCommandLineArguments();
 
         $this->assertEquals('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', $inilist[0]);
