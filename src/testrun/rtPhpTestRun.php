@@ -18,6 +18,7 @@ class rtPhpTestRun
 
         //Configure the test environment
         $runConfiguration = rtRuntestsConfiguration::getInstance($this->commandLineArguments);
+        $runConfiguration->getUserEnvironment();
         $runConfiguration->configure();
 
         //Check the preconditions

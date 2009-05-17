@@ -66,9 +66,8 @@ abstract class rtRuntestsConfiguration
         $this->commandLine = new rtCommandLineOptions;
         $this->commandLine->parse($this->commandLineArgs);
 
-        //get and put envrionment variables
-        $this->environmentVariables = rtEnvironmentVariables::getInstance();
-        $this->environmentVariables->getUserSuppliedVariables();
+        //create object to hold environment variables
+        $this->environmentVariables = rtEnvironmentVariables::getInstance();       
     }
 
     /**
@@ -151,6 +150,10 @@ abstract class rtRuntestsConfiguration
     public function getTestFilename()
     {
         return $this->commandLine->getTestFilename();
+    }
+    
+    public function getUserEnvironment() {
+        $this->environmentVariables->getUserSuppliedVariables();
     }
 }
 ?>

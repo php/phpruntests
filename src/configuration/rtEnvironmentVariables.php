@@ -22,7 +22,7 @@ class rtEnvironmentVariables
         'NO_PHPTEST_SUMMARY',
     );
 
-    private $environmentVariables;
+    private $environmentVariables = array();
 
     public function __construct()
     {
@@ -41,9 +41,7 @@ class rtEnvironmentVariables
     {
         if (isset($_ENV)) {
             $this->environmentVariables = $_ENV;
-        } else {
-            $this->environmentVariables = array();
-        }
+        } 
 
         foreach ($this->userSuppliedVariables as $variable) {
             if (getenv($variable)) {
