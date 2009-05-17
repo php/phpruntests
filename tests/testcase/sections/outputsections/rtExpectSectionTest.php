@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '../../../../../src/rtAutoload.php';
 class rtExpectSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreatePattern()  {
-        $expectSection = new rtExpectSection('EXPECT', array('Hello World'));     
+        $expectSection = rtExpectSection::getInstance('EXPECT', array('Hello World'));     
         $pattern = $expectSection->getPattern();
 
         $this->assertEquals('Hello World', $pattern);
@@ -15,7 +15,7 @@ class rtExpectSectionTest extends PHPUnit_Framework_TestCase
 
     public function testCreateTwolinePattern()
     {
-        $expectSection = new rtExpectSection('EXPECT', array('Hello World', 'Hello again')); 
+        $expectSection = rtExpectSection::getInstance('EXPECT', array('Hello World', 'Hello again')); 
         $pattern = $expectSection->getPattern();
 
         $this->assertEquals("Hello World\nHello again", $pattern);
@@ -23,7 +23,7 @@ class rtExpectSectionTest extends PHPUnit_Framework_TestCase
 
     public function testCreateTwolinePatternWithr()
     {
-        $expectSection = new rtExpectSection('EXPECT', array("Hello World\r", 'Hello again'));  
+        $expectSection = rtExpectSection::getInstance('EXPECT', array("Hello World\r", 'Hello again'));  
         $pattern = $expectSection->getPattern();
 
         $this->assertEquals("Hello World\nHello again", $pattern);
@@ -31,7 +31,7 @@ class rtExpectSectionTest extends PHPUnit_Framework_TestCase
 
     public function testCompare()
     {
-        $expectSection = new rtExpectSection('EXPECT', array('Hello World') );
+        $expectSection = rtExpectSection::getInstance('EXPECT', array('Hello World') );
         $result = $expectSection->compare('Hello World');
 
         $this->assertTrue($result);

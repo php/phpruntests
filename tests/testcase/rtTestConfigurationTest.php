@@ -11,10 +11,10 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->php = $this->php = trim(shell_exec("which php"));
         
-        $this->sections['ARGS'] = new rtArgsSection('ARGS', array('-vvv -a value -1111 -2 -v'));
-        $this->sections['ENV'] = new rtEnvSection('ENV', array('env1 = ENV1', 'env2=ENV2'));
-        $this->sections['INI'] = new rtIniSection('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));
-        $this->sections['FILE'] = new rtFileSection('FILE', array('blah'));
+        $this->sections['ARGS'] = rtArgsSection::getInstance('ARGS', array('-vvv -a value -1111 -2 -v'));
+        $this->sections['ENV'] = rtEnvSection::getInstance('ENV', array('env1 = ENV1', 'env2=ENV2'));
+        $this->sections['INI'] = rtIniSection::getInstance('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));
+        $this->sections['FILE'] = rtFileSection::getInstance('FILE', array('blah'));
         
     }
 

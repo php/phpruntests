@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '../../../../../src/rtAutoload.php';
 class rtExpectHeadersSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreatePattern()  {
-        $expectSection = new rtExpectHeadersSection('EXPECTHEADERS', array('abc:def', 'ghi:jkl'));
+        $expectSection = rtExpectHeadersSection::getInstance('EXPECTHEADERS', array('abc:def', 'ghi:jkl'));
         $pattern = $expectSection->getPattern();
 
         $this->assertEquals('def', $pattern['abc']);
@@ -14,7 +14,7 @@ class rtExpectHeadersSectionTest extends PHPUnit_Framework_TestCase
     }
 
     public function testCreatePattern2()  {
-        $expectSection = new rtExpectHeadersSection('EXPECTHEADERS', array("abc:def\r\n", "ghi:jkl:fred"));
+        $expectSection = rtExpectHeadersSection::getInstance('EXPECTHEADERS', array("abc:def\r\n", "ghi:jkl:fred"));
         $pattern = $expectSection->getPattern();
 
         $this->assertEquals('def', $pattern['abc']);
@@ -22,14 +22,14 @@ class rtExpectHeadersSectionTest extends PHPUnit_Framework_TestCase
     }
     
     public function testCompare()  {
-        $expectSection = new rtExpectHeadersSection('EXPECTHEADERS', array("abc:def\r\n", "ghi:jkl:fred"));
+        $expectSection = rtExpectHeadersSection::getInstance('EXPECTHEADERS', array("abc:def\r\n", "ghi:jkl:fred"));
         $test = $expectSection->compare("ghi:jkl:fred\nabc: def");
 
         $this->assertTrue($test);
     }
     
     public function testCompare2()  {
-        $expectSection = new rtExpectHeadersSection('EXPECTHEADERS', array("abc:def\r\n", "ghi:jkl:fred"));
+        $expectSection = rtExpectHeadersSection::getInstance('EXPECTHEADERS', array("abc:def\r\n", "ghi:jkl:fred"));
         $test = $expectSection->compare("ghi:jkl\r\nabcd: def\r\n");
 
         $this->assertFalse($test);

@@ -7,7 +7,7 @@ class rtTestDifferenceTest extends PHPUnit_Framework_TestCase
 {
     public function testTestDifference()
     {
-        $expectSection = new rtExpectSection('EXPECT', array('Hello World'));       
+        $expectSection = rtExpectSection::getInstance('EXPECT', array('Hello World'));       
         $testDifference = new rtTestDifference($expectSection, 'Hello Dolly');
         
         $difference = $testDifference->getDifference();
