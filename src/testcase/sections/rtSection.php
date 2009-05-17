@@ -34,7 +34,7 @@ abstract class rtSection
     protected $carriageReturnLineFeed = "\r\n";
     protected $lineFeed = "\n";
 
-    public function __construct($sectionName, $contents)
+    protected function __construct($sectionName, $contents)
     {
         $this->sectionName = $sectionName;
         $this->sectionContents = $contents;
