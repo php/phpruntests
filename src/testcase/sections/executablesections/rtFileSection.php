@@ -21,7 +21,7 @@ class rtFileSection extends rtExecutableSection
     {
         $this->fileName = $testName.".php";
     }
-    
+
     protected function init() {
         $contents = array();
         foreach($this->sectionContents as $line) {
@@ -32,7 +32,7 @@ class rtFileSection extends rtExecutableSection
                 $this->sectionContents = $contents;
                 break;
             }
-        }     
+        }
     }
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
@@ -43,50 +43,53 @@ class rtFileSection extends rtExecutableSection
         $phpExecutable = $testCase->testConfiguration->getPhpExecutable();
 
         // The CGI excutable is null if it is not available, check and SKIP if necessary
-        if ($phpExecutable != null) {
-            $phpCommand = $phpExecutable;
-            $phpCommand .= ' '. $testCase->testConfiguration->getPhpCommandLineArguments();
-            $phpCommand .= ' -f '.$this->fileName;
-            $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
-            $phpCommand .= ' 2>&1 '.$testCase->testConfiguration->getInputFileString();
-             
-
-            $PhpRunner = new rtPhpRunner($phpCommand,
-            $testCase->testConfiguration->getEnvironmentVariables(),
-            $runConfiguration->getSetting('WorkingDirectory')
-            );
-
-            try {
-                $this->output = $PhpRunner->runphp();
-
-                //If it's a CGI test and separate the headers from the output
-                if($testCase->testConfiguration->isCgiTest()) {
-                    // Would this be better done with substr/strpos, not sure how to cope with \n
-                    // Do Web servers alsways send \n\r\n\r? I *think* so but need to check
-
-                    if (preg_match("/^(.*?)$this->twoBlankLines(.*)/s", $this->output, $match)) {
-                        $this->output = $match[2];
-                        $this->headers = $match[1];
-                    }                     
-                }
-
-
-            } catch (rtPhpRunnerException $e) {
-                $this->status['fail'] = $e->getMessage();
-            }
-        } else {
+        if (is_null($phpExecutable)) {
             $this->status['skip'] = 'The CGI executable is unavailable';
+            return $this->status;
         }
-        return $this->status;
-    }
 
-    /**
-     *
-     */
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
+
+        $phpCommand = $phpExecutable;
+        $phpCommand .= ' '. $testCase->testConfiguration->getPhpCommandLineArguments();
+        $phpCommand .= ' -f '.$this->fileName;
+        $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
+        $phpCommand .= ' 2>&1 '.$testCase->testConfiguration->getInputFileString();
+         
+
+        $PhpRunner = new rtPhpRunner($phpCommand,
+        $testCase->testConfiguration->getEnvironmentVariables(),
+        $runConfiguration->getSetting('WorkingDirectory')
+        );
+
+        try {
+            $this->output = $PhpRunner->runphp();
+
+            //If it's a CGI test and separate the headers from the output
+            if($testCase->testConfiguration->isCgiTest()) {
+                // Would this be better done with substr/strpos, not sure how to cope with \n
+                // Do Web servers alsways send \n\r\n\r? I *think* so but need to check
+
+                if (preg_match("/^(.*?)$this->twoBlankLines(.*)/s", $this->output, $match)) {
+                    $this->output = $match[2];
+                    $this->headers = $match[1];
+                }
+            }
+
+
+        } catch (rtPhpRunnerException $e) {
+            $this->status['fail'] = $e->getMessage();
+        }
+    
+    return $this->status;
+}
+
+/**
+ *
+ */
+public function getHeaders()
+{
+    return $this->headers;
+}
 
 
 }
