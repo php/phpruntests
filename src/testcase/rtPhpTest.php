@@ -44,7 +44,10 @@ class rtPhpTest
                 $tempArray = array();
                 for ($j=$i+1; $j<count($this->contents); $j++) {
                      
-                    if ($this->isSectionKey($this->contents[$j])) {
+                    if ($this->isSectionKey($this->contents[$j]) || stripos($this->contents[$j], "===done===") !== false) {
+                        if(stripos($this->contents[$j], "===done===") !== false) {
+                            $tempArray[] = trim($this->contents[$j]);
+                        }
                         $testSection = rtSection::getInstance($sectionKey, $tempArray);
                         $this->sections[$sectionKey] = $testSection;
                         break;
@@ -56,6 +59,7 @@ class rtPhpTest
 
         $testSection = rtSection::getInstance($sectionKey, $tempArray);
         $this->sections[$sectionKey] = $testSection;
+        
 
         //Identify the file and expect section types
         $this->fileSection = $this->setFileSection();

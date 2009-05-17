@@ -23,16 +23,6 @@ class rtFileSection extends rtExecutableSection
     }
 
     protected function init() {
-        $contents = array();
-        foreach($this->sectionContents as $line) {
-            if(stripos($line, "===done===") === false) {
-                $contents[] = $line;
-            } else {
-                $contents[] = $line;
-                $this->sectionContents = $contents;
-                break;
-            }
-        }
     }
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)

@@ -15,6 +15,8 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
                             '<?php',
                             ' echo "hello world"; ',
                             '?>',
+                            '===Done===',
+                            'blah blah blah',
                             'EXPECTF',
                             'hello world',
         );
@@ -40,6 +42,17 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('rtTestHeaderSection', get_class($test->getSection('TEST')));
         $this->assertEquals('rtFileSection', get_class($test->getSection('FILE')));
         $this->assertEquals('rtExpectFSection', get_class($test->getSection('EXPECTF')));
+    } 
+    
+    public function testDone()
+    {
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config->configure();
+
+        $test = new rtPhpTest($this->testCase, 'nameOfTest', array('TEST', 'FILE', 'EXPECTF'), $config);
+        
+       // var_dump($test->getSection('FILE'));
+
     } 
 }
 ?>
