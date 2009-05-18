@@ -9,8 +9,11 @@ class rtEnvSection extends rtConfigurationSection
     protected function init()
     {
         foreach ($this->sectionContents as $line) {
-            $tempArray = explode('=', $line);
-            $this->testEnvironmentVariables[trim($tempArray[0])] = trim($tempArray[1]);
+            $firstEqualsPosition = strpos($line, "=");
+            $variableName = substr($line, 0, -(strlen($line) - $firstEqualsPosition));
+            $variableValue = substr($line, -(strlen($line) - $firstEqualsPosition - 1));
+      
+            $this->testEnvironmentVariables[trim($variableName)] = trim($variableValue);
         }
     }
 
