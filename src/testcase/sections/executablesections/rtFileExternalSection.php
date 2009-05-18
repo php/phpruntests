@@ -14,43 +14,41 @@
  */
 class rtFileExternalSection extends rtFileSection
 {
-
+	/**
+	 * @param  rtPhpTest                $testCase
+	 * @param  rtRuntestsConfiguration  $runConfiguration
+	 * @return Array                    $status
+	 */
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
     	if ($this->copyExternalFileContent() === true) {
-
             return parent::run($testCase, $runConfiguration);
         }
-
         return $this->status;
     }
 
-    
+    /**
+     * @return boolean
+     */
     private function copyExternalFileContent()
     {
-    	if (sizeof($this->sectionContents) == 1) {
-    	
-	    	$file = $this->sectionContents[0];
-	        
-	    	// don't allow tests to retrieve files from anywhere but this subdirectory
-	        $file = dirname($this->fileName).'/'.trim(str_replace('..', '', $file));
-	        
-	        if (file_exists($file)) {
-	        
-	            $this->sectionContents[0] = file_get_contents($file);            
-	            return true;
-	        
-	        } else {
-	        	
-	        	$this->status['fail'] = 'Can not open external file '.$file;
-	        }
-        
-    	} else {
-    		
-    		$this->status['fail'] = 'One file per testcase permitted.';
+    	if (sizeof($this->sectionContents) != 1) {
+            $this->status['fail'] = 'One file per testcase permitted.';
+    	    return false;
     	}
-        
-        return false;
+    	
+        $file = $this->sectionContents[0];
+	        
+	    // don't allow tests to retrieve files from anywhere but this subdirectory
+        $file = dirname($this->fileName).'/'.trim(str_replace('..', '', $file));
+	        
+        if (!file_exists($file)) {
+	       $this->status['fail'] = 'Can not open external file '.$file;
+	       return false;
+        }
+	        
+        $this->sectionContents[0] = file_get_contents($file);            
+        return true;
     }
     
     public function writeExecutableFile() {
