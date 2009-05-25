@@ -1,6 +1,17 @@
 <?php
 /**
+ * rtTestOutputWriterList
  *
+ * Write test output line by line to stdout
+ * 
+ * @category   Testing
+ * @package    RUNTESTS
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link       http://qa.php.net/
+ * 
  */
 class rtTestOutputWriterList extends rtTestOutputWriter
 {
@@ -23,8 +34,6 @@ class rtTestOutputWriterList extends rtTestOutputWriter
             $outputString = "";
             $testStatus = $testResult->getStatus();
             ksort($testStatus);
-            //Status can be PASS and WARN or FAIL and WARN. I think these are the olny two combinations 
-            //but there may be more
             foreach ($testStatus as $status => $message) {
                 $outputString .= strtoupper($status);
                 $outputString .= " " . $message;

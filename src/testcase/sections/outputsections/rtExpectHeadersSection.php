@@ -1,7 +1,7 @@
 <?php
 /**
  * rtExpectHeadersSection
- * Sets environment variables for EXPECT_HEADERS section
+ * Class for expected headers (EXPECT_HEADERS) section
  *
  *
  * @category  Testing
