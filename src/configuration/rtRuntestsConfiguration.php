@@ -1,23 +1,12 @@
 <?php
 /**
  * rtRuntestsConfiguration
- *
- * @category  Testing
- * @package   RUNTESTS
- * @author    Zoe Slattery <zoe@php.net>
- * @author    Stefan Priebsch <spriebsch@php.net>
- * @copyright 2009 The PHP Group
- * @license   http://www.php.net/license/3_01.txt PHP License 3.01
- * @link      http://qa.php.net/
- */
-
-/**
+ * 
  * Sets up the configuration for the whole test run
  *
  * Settings are derived from command line options and/or environment variables.
- * Runtests also overrides a number of ini settings.
+ * Runtests also overrides a number of ini settings. 
  * 
- *
  * @category  Testing
  * @package   RUNTESTS
  * @author    Zoe Slattery <zoe@php.net>

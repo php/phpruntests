@@ -1,9 +1,18 @@
 <?php
-
 /**
- * Class to retrieve the values of environmnetal variables and store them
- * Needs some changes - don't document till complete
+ * rtEnvironmentVariables
  *
+ * Class to retrieve the values of environmental variables and 
+ * store them.
+ * 
+ * @category   Testing
+ * @package    RUNTESTS
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link       http://qa.php.net/
+ * 
  */
 class rtEnvironmentVariables
 {
