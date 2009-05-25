@@ -1,11 +1,21 @@
 <?php
+/**
+ * rtAutoload
+ *
+ * Autoloader using a map file (rtClassMap.php)
+ * defining the file to load each class from.
+ * 
+ * @category   Testing
+ * @package    run-tests
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ *
+ */
 
 rtAutoload::init();
 
-/**
- * Autoloader using a map file (rtClassMap.php)
- * defining the file to load each class from.
- */
 class rtAutoload
 {
     /**

@@ -1,10 +1,20 @@
 <?php
 /**
+ * rtClassMap
+ *
  * Autoload Class Map
  *
  * This is a generated file. Do not edit!
  *
  * To re-generate this file, run the script BuildClassMap.php.
+ * 
+ * @category   Testing
+ * @package    run-tests
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ *
  */
 $rtClassMap = array(
     'rtEnvironmentException'                   => 'configuration/exceptions/rtEnvironmentException.php',
