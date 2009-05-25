@@ -1,6 +1,16 @@
 <?php
 /**
- * Calculates the difference between the expected and actual output
+ * rtTestDifference
+ *
+ * Calculates difference between actual and expected output.
+ * Exact import from run-tests.php
+ *
+ * @category   Quality Assurance
+ * @package    run-tests
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  *
  */
 class rtTestDifference

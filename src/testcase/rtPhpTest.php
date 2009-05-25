@@ -1,5 +1,6 @@
 <?php
 /**
+ * rtPhpTest
  *
  * This class represents a single phpt test case.
  *
@@ -11,7 +12,6 @@
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  *
  */
-
 class rtPhpTest
 {
     public $testConfiguration;
@@ -34,6 +34,9 @@ class rtPhpTest
         $this->init($runConfiguration);
     }
 
+    /**
+     * Creates a section object for each test section
+     */
     public function parse()
     {
         for ($i=0; $i<count($this->contents); $i++) {
@@ -67,13 +70,25 @@ class rtPhpTest
 
         $this->fileSection->setExecutableFileName($this->getName());
     }
+    
 
+    /**
+     * Initialises the configuration for this test. Uses the configuration sections from teh test case
+     * 
+     * @param rtRunTEstsConfiuration $runConfiguration
+     * 
+     */
     public function init(rtRuntestsConfiguration $runConfiguration)
     {
         $this->testConfiguration = new rtTestConfiguration($runConfiguration, $this->sections, $this->sectionHeadings, $this->fileSection);
     }
+    
 
-    //run
+    /**
+     * Executes the test case
+     * 
+     * @param rtRunTEstsConfiuration $runConfiguration
+     */
     public function executeTest(rtRuntestsConfiguration $runConfiguration)
     {
         $this->status = array();
@@ -103,6 +118,10 @@ class rtPhpTest
         }
     }
 
+    /**
+     * Test the output against the expect section
+     * 
+     */
     public function compareOutput()
     {
         $result = $this->expectSection->compare($this->output);
@@ -114,6 +133,11 @@ class rtPhpTest
         }
     }
 
+    
+    /**
+     * Test the expected headers against actual headers. Only relevant for CGI tests.
+     * 
+     */
     public function compareHeaders()
     {
         $result = $this->sections['EXPECTHEADERS']->compare($this->headers);
@@ -125,6 +149,11 @@ class rtPhpTest
         }
     }
 
+    
+    /**
+     * Identify a section heading
+     * 
+     */
     private function isSectionKey($line)
     {
         if (in_array($line, $this->sectionHeadings)) {
@@ -134,6 +163,9 @@ class rtPhpTest
     }
 
 
+    /**
+     * Set the test's file section
+     */
     private function setFileSection()
     {
         if (array_key_exists('FILE', $this->sections)) {
@@ -149,6 +181,10 @@ class rtPhpTest
         }
     }
 
+    
+    /**
+     * Sets the test's expect section
+     */
     private function setExpectSection()
     {
         if (array_key_exists('EXPECT', $this->sections)) {

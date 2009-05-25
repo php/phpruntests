@@ -1,11 +1,20 @@
 <?php
 /**
+ * rtTestResults
+ *
  * Class to store test results.
  *
  * Ensures that files are either deleted or saved depending on the test results
  * Maintains an array of files names that have been saved
  * Maintains (adds to) the tests case status to give a final status array
  * Request calculation of difference between expected/actual output if the test has failed.
+ *
+ * @category   Quality Assurance
+ * @package    run-tests
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  *
  */
 class rtTestResults
