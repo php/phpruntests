@@ -5,7 +5,7 @@
  * class for checking the required minimum-version (5.3)
  * of the the running and executing php-executable
  *
- * @category  Configuration
+ * @category  Testing
  * @package   RUNTESTS
  * @author    Zoe Slattery <zoe@php.net>
  * @author    Stefan Priebsch <spriebsch@php.net>
