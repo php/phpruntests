@@ -5,7 +5,7 @@
  * Filter for .phpt file types
  * 
  * @category   Testing
- * @package    run-tests
+ * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
  * @copyright  2009 The PHP Group

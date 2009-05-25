@@ -5,8 +5,8 @@
  * Writes test output. This is concerned with status (PASS, FAIL etc) not
  * with the log files.
  *
- * @category   Quality Assurance
- * @package    run-tests
+ * @category   Testing
+ * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
  * @copyright  2009 The PHP Group

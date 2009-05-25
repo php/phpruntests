@@ -4,8 +4,8 @@
  *
  * Reads the test file and checks pre-conditions
  *
- * @category   Quality Assurance
- * @package    run-tests
+ * @category   Testing
+ * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
  * @copyright  2009 The PHP Group

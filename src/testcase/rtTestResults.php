@@ -9,8 +9,8 @@
  * Maintains (adds to) the tests case status to give a final status array
  * Request calculation of difference between expected/actual output if the test has failed.
  *
- * @category   Quality Assurance
- * @package    run-tests
+ * @category   Testing
+ * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
  * @copyright  2009 The PHP Group

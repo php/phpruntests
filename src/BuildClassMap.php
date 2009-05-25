@@ -6,7 +6,7 @@
  * It assumes that all classes have the same name at the file name (less .php)  and all are prefixed by 'rt'
  *
  * @category   Testing
- * @package    run-tests
+ * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
  * @copyright  2009 The PHP Group
