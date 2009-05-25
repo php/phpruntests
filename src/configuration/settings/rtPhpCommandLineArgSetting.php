@@ -1,9 +1,18 @@
 <?php
-
 /**
- * Sets the arguments to teh PHP command line, initially as ini overrides
- * converted to -d flags
+ * rtPhpCommandLineArgSetting
  *
+ * Sets the arguments to the PHP command line.
+ * Initially as ini overrides,  converted to -d flags
+ * 
+ * @category   Testing
+ * @package    RUNTESTS
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link       http://qa.php.net/
+ * 
  */
 class rtPhpCommandLineArgSetting extends rtSetting
 {

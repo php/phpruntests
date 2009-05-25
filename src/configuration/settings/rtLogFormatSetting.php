@@ -1,8 +1,21 @@
 <?php
-
 /**
- * Sets the format of the log file
+ * rtLogFormatSetting
  *
+ * Determines which log files ae written. 
+ * L=log, E=exp, O=out, D=diff
+ * 
+ * @category   Testing
+ * @package    RUNTESTS
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link       http://qa.php.net/
+ * 
+ */
+/*
+ * @todo don't have anything implemented that checks this yet
  */
 class rtLogFormatSetting extends rtSetting
 {

@@ -1,9 +1,19 @@
 <?php
-
 /**
- * Class for setting the test directory (or directories) - these contain PHPT files 
- * to be tested and can be provided on teh command line or by  TEST_PHP_USER
+ * rtTestDirectorySetting
  *
+ * Class for setting the test directory (or directories) - these 
+ * contain PHPT files to be tested and can be provided on 
+ * the command line or by  TEST_PHP_USER
+ * 
+ * @category   Testing
+ * @package    RUNTESTS
+ * @author     Zoe Slattery <zoe@php.net>
+ * @author     Stefan Priebsch <spriebsch@php.net>
+ * @copyright  2009 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link       http://qa.php.net/
+ * 
  */
 class rtTestDirectorySetting extends rtSetting
 {
