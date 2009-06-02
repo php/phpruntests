@@ -88,10 +88,13 @@ class rtPhpTestRun
                     $testFile = new rtPhpTestFile();
                     $testFile->doRead($testName);
                     $testFile->normaliseLineEndings($testName);
+                    
+                    $testStatus = new rtTestStatus();
+                    $testStatus->setTestName($testFile->getTestName());
 
                     if ($testFile->arePreconditionsMet()) {
 
-                        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration);
+                        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
                          
                         //Setup and set the local environment for the test case
                         $testCase->executeTest($runConfiguration);
