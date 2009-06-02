@@ -41,16 +41,17 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
+        $status = new rtTestStatus();
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
         $output = $testCase->getOutput();
-        $status = $testCase->getStatus();
+        $stat = $testCase->getStatus();
         $headers = $testCase->getHeaders();
 
          
-        $this->assertEquals('', $status['pass']);
+        $this->assertEquals('', $stat['pass']);
       
 
     }
@@ -70,13 +71,14 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);
+        $status = new rtTestStatus();
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
-        $status = $testCase->getStatus();
+        $stat = $testCase->getStatus();
          
-        $this->assertEquals('headers', $status['fail']);
+        $this->assertEquals('headers', $stat['fail']);
 
     }
 }

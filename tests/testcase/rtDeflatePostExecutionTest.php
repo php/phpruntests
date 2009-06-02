@@ -18,7 +18,7 @@ class rtDeflatePostExecutionTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        @unlink($this->path-to_tests . '/sample_deflatepost.php');
+        @unlink($this->path_to_tests . '/sample_deflatepost.php');
     }
 
     public function testFileRun()
@@ -37,7 +37,8 @@ class rtDeflatePostExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);      
+        $status = new rtTestStatus();
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);      
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);

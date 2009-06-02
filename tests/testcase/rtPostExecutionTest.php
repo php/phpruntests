@@ -37,7 +37,8 @@ class rtPostExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config);      
+        $status = new rtTestStatus();
+        $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);      
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);

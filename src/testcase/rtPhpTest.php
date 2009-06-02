@@ -19,17 +19,19 @@ class rtPhpTest
     private $testName;
     private $contents;
     private $status;
+    private $testStatus;
     private $output;
     private $sections;
     private $fileSection;
     private $expectSection;
     private $sectionHeadings;
 
-    public function __construct(array $contents, $testName, $sectionHeadings, $runConfiguration)
+    public function __construct(array $contents, $testName, $sectionHeadings, $runConfiguration, $testStatus)
     {
         $this->contents = $contents;
         $this->testName = $testName;
         $this->sectionHeadings = $sectionHeadings;
+        $this->testStatus = $testStatus;
         $this->parse();
         $this->init($runConfiguration);
     }
