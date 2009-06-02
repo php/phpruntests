@@ -41,7 +41,8 @@ class rtSkipIfExecutionTest extends PHPUnit_Framework_TestCase
         $testCase->executeTest($config);
 
         //Check that the test has been skipped
-        $this->assertTrue(array_key_exists('skip', $testCase->getStatus()));          
+        //var_dump($testCase->getStatus());
+        $this->assertTrue($testCase->getStatus()->getValue('skip'));          
     }
 }
 ?>

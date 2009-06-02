@@ -19,46 +19,44 @@
  */
 class rtTestResults
 {
-    private $status = array();
+    private $testStatus;
     private $testName = '';
     private $savedResultsFiles = array();
     private $title = '';
 
-    public function __construct(rtPhpTest $testCase = null, $borkErrorString = null, $borkedFile = null) 
+    public function __construct(rtPhpTest $testCase = null, rtTestStatus $testStatus = null) 
     {
-        $this->init($testCase,$borkErrorString, $borkedFile);
+        $this->init($testCase, $testStatus);
     }
 
-    public function init(rtPhpTest $testCase = null, $borkErrorString = null, $borkedFile = null)
+    public function init(rtPhpTest $testCase = null, rtTestStatus $testStatus = null)
     {
         if ($testCase != null) {
             $this->title = implode('',$testCase->getSection('TEST')->getContents());
-            $this->status = $testCase->getStatus();
+            $this->testStatus = $testCase->getStatus();
             $this->testName = $testCase->getName();
         } else {
-            $this->status['bork'] = $borkErrorString;
-            $this->testName = $borkedFile;
+            $this->testStatus = $testStatus;
+            $this->testName = $testStatus->getTestName();
         }
     }
 
     public function processResults(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
 
-        if (array_key_exists('pass', $this->status)) {
+        if ($testCase->getStatus()->getValue('pass') == true) {
             $this->onPass($testCase, $runConfiguration);
-        } elseif (array_key_exists('fail', $this->status)) {
+        } elseif($testCase->getStatus()->getValue('fail') == true) {
             $this->onFail($testCase);
-        } elseif (array_key_exists('skip', $this->status)) {
+        } elseif ($testCase->getStatus()->getValue('skip') == true) {
             $this->onSkip($testCase, $runConfiguration);
-        } elseif (array_key_exists('bork', $this->status)) {
-            //what to do here?
         } else {
             echo "no status? something wrong here\n";
         }
     }
 
     /**
-     * Actions is a test passes
+     * Actions if a test passes
      */
     private function onPass(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
@@ -81,7 +79,8 @@ class rtTestResults
         }
 
         if ($testCase->hasSection('XFAIL')) {
-            $this->status['warn'] = 'Test passeses but has an XFAIL section';
+            $this->testStatus->setTrue('warn');
+            $this->testStatus->setMessage('warn', 'Test passes but has an XFAIL section');
         }
 
         if ($testCase->hasSection('CLEAN')) {
@@ -115,7 +114,9 @@ class rtTestResults
         $this->savedFileNames['diff'] = $differenceFileName;
          
         if ($testCase->hasSection('XFAIL')) {
-            $this->status['xfail'] = $testCase->getSection('XFAIL')->getReason();
+            $this->testStatus->setTrue('xfail');
+            $this->testStatus->setMessage('xfail', $testCase->getSection('XFAIL')->getReason());
+            
         }
 
         //Note: if there are clean and skipif files they will not be deleted if the test fails
@@ -141,13 +142,14 @@ class rtTestResults
         //a few windows tests with blank XFAIL sections and wanted to know about those.
         
         if ($testCase->hasSection('XFAIL')) {
-            $this->status['xfail'] = $testCase->getSection('XFAIL')->getReason();
+            $this->testStatus->setTrue('xfail');
+            $this->testStatus->setMessage('xfail',$testCase->getSection('XFAIL')->getReason());
         }
     }
 
     public function getStatus()
     {
-        return $this->status;
+        return $this->testStatus;
     }
 
     public function getSavedFileNames()

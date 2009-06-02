@@ -18,7 +18,6 @@ class rtPhpTest
 
     private $testName;
     private $contents;
-    private $status;
     private $testStatus;
     private $output;
     private $sections;
@@ -93,16 +92,15 @@ class rtPhpTest
      */
     public function executeTest(rtRuntestsConfiguration $runConfiguration)
     {
-        $this->status = array();
 
         if (array_key_exists('SKIPIF', $this->sections)) {
-            $this->status = $this->sections['SKIPIF']->run($this, $runConfiguration);
+            $this->testStatus = $this->sections['SKIPIF']->run($this, $runConfiguration);
         }
 
-        if (!array_key_exists('skip', $this->status) && !array_key_exists('bork', $this->status)) {
-            $this->status = array_merge($this->status, $this->fileSection->run($this, $runConfiguration));
+        if (!$this->testStatus->getValue('skip') && !$this->testStatus->getValue('skip')) {
+            $this->testStatus = $this->fileSection->run($this, $runConfiguration);
             //The test can be skipped by file sections if the CGI executable is not available
-            if(!array_key_exists('skip', $this->status)) {
+            if(!$this->testStatus->getValue('skip')) {
                 $this->output = $this->fileSection->getOutput();
                 $this->compareOutput();
 
@@ -114,8 +112,7 @@ class rtPhpTest
              
 
             if (array_key_exists('CLEAN', $this->sections)) {
-                $cleanStatus = $this->sections['CLEAN']->run($this, $runConfiguration);
-                $this->status = array_merge($this->status, $cleanStatus);
+                $this->testStatus = $this->sections['CLEAN']->run($this, $runConfiguration);
             }
         }
     }
@@ -128,10 +125,10 @@ class rtPhpTest
     {
         $result = $this->expectSection->compare($this->output);
 
-        if ($result) {
-            $this->status['pass'] = '';
+        if (!$result) {
+            $this->testStatus->setTrue('fail');
         } else {
-            $this->status['fail'] = 'output';
+            $this->testStatus->setTrue('pass');
         }
     }
 
@@ -144,10 +141,10 @@ class rtPhpTest
     {
         $result = $this->sections['EXPECTHEADERS']->compare($this->headers);
 
-        if ($result) {
-            $this->status['pass'] = '';
+        if (!$result) {
+            $this->testStatus->setTrue('fail_headers');
         } else {
-            $this->status['fail'] = 'headers';
+            $this->testStatus->setTrue('pass_headers');
         }
     }
 
@@ -226,10 +223,13 @@ class rtPhpTest
     {
         return $this->sections[$sectionKey];
     }
-
+    
+    /*
+     * Return the object containing all test status 
+     */
     public function getStatus()
     {
-        return $this->status;
+        return $this->testStatus;
     }
 
     public function getFileSection()

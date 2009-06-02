@@ -21,7 +21,7 @@ class rtCleanSection extends rtExecutableSection
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
-        $this->status = array();
+        $testStatus = $testCase->getStatus();
         
         $this->setExecutableFileName($testCase->getName());
         $this->writeExecutableFile();
@@ -39,13 +39,16 @@ class rtCleanSection extends rtExecutableSection
             $this->output = $PhpRunner->runphp();
             //if the CLEAN section has worked the result should be a blank line
             if (trim($this->output) != "") {
-                $this->status['warn'] = 'Execution of clean section failed: '.trim($this->output);
+                $testStatus->setTrue('fail_clean');
+                $testStatus->setMessage('fail_clean','Execution of clean section failed: '.trim($this->output) );
+        
             } 
         } catch (rtPhpRunnerException $e) {
-            $this->status['warn'] = 'Failed to execute clean section';
+            $testStatus->setTrue('fail_clean');
+            $testStatus->setMessage('fail_clean',$e->getMessage);
         }
         
-        return $this->status;
+        return $testStatus;
     }
 }
 ?>

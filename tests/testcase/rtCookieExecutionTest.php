@@ -45,10 +45,7 @@ class rtCookieExecutionTest extends PHPUnit_Framework_TestCase
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
        
-        $status = $testCase->getStatus();
-  
-        $this->assertEquals('', $status['pass']);
-        
+        $this->assertFalse($testCase->getStatus()->getValue('fail'));        
 
     }
 }  

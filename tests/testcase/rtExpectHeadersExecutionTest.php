@@ -46,12 +46,11 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
-        $output = $testCase->getOutput();
-        $stat = $testCase->getStatus();
-        $headers = $testCase->getHeaders();
+      
+      
 
-         
-        $this->assertEquals('', $stat['pass']);
+        $this->assertFalse($testCase->getStatus()->getValue('fail_headers'));
+    
       
 
     }
@@ -76,9 +75,10 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
 
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
-        $stat = $testCase->getStatus();
-         
-        $this->assertEquals('headers', $stat['fail']);
+      
+        
+        $this->assertTrue($testCase->getStatus()->getValue('fail_headers'));
+       
 
     }
 }

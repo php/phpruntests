@@ -44,11 +44,11 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);      
 
         //Setup and set the local environment for the test case
-        $testCase->executeTest($config);
+        $status = $testCase->executeTest($config);
 
         //Check that the temp file has been removed
         $fileName = $this->path_to_tests . '/phpt-tests/cleantest.tmp';
-
+        $this->assertFalse($testCase->getStatus()->getValue('fail_clean'));
         $this->assertFalse(file_exists($fileName));          
     }
 
@@ -75,7 +75,7 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
 
         //Check that the temp file has been removed
         $fileName = $this->path_to_tests . '/cleantest.tmp';
-
+        $this->assertTrue($testCase->getStatus()->getValue('fail_clean'));
         $this->assertTrue(file_exists($fileName));          
     }
 }  

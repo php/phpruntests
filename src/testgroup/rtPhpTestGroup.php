@@ -40,11 +40,16 @@ class rtPhpTestGroup
             $testFile->doRead($testName);
             $testFile->normaliseLineEndings();
 
+            $testStatus = new rtTestStatus();
+            $testStatus->setTestName($testFile->getTestName());
             if ($testFile->arePreconditionsMet() ) {
                 // Create a new test case
-                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration);
+               
+                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
             } else {
-                $this->results[] = new rtTestResults(null, $testFile->getExitMessage(), $testFile->getTestName());
+                $testStatus->setTrue('bork');
+                $testStatus->setMessage('bork', $testFile->getExitMessage());
+                $this->results[] = new rtTestResults(null, $testStatus);
             }
         }
     }

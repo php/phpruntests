@@ -43,10 +43,9 @@ class rtPostRawExecutionTest extends PHPUnit_Framework_TestCase
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
         
-        $status = $testCase->getStatus();
-      
-        //$this->assertEquals('It worked!', trim($output));
-        $this->assertEquals('', $status['pass']);
+       
+        $this->assertFalse($testCase->getStatus()->getValue('fail'));
+       
         
 
     }

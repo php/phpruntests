@@ -21,20 +21,22 @@ class rtFileExternalSection extends rtFileSection
 	 */
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
-    	if ($this->copyExternalFileContent() === true) {
+        $testStatus = $this->copyExternalFileContent($testCase->getStatus());
+    	if ($testStatus->getValue('fail') == false) {
             return parent::run($testCase, $runConfiguration);
         }
-        return $this->status;
+        return $testStatus;
     }
 
     /**
      * @return boolean
      */
-    private function copyExternalFileContent()
+    private function copyExternalFileContent($testStatus)
     {
     	if (sizeof($this->sectionContents) != 1) {
-            $this->status['fail'] = 'One file per testcase permitted.';
-    	    return false;
+    	    $this->testStatus->setTrue('fail');
+            $this->testStatus->setMessage('fail', 'One file per testcase permitted.');
+            return $testStatus;
     	}
     	
         $file = $this->sectionContents[0];
@@ -43,12 +45,13 @@ class rtFileExternalSection extends rtFileSection
         $file = dirname($this->fileName).'/'.trim(str_replace('..', '', $file));
 	        
         if (!file_exists($file)) {
-	       $this->status['fail'] = 'Can not open external file '.$file;
-	       return false;
+            $testStatus->setTrue('fail');
+            $testStatus->setMessage('fail', 'Can not open external file '.$file );
+            return $testStatus;
         }
 	        
         $this->sectionContents[0] = file_get_contents($file);            
-        return true;
+        return $this->testStatus;
     }
     
     public function writeExecutableFile() {

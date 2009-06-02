@@ -104,7 +104,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
         $testCase->compareOutput();
 
         //Check the exit status
-        $this->assertTrue(array_key_exists('pass', $testCase->getStatus()));
+        $this->assertFalse($testCase->getStatus()->getValue('fail'));
     }
 
     public function testExpectFFileRunAndCompare()
@@ -132,7 +132,8 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
         $testCase->compareOutput();
 
         //Check the exit status
-        $this->assertTrue(array_key_exists('pass', $testCase->getStatus()));
+        $this->assertFalse($testCase->getStatus()->getValue('fail'));
+       
     }
 
     public function testExpectRegexFileRunAndCompare()
@@ -160,7 +161,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
         $testCase->compareOutput();
 
         //Check the exit status
-        $this->assertTrue(array_key_exists('pass', $testCase->getStatus()));
+        $this->assertFalse($testCase->getStatus()->getValue('fail_clean'));
     }
 }
 ?>

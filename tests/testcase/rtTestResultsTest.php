@@ -233,8 +233,9 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
 
         $results = new rtTestResults($testCase);
         $results->processResults($testCase, $config);
+        
+        $this->assertTrue($testCase->getStatus()->getValue('pass'));
 
-        $this->assertTrue(array_key_exists('pass', $results->getStatus()));
     }
 
     public function testBork()
@@ -252,10 +253,13 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         if (!$testFile->arePreConditionsMet()) {
+            $testStatus = new rtTestStatus();
+            $testStatus->setTrue('bork');
+            $testStatus->setMessage('bork', 'bork message');
 
-            $results = new rtTestResults(null, "borked", $testFiles[0]);
+            $results = new rtTestResults( null, $testStatus);
 
-            $this->assertTrue(array_key_exists('bork', $results->getStatus()));
+            $this->assertTrue($results->getStatus()->getvalue('bork'));
         }
     }
 }

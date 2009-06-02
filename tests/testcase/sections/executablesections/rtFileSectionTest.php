@@ -12,22 +12,5 @@ class rtFileSectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('<?php', $code[0]);
     }
-    public function testDone()
-    {
-        $fileSection = rtFileSection::getInstance('FILE', array('<?php', 'echo "hello world";', '?>', '===DONE===', 'ignore-me'));
-        $code = $fileSection->getContents();
-        $last = count($code) - 1;
-
-        $this->assertEquals('===DONE===', $code[$last]);
-    }
-
-    public function testDone2()
-    {
-        $fileSection = rtFileSection::getInstance('FILE', array('<?php', 'echo "hello world";', '?>', '===DoNe===', 'ignore-me'));
-        $code = $fileSection->getContents();
-        $last = count($code) - 1;
-
-        $this->assertEquals('===DoNe===', $code[$last]);
-    }
 }
 ?>

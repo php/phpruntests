@@ -21,8 +21,8 @@ class rtSkipIfSection extends rtExecutableSection
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
-        $this->status = array();
         
+        $testStatus = $testCase->getStatus();
         $this->setExecutableFileName($testCase->getName());
         $this->writeExecutableFile();
 
@@ -39,25 +39,24 @@ class rtSkipIfSection extends rtExecutableSection
             $this->output = $PhpRunner->runphp();
 
             if (!strncasecmp('skip', ltrim($this->output), 4)) {
-                if (preg_match('/^\s*skip\s*(.+)\s*/i', $this->output, $matches)) {
-                    $this->status['skip'] = $matches[1];
-                } else {
-                    $this->status['skip'] = '';
+                 $testStatus->setTrue('skip');
+                if (preg_match('/^\s*skip\s*(.+)\s*/i', $this->output, $matches)) {         
+                    $testStatus->setMessage('skip', $matches[1]);
                 }
             }
 
             if (!strncasecmp('warn', ltrim($this->output), 4)) {
+                 $testStatus->setTrue('warn');
                 if (preg_match('/^\s*warn\s*(.+)\s*/i', $this->output, $matches)) {
-                    $this->status['warn'] = $matches[1];
-                } else {
-                    $this->status['warn'] = '';
+                    $testStatus->setMessage('warn', $matches[1]);
                 }
             }
         } catch (rtPhpRunnerException $e) {
-            $this->status['bork'] = 'Failed to execute skipif section';
+            $testStatus->setTrue('fail_skip');
+            $testStatus->setMessage('fail_skip', 'Failed to execute skipif section' . $e->getMessage());
         }
         
-        return $this->status;
+        return $testStatus;
     }
 }
 ?>

@@ -13,5 +13,66 @@
  *
  */
 class rtTestStatus {
+
+    private $testName;
+    private $states = array();
+    private $messages = array();
+    private $stateName = array ('skip',
+                                'bork',
+                                'warn',
+                                'xfail',
+                                'fail',
+                                'pass',
+                                'fail_clean',
+                                'fail_skip',
+                                'fail_headers',
+                                'pass_headers',
+    );
+
+    public function __construct()
+    {
+        $this->init();
+    }
+
+    private function init()
+    {
+        foreach ($this->stateName as $name) {
+            $this->states[$name] = false;
+            $this->messages[$name] = '';
+        }
+    }
+
+    public function setTrue($name)
+    {
+        $this->states[$name] = true;
+    }
+
+    public function setMessage($name, $text)
+    {
+        $this->messages[$name] = $text;
+    }
+
+    public function getValue($name)
+    {
+        return $this->states[$name];
+    }
+
+    public function getMessage($name)
+    {
+        return $this->messages[$name];
+    }
+    
+    public function getName() {
+        return $this->stateName;
+    }
+    
+    public function setTestName($name) {
+        $this->testName = $name;
+    }
+    
+    public function getTestName() {
+        return $this->testName;
+    }
+
 }
 ?>

@@ -27,15 +27,16 @@ class rtFileSection extends rtExecutableSection
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
-        $this->status = array();
+        $testStatus = $testCase->getStatus();
         $this->writeExecutableFile();
 
         $phpExecutable = $testCase->testConfiguration->getPhpExecutable();
 
         // The CGI excutable is null if it is not available, check and SKIP if necessary
         if (is_null($phpExecutable)) {
-            $this->status['skip'] = 'The CGI executable is unavailable';
-            return $this->status;
+            $testStatus->setTrue('skip');
+            $testStatus->setMessage('skip', 'The CGI executable is unavailable' );         
+            return $testStatus;
         }
 
 
@@ -67,10 +68,11 @@ class rtFileSection extends rtExecutableSection
 
 
         } catch (rtPhpRunnerException $e) {
-            $this->status['fail'] = $e->getMessage();
+            $testStatus->setTrue('fail');
+            $testStatus->setMessage('fail', $e->getMessage() );         
         }
     
-    return $this->status;
+    return $testStatus;
 }
 
 /**

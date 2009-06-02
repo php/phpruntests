@@ -48,7 +48,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $status = $testCase->getStatus();
          
         $this->assertEquals('85', strlen($output));
-        $this->assertEquals('', $status['pass']);
+          $this->assertFalse($testCase->getStatus()->getValue('fail'));
 
 
     }
@@ -81,7 +81,8 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
      
          
         $this->assertEquals(0, strlen($output));
-        $this->assertEquals('The CGI executable is unavailable', $status['skip']);
+        $this->assertTrue($testCase->getStatus()->getValue('skip'));
+        $this->assertEquals('The CGI executable is unavailable', $testCase->getStatus()->getMessage('skip'));
 
 
     }
