@@ -22,16 +22,23 @@ class rtTestDifference
 
     public function __construct(rtOutputSection $expectedOutput, $output)
     {
-        $this->expectedOutput = $expectedOutput->getContents();  
+        
+        $this->expectedOutput = $expectedOutput->getContents(); 
+        
+        //Expect a regular expression from EXPECTF or EXPECTREGEX but not from EXPECT sections
+        $is_reg = true; 
+        if(get_class($expectedOutput) == 'rtExpectSection') {
+            $is_reg = false;
+        }
         $this->expectedRegularExpression = explode(b"\n", $expectedOutput->getPattern());
         $this->output = explode(b"\n", $output);
         
-        $this->generateDiff();
+        $this->generateDiff($is_reg);
     }
 
-    public function generateDiff()
+    public function generateDiff($is_reg)
     {
-        $this->difference = $this->generateArrayDiff($this->expectedRegularExpression, $this->output, true, $this->expectedOutput);
+        $this->difference = $this->generateArrayDiff($this->expectedRegularExpression, $this->output, $is_reg, $this->expectedOutput);
     }
 
     /**
@@ -55,6 +62,14 @@ class rtTestDifference
      */
     public function generateArrayDiff($ar1, $ar2, $is_reg, $w)
     {
+        var_dump($is_reg);
+         
+        file_put_contents("/home/zoe/bug/ar1_my.out", $ar1);
+        file_put_contents("/home/zoe/bug/ar2_my.out", $ar2);
+        file_put_contents("/home/zoe/bug/w_my.out", $w);
+        
+        
+        
         $idx1 = 0; $ofs1 = 0; $cnt1 = @count($ar1);
         $idx2 = 0; $ofs2 = 0; $cnt2 = @count($ar2);
         $diff = array();
@@ -189,6 +204,8 @@ class rtTestDifference
     public function compLine($l1, $l2, $is_reg)
     {
         if ($is_reg) {
+          /*  var_dump($l1);
+            var_dump($l2);*/
             return preg_match((binary) "/^$l1$/s", (binary) $l2);
         } else {
             return !strcmp((binary) $l1, (binary) $l2);
