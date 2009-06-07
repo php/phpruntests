@@ -62,7 +62,6 @@ class rtTestDifference
      */
     public function generateArrayDiff($ar1, $ar2, $is_reg, $w)
     {
-        var_dump($is_reg);
          
         file_put_contents("/home/zoe/bug/ar1_my.out", $ar1);
         file_put_contents("/home/zoe/bug/ar2_my.out", $ar2);
@@ -204,8 +203,6 @@ class rtTestDifference
     public function compLine($l1, $l2, $is_reg)
     {
         if ($is_reg) {
-          /*  var_dump($l1);
-            var_dump($l2);*/
             return preg_match((binary) "/^$l1$/s", (binary) $l2);
         } else {
             return !strcmp((binary) $l1, (binary) $l2);

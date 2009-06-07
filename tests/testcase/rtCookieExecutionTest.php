@@ -39,7 +39,7 @@ class rtCookieExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->normaliseLineEndings();
 
         //Create a new test case
-        $status = new rtTestStatus();
+        $status = new rtTestStatus($testFile->getTestName());
         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);      
 
         //Setup and set the local environment for the test case

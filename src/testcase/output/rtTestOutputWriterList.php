@@ -33,7 +33,7 @@ class rtTestOutputWriterList extends rtTestOutputWriter
         foreach ($testResults as $testResult) {
             $outputString = "";
             $testStatus = $testResult->getStatus();
-            foreach($testStatus->getName() as $name) {
+            foreach($testStatus->getTestStateNames() as $name) {
                 if($testStatus->getValue($name)) {
                     $outputString .= " ". strtoupper($name);
                     $outputString .= " " . $testStatus->getMessage($name);

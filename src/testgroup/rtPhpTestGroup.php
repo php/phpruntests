@@ -28,20 +28,25 @@ class rtPhpTestGroup
     {
         $this->testFiles = rtUtil::getTestList($this->testDirectory);
 
-        foreach ($this->testFiles as $testName) {
+        foreach ($this->testFiles as $testFileName) {
+       
+            //testFiles is a list of file namnes relative to the current working directory
 
-            if (!file_exists($testName)) {
-                echo rtText::get('invalidTestFileName', array($testName));
+            if (!file_exists($testFileName)) {
+                echo rtText::get('invalidTestFileName', array($testFileName));
                 exit();
             }
 
             // Create a new test file object;
             $testFile = new rtPhpTestFile();
-            $testFile->doRead($testName);
+            $testFile->doRead($testFileName);
             $testFile->normaliseLineEndings();
+            
+            //The test name is the full path to the test file name without the .phpt
 
-            $testStatus = new rtTestStatus();
-            $testStatus->setTestName($testFile->getTestName());
+            $testStatus = new rtTestStatus($testFile->getTestName());
+             echo $testFile->getTestName() . "\n";
+            
             if ($testFile->arePreconditionsMet() ) {
                 // Create a new test case
                

@@ -89,8 +89,8 @@ class rtPhpTestRun
                     $testFile->doRead($testName);
                     $testFile->normaliseLineEndings($testName);
                     
-                    $testStatus = new rtTestStatus();
-                    $testStatus->setTestName($testFile->getTestName());
+                    $testStatus = new rtTestStatus($testFile->getTestName());
+                   
 
                     if ($testFile->arePreconditionsMet()) {
 

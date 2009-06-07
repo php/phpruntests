@@ -17,7 +17,7 @@ class rtTestStatus {
     private $testName;
     private $states = array();
     private $messages = array();
-    private $stateName = array ('skip',
+    private $testStateNames = array ('skip',
                                 'bork',
                                 'warn',
                                 'xfail',
@@ -29,14 +29,15 @@ class rtTestStatus {
                                 'pass_headers',
     );
 
-    public function __construct()
+    public function __construct($testName)
     {
+        $this->testName = $testName;
         $this->init();
     }
 
     private function init()
     {
-        foreach ($this->stateName as $name) {
+        foreach ($this->testStateNames as $name) {
             $this->states[$name] = false;
             $this->messages[$name] = '';
         }
@@ -62,12 +63,8 @@ class rtTestStatus {
         return $this->messages[$name];
     }
     
-    public function getName() {
-        return $this->stateName;
-    }
-    
-    public function setTestName($name) {
-        $this->testName = $name;
+    public function getTestStateNames() {
+        return $this->testStateNames;
     }
     
     public function getTestName() {
