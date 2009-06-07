@@ -51,7 +51,7 @@ class rtFileExternalSection extends rtFileSection
         }
 	        
         $this->sectionContents[0] = file_get_contents($file);            
-        return $this->testStatus;
+        return $testStatus;
     }
     
     public function writeExecutableFile() {
