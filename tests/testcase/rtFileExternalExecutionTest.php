@@ -3,7 +3,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
 
-class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
+class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
 {
     private $path_to_tests;
     private $sample_test;
