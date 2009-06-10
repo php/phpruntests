@@ -63,11 +63,6 @@ class rtTestDifference
     public function generateArrayDiff($ar1, $ar2, $is_reg, $w)
     {
          
-        file_put_contents("/home/zoe/bug/ar1_my.out", $ar1);
-        file_put_contents("/home/zoe/bug/ar2_my.out", $ar2);
-        file_put_contents("/home/zoe/bug/w_my.out", $w);
-        
-        
         
         $idx1 = 0; $ofs1 = 0; $cnt1 = @count($ar1);
         $idx2 = 0; $ofs2 = 0; $cnt2 = @count($ar2);
