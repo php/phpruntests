@@ -25,6 +25,8 @@ function readSource($base, $path=NULL)
 		$name = $file->getFileName();
 		
 		if (substr($name,0,1) == '.') continue;
+		
+		if ($name == 'CVS') continue;
 
 		if ($file->isDir()) {
 			
