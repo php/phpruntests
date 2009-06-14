@@ -54,15 +54,6 @@ class rtIniAsCommandLineArgsTest extends PHPUnit_Framework_TestCase
         $addStr = $iniSet->settingsToArguments(array('af'), $iniSet->getBasePhpDArgs());
     }
 
-    /**
-     * @expectedException rtUnknownIniSettingException
-     */
-    public function testInvalidArg2()
-    {
-        $iniSet = new rtIniAsCommandLineArgs();
-        $iniSet->setBase();
-        $addStr = $iniSet->settingsToArguments(array('af=be=blah'), $iniSet->getBasePhpDArgs());
-    }
     
     public function testValidDoubleEquals()
     {
@@ -73,5 +64,19 @@ class rtIniAsCommandLineArgsTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('==\"', $last3);
     }
+    
+    public function testValidComplex()
+    {
+        $iniSet = new rtIniAsCommandLineArgs();
+        $iniSet->setBase();
+        $addStr = $iniSet->settingsToArguments(array('pdo.dsn.mysql="mysql:dbname=phptest;socket=/tmp/mysql.sock"
+        '), $iniSet->getBasePhpDArgs());
+        
+        $last3= addslashes(substr($addStr, -3));
+
+        $this->assertEquals('k\"\"', $last3);
+    }
+    
+    
 }
 ?>

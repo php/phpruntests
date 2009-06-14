@@ -89,22 +89,11 @@ class rtIniAsCommandLineArgs
         if ($parts[0] === $string) {
             return false;
         }
-
-        //test for ==, which is allowed
-        if (strncmp($parts[1], '=', 1) === 0) {
-            return true;
-        }
-
-        //test for a=b=c
-        if (strstr($parts[1], '=') == false) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     /**
-     * Removes spaces from ini settings, "a  =  b" is retirned as "a=b"
+     * Removes spaces from ini settings, "a  =  b" is returned as "a=b"
      *
      * @param string - ini setting
      * @return string - ini setting with any spaces removed
