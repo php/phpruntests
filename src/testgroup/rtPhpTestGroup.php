@@ -45,7 +45,6 @@ class rtPhpTestGroup
             //The test name is the full path to the test file name without the .phpt
 
             $testStatus = new rtTestStatus($testFile->getTestName());
-             echo $testFile->getTestName() . "\n";
             
             if ($testFile->arePreconditionsMet() ) {
                 // Create a new test case
