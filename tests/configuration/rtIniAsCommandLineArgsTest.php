@@ -63,5 +63,15 @@ class rtIniAsCommandLineArgsTest extends PHPUnit_Framework_TestCase
         $iniSet->setBase();
         $addStr = $iniSet->settingsToArguments(array('af=be=blah'), $iniSet->getBasePhpDArgs());
     }
+    
+    public function testValidDoubleEquals()
+    {
+        $iniSet = new rtIniAsCommandLineArgs();
+        $iniSet->setBase();
+        $addStr = $iniSet->settingsToArguments(array('af=='), $iniSet->getBasePhpDArgs());
+        $last3= addslashes(substr($addStr, -3));
+
+        $this->assertEquals('==\"', $last3);
+    }
 }
 ?>

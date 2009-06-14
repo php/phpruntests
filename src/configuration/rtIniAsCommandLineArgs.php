@@ -90,9 +90,9 @@ class rtIniAsCommandLineArgs
             return false;
         }
 
-        //test for ==
+        //test for ==, which is allowed
         if (strncmp($parts[1], '=', 1) === 0) {
-            return false;
+            return true;
         }
 
         //test for a=b=c
