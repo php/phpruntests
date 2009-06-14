@@ -39,4 +39,4 @@ array(1) {
     int(15)
   }
 }
-string(15) "abcdef123456789"
+string(%d) "abcdef123456789"
