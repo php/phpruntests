@@ -25,10 +25,11 @@ function logg($msg) {
 
 $argc = sizeof($argv);
 
-if ($argc == 2 || $argc == 3) {
+if ($argc >= 2 || $argc <= 3) {
 	
 	$src = $argv[1];
 	$count = isset($argv[2]) ? $argv[2] : NULL;
+	
 } else {
 	
 	die("USAGE: php run.php example processCount\n");
@@ -46,7 +47,7 @@ if (!file_exists($src)) {
 
 include $src;
 
-$taskList = createTaskList();
+$taskList = createTaskList($count);
 
 
 // init scheduler
@@ -60,6 +61,8 @@ $c->printStatistic();
 // var_dump($c->getTaskList());
 
 $c->printFailedTasks();
+
+$c->printMemStatistic(10);
 
 exit(0);
 

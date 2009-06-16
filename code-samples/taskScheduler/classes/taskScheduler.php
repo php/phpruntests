@@ -9,14 +9,15 @@ class taskScheduler
 	const MSG_QUEUE_SIZE = 1024;	// max-size of a single message
 	const KILL_CHILD = 'killBill';	// kill-signal to terminate a child
 
-	private $taskList = array();
-	private $processCount = NULL;
-	private $inputQueue = NULL;
-	private $pidStore = array(); 
-	private $time = 0;
-	private $countPass = 0;
-	private $countFail = 0;
-	private $groupTasks = false;
+	private $taskList = array();	// the list of the tasks to be executed
+	private $processCount = NULL;	// the number of processes
+	private $inputQueue = NULL;		// the input-queue (only used by the sender)
+	private $pidStore = array(); 	// stores the pids of all child-processes
+	private $time = 0;				// the needed time
+	private $countPass = 0;			// counts the passed tasks
+	private $countFail = 0;			// counts the failed tasks
+	private $groupTasks = false;	// are the tasks stored in groups?
+	private	$memStore = array();	// stores the mem-usage after an incomming task
 	
 	
 	/**
@@ -252,6 +253,8 @@ class taskScheduler
 		}
 
 		for ($i=0; $i<$limit; $i++) {
+			
+			$this->memStore[] = memory_get_usage(true);
 		
 			if (msg_receive($resultQueue, 0, $type, self::MSG_QUEUE_SIZE, $task, true, NULL, $error)) {
 
@@ -273,6 +276,8 @@ class taskScheduler
 					$this->taskList[$index] = $task;
 					logg("RECEIVER store task $index");
 				}
+				
+				
 			}
 			else logg("RECEIVER ERROR $error");
 		}
@@ -352,7 +357,7 @@ class taskScheduler
 	/**
 	 * the child is listening to the input-queue and executes the incomming
 	 * tasks. afterwards it setts the task-state and sends it back to the
-	 * receiver by the result-queue.
+	 * receiver via the result-queue.
 	 * after receiving the kill-signal from the receiver it terminates itself. 
 	 * 
 	 * @param  int	$cid	the child-id (default=NULL)
@@ -426,6 +431,7 @@ class taskScheduler
 			print "Tasks:\t\t".$count."\n";
 
 		} else {
+			
 			$count = sizeof($this->taskList);
 			print "Tasks:\t\t".$count."\n";
 		}
@@ -437,8 +443,12 @@ class taskScheduler
 		
 		if ($this->processCount > 0) {
 			print "AVG sec/task:\t".round($this->time/$this->processCount,5)."\n";
+			print "Memory-MAX:\t".number_format(max($this->memStore))."\n";
+			print "Memory-MIN:\t".number_format(min($this->memStore))."\n";
+			$avg = array_sum($this->memStore)/sizeof($this->memStore);
+			print "Memory-AVG:\t".number_format($avg)."\n";
 		}
-		
+
 		print "----------------------------------------\n";
 		flush();
 	}
@@ -468,6 +478,30 @@ class taskScheduler
 			print "----------------------------------------\n";
 			flush();
 		}
+	}
+	
+	
+	
+	public function printMemStatistic($int=10)
+	{
+		print "MEMORY-USAGE";
+		print "\n----------------------------------------\n";
+		
+		$int = ceil(sizeof($this->memStore)/$int);
+		
+		$title = "TASK:\t";
+		$body = "kB:\t";
+		
+		for ($i=0; $i<sizeof($this->memStore); $i+=$int) {
+			
+			$title .= "$i\t";
+			$body .= round($this->memStore[$i]/1000)."\t";
+		}
+		
+		print $title."\n".$body;
+		
+		print "\n----------------------------------------\n";
+		flush();		
 	}
 	
 }
