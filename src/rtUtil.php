@@ -3,7 +3,7 @@
  * rtUtil
  *
  * Static utility methods
- * 
+ *
  * @category  Testing
  * @package   RUNTESTS
  * @author    Zoe Slattery <zoe@php.net>
@@ -17,11 +17,7 @@ class rtUtil
     public static function getTestList($aDirectory)
     {
         $result = array();
-
-        foreach (new rtPhptFilterIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($aDirectory))) as $item) {
-            $result[] = $item->getPathname();
-        }
-
+        $result = glob($aDirectory. "/*.phpt");      
         return $result;
     }
 
@@ -35,13 +31,22 @@ class rtUtil
      */
     public static function getDirectoryList($aDirectory)
     {
-        $result = array();
-
-        foreach (new rtPhptFilterIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($aDirectory))) as $directory) {
-            $result[] = $directory->getPath() . "/";
+        $subDirectories = array();
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($aDirectory)) as $directory) {
+            $subDirectories[] = $directory->getPath() . "/";
         }
-
-        return array_unique($result);
+        
+        $subDirectoriesUnique = array_unique($subDirectories);
+        
+        $phptDirectories = array();
+        
+        foreach ($subDirectoriesUnique as $subDir) {
+            if(count(self::getTestList($subDir)) > 0) {
+                $phptDirectories[] = $subDir;
+            }
+        }
+        
+        return $phptDirectories;
     }
 }
 ?>
