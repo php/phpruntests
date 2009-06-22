@@ -17,7 +17,7 @@ class rtUtil
     public static function getTestList($aDirectory)
     {
         $result = array();
-        $result = glob($aDirectory. "/*.phpt");      
+        $result = glob($aDirectory. "/*.phpt");
         return $result;
     }
 
@@ -35,48 +35,77 @@ class rtUtil
         foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($aDirectory)) as $directory) {
             $subDirectories[] = $directory->getPath() . "/";
         }
-        
+
         $subDirectoriesUnique = array_unique($subDirectories);
-        
+
         $phptDirectories = array();
-        
+
         foreach ($subDirectoriesUnique as $subDir) {
             if(count(self::getTestList($subDir)) > 0) {
                 $phptDirectories[] = $subDir;
             }
         }
-        
+
         return $phptDirectories;
     }
-    
-    
-	/**
-	 * just a test 
-	 *
+
+
+    /**
+     * just a test
+     *
      * @param $path
      * @return array
-	 */
-	public static function parseDir($path) {
-	
-		$list = array();
-	
-		if (sizeof(glob($path."/*.phpt")) > 0) {
-	
-			$list[] = $path.'/';
-		}
-	
-		foreach (scandir($path) as $file) { 
-	
-			if (substr($file, 0, 1) != '.' && $file != 'CVS') {
-	
-				if (is_dir($path.'/'.$file)) {
-	
-					$list = array_merge($list, rtUtil::parseDir($path.'/'.$file));
-				}
-			}
-		}
-		
-		return $list;
-	}
+     */
+    public static function parseDir($path) {
+
+        $list = array();
+
+        if (sizeof(glob($path."/*.phpt")) > 0) {
+
+            $list[] = $path.'/';
+        }
+
+        foreach (scandir($path) as $file) {
+
+            if (substr($file, 0, 1) != '.' && $file != 'CVS') {
+
+                if (is_dir($path.'/'.$file)) {
+
+                    $list = array_merge($list, rtUtil::parseDir($path.'/'.$file));
+                }
+            }
+        }
+
+        return $list;
+    }
+    
+    /**
+     * This is the original version of getDirectoryList which uses PhptFilterIterator
+     */
+    public static function getTestListOld($aDirectory)
+    {
+        $result = array();
+
+        foreach (new rtPhptFilterIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($aDirectory))) as $item) {
+            $result[] = $item->getPathname();
+        }
+
+        return $result;
+    }
+
+    /**
+     * This is the original version of getDirectoryList which uses PhptFilterIterator
+     */
+    public static function getDirectoryListOld($aDirectory)
+    {
+        $result = array();
+
+        foreach (new rtPhptFilterIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($aDirectory))) as $directory) {
+            $result[] = $directory->getPath() . "/";
+        }
+
+        return array_unique($result);
+    }
+
 }
 ?>
