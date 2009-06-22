@@ -48,5 +48,35 @@ class rtUtil
         
         return $phptDirectories;
     }
+    
+    
+	/**
+	 * just a test 
+	 *
+     * @param $path
+     * @return array
+	 */
+	public static function parseDir($path) {
+	
+		$list = array();
+	
+		if (sizeof(glob($path."/*.phpt")) > 0) {
+	
+			$list[] = $path.'/';
+		}
+	
+		foreach (scandir($path) as $file) { 
+	
+			if (substr($file, 0, 1) != '.' && $file != 'CVS') {
+	
+				if (is_dir($path.'/'.$file)) {
+	
+					$list = array_merge($list, rtUtil::parseDir($path.'/'.$file));
+				}
+			}
+		}
+		
+		return $list;
+	}
 }
 ?>
