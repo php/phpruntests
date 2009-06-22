@@ -50,35 +50,37 @@ class rtUtil
     }
 
 
-    /**
-     * just a test
-     *
+	/**
+	 * returns a list of directories containing a phpt-file
+	 *
      * @param $path
      * @return array
-     */
-    public static function parseDir($path) {
+	 */
+	public static function parseDir($path)
+	{
+		$list = array();
+		$found = false;
 
-        $list = array();
+		foreach (scandir($path) as $file) { 
+	
+			if (substr($file, 0, 1) != '.' && $file != 'CVS') {
+	
+				if (is_dir($path.'/'.$file)) {
+	
+					$list = array_merge($list, rtUtil::parseDir($path.'/'.$file));
 
-        if (sizeof(glob($path."/*.phpt")) > 0) {
-
-            $list[] = $path.'/';
-        }
-
-        foreach (scandir($path) as $file) {
-
-            if (substr($file, 0, 1) != '.' && $file != 'CVS') {
-
-                if (is_dir($path.'/'.$file)) {
-
-                    $list = array_merge($list, rtUtil::parseDir($path.'/'.$file));
-                }
-            }
-        }
-
-        return $list;
-    }
+				} elseif ($found === false && strpos($file, '.phpt') !== false) {
+						
+					$list[] = $path.'/';
+					$found = true;
+				}
+			} 
+		}
+		
+		return $list;
+	}
     
+	
     /**
      * This is the original version of getDirectoryList which uses PhptFilterIterator
      */
