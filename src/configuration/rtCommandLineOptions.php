@@ -24,8 +24,7 @@ class rtCommandLineOptions
         'q',
         'x',
         'v',
-        'h',
-        'z',  //parallel - run out of obvious letters
+        'h',        
     );
 
     /**
@@ -40,6 +39,7 @@ class rtCommandLineOptions
         'd',
         'p',
         's',
+    	'z',  //parallel - run out of obvious letters
     );
 
     /**

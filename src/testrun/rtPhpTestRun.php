@@ -8,6 +8,7 @@
  * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
+ * @author     Georg Gradwohl <g2@php.net>
  * @copyright  2009 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  *
@@ -39,16 +40,43 @@ class rtPhpTestRun
         if ($runConfiguration->getSetting('TestDirectories') != null) {
 
             foreach ($runConfiguration->getSetting('TestDirectories') as $testDirectory) {
+            	
+            	// make list of subdirectories which contain tests, includes the top level directory
+            	$subDirectories = rtUtil::parseDir($testDirectory);
+            	
+            	// check for the cmd-line-option 'z' which defines parellel-execution
+            	if ($runConfiguration->hasCommandLineOption('z')) {
+            		
+            		$processCount = $runConfiguration->getCommandLineOption('z');
+            		
+            		if (!is_numeric($processCount) || $processCount <= 0) {
+            			$processCount = sizeof($subDirectories);
+            		}
+            		
+            		// create the task-list
+            		$taskList = array();
+	            	foreach ($subDirectories as $subDirectory) {
+	            		$taskList[] = new rtTaskTestGroup(&$runConfiguration, &$subDirectory);
+	                }
 
-                //make list of subdirectories which contain tests, includes the top level directory
-                $subDirectories = rtUtil::getDirectoryList($testDirectory);
-
-                //Run tests in each subdirectory in sequence
-                foreach ($subDirectories as $subDirectory) {
-                    $testGroup = new rtPhpTestGroup($runConfiguration, $subDirectory);
-                    $testGroup->runGroup($runConfiguration);
-                    $testGroup->writeGroup();
-                }
+	                
+	                // start the task-scheduler for multi-processing	
+	                $scheduler = rtTaskScheduler::getInstance();
+	                $scheduler->setTaskList($taskList);
+	                $scheduler->setProcessCount($processCount);
+					$scheduler->run();
+					$scheduler->printStatistic();
+ 
+            	} else {
+            		
+            	    //Run tests in each subdirectory in sequence
+	                foreach ($subDirectories as $subDirectory) {
+	                    $testGroup = new rtPhpTestGroup($runConfiguration, $subDirectory);
+	                    $testGroup->runGroup($runConfiguration);
+	                    // $testGroup->writeGroup();
+	                }
+            		
+            	}
             }
 
             //*have a directory or list of directories to test.

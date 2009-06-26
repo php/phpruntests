@@ -1,6 +1,6 @@
 <?php
 
-class rtEnvironmentException extends RunTimeException
+class rtEnvironmentException extends rtException
 {
 }
 ?>

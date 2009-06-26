@@ -4,6 +4,22 @@
  */
 
 
+
+/**
+ * rtExceptionHandler
+ * 
+ * @param Exception $e
+ * @return unknown_type
+ */
+function rtExceptionHandler(Exception $e) {
+	
+	print $e;
+}
+
+set_exception_handler('rtExceptionHandler');
+
+
+
 /*
  * check the version of the running php-executable and
  * ensure that is 5.3 or higher
@@ -14,7 +30,13 @@ if (version_compare(PHP_VERSION, '5.3.0RC1', '<')) {
 
 require_once dirname(__FILE__) . '/rtAutoload.php';
 
+$s = microtime(true);
+
 $phpTestRun = new rtPhpTestRun($argv);
 $phpTestRun->run();
+
+$e = microtime(true);
+
+print "\n".($e-$s)." sec\n\n";
 
 ?>
