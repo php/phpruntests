@@ -41,7 +41,7 @@ class rtTaskScheduler
     }
     
     
-    public static function getInstance(array $taskList=NULL, $processCount=NUL, $useMsgQ=false)
+    public static function getInstance(array $taskList=NULL, $processCount=NULL, $useMsgQ=false)
     {
     	// TODO: remove this statement and check this by runtime-config
     	if (extension_loaded('pcntl')) {
