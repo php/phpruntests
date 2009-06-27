@@ -73,7 +73,7 @@ class rtPhpTestRun
 	                foreach ($subDirectories as $subDirectory) {
 	                    $testGroup = new rtPhpTestGroup($runConfiguration, $subDirectory);
 	                    $testGroup->runGroup($runConfiguration);
-	                    // $testGroup->writeGroup();
+	                    $testGroup->writeGroup();
 	                }
             		
             	}
