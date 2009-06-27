@@ -151,8 +151,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 		if ($this->groupTasks == true) { 
 
-			$c = 0;
-			
 			foreach ($this->taskList as $key => $list) {
 				
 				for ($i=0; $i<sizeof($list); $i++) {
@@ -165,7 +163,13 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 			for ($i=0; $i<sizeof($this->taskList); $i++) {
 
-				$taskStr[$i%$this->processCount] .= $i.';';
+				$cid = $i%$this->processCount;
+				
+				if (!isset($taskStr[$cid])) {
+					$taskStr[$cid] = '';
+				}
+				
+				$taskStr[$cid] .= $i.';';
 			}
 		}
 

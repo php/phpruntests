@@ -7,10 +7,11 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
 {
 	public function testResult()
     {
-        // create 10 tasks with random numbers
     	$taskList = array();
     	$expected = array();
+    	$results = array();
     	
+    	// create 10 tasks with random numbers
     	for ($i=0; $i<10; $i++) {
     		$n = rand(0,9);
     		$expected[$i] = $n+1;
@@ -24,8 +25,6 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
 		$scheduler->run();
 		
 		// get the results from the manupilated task-list
-		$results = array();
-		
 		foreach ($scheduler->getTaskList() as $task) {
 			$results[] = $task->getNumber();
 		}
@@ -60,6 +59,5 @@ class rtTaskIncTest extends rtTask implements rtTaskInterface
 		return $this->num;
 	}	
 }
-
 
 ?>

@@ -107,24 +107,21 @@ class rtTaskScheduler
 			$task = $this->taskList[$i];
 			
 			if ($task->run() === true) {			
-				$task->setState(task::PASS);
+				$task->setState(rtTask::PASS);
 				$this->countPass++;
 			} else {
-				$task->setState(task::FAIL);
+				$task->setState(rtTask::FAIL);
 				$this->countFail++;
 			}
 			
 			$this->memStore[] = memory_get_usage(true);
-			
-			print ".";
-			flush();
-			
+
 			$this->taskList[$i] = $task;
 		}
 		
 		$error = microtime(true);
 		
-		$this->time = round($error-$s,5);
+		$this->time = round($e-$s,5);
 
 		return;
 	}
