@@ -27,7 +27,7 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	{
 		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory);
 		$testGroup->runGroup($this->runConfiguration);
-		// $testGroup->writeGroup();
+		$testGroup->writeGroup();
 		return true;
 	}
 		
