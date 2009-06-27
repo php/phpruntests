@@ -43,7 +43,7 @@ class rtIfParallelHasPcntlTest extends PHPUnit_Framework_TestCase
      */
     public function testCheckWhenCommandLineOptionIsSet()
     {
-        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-z'));
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-z', '1'));
         
         $this->assertEquals(extension_loaded('pcntl'), $this->preCondition->check($runtestsConfiguration));
     }
