@@ -27,7 +27,12 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	{
 		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory);
 		$testGroup->runGroup($this->runConfiguration);
-		$testGroup->writeGroup();
+		
+		$outType = 'list';
+        if ($this->runConfiguration->hasCommandLineOption('o')) {           		
+            		$outType = $this->runConfiguration->getCommandLineOption('o');
+        } 
+		$testGroup->writeGroup($outType);
 		return true;
 	}
 		

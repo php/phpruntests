@@ -36,6 +36,12 @@ class rtPhpTestRun
 
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
         $preConditionList->check($runConfiguration);
+        
+        //Set the type of output. Defaults to 'list' - comatible with old version
+        $this->outType = 'list';
+        if ($runConfiguration->hasCommandLineOption('o')) {            		
+            		$this->outType = $runConfiguration->getCommandLineOption('o');
+        } 
 
         if ($runConfiguration->getSetting('TestDirectories') != null) {
 
@@ -73,7 +79,7 @@ class rtPhpTestRun
 	                foreach ($subDirectories as $subDirectory) {
 	                    $testGroup = new rtPhpTestGroup($runConfiguration, $subDirectory);
 	                    $testGroup->runGroup($runConfiguration);
-	                    $testGroup->writeGroup();
+	                    $testGroup->writeGroup($this->outType);
 	                }
             		
             	}

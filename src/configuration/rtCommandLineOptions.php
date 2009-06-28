@@ -39,6 +39,7 @@ class rtCommandLineOptions
         'd',
         'p',
         's',
+        'o', //new for output type (list, xml, csv...)
     	'z',  //parallel - run out of obvious letters
     );
 

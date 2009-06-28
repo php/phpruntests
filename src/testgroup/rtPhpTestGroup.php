@@ -70,9 +70,9 @@ class rtPhpTestGroup
         }
     }
 
-    public function writeGroup()
+    public function writeGroup($outType)
     {
-        $testOutputWriter = rtTestOutputWriter::getInstance($this->results, 'list');
+        $testOutputWriter = rtTestOutputWriter::getInstance($this->results, $outType);
         $testOutputWriter->write($this->testDirectory);
     }
 }
