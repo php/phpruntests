@@ -26,7 +26,10 @@ abstract class rtTestOutputWriter
         }
         
         if ($outputType == 'xml') {
-            return new rtTestOutputWriterXML($testresults);
+            return new rtTestOutputWriterXML($testResults);
+        }
+        if ($outputType == 'csv') {
+            return new rtTestOutputWriterCSV($testResults);
         }
     }  
     
