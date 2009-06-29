@@ -17,11 +17,9 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 {
 	const TMP_FILE = 'taskFile';
 	
-	private $inputQueue = NULL;		// the input-queue (only used by the sender)
 	private $pidStore = array(); 	// stores the pids of all child-processes
 	private $groupTasks = false;	// are the tasks stored in groups?
-	
-	private $tmpTaskList = array();
+
 	
 	/**
 	 * the constructor
@@ -59,8 +57,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		$this->taskList = $taskList;
 	}
 
-	
-	
 	/**
 	 * sets the number of child-processes.
 	 * in the case of using a multidimensional task-list this parameter is
@@ -75,7 +71,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$this->processCount = $processCount;
 		}
 	}
-
 
 	
 	/**
@@ -98,8 +93,8 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$this->processCount = sizeof($this->taskList);
 		}
 
+		// distribute the task to the children
 		$this->createTaskFiles();
-		
 
 		// fork the child-processes
 		for ($i=0; $i<$this->processCount; $i++) {
@@ -126,7 +121,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			pcntl_waitpid($this->pidStore[$i], $status);
 		}
 		
-		// ensure that the tmp-files are completly written
+		// ensure that the tmp-files are completely written
 		sleep(1);
 		
 		// collecting the results
@@ -137,8 +132,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 		return;
 	}
-	
-	
+
 	
 	/**
 	 * creates a temporary file for each child which stores the allocated 
@@ -180,8 +174,9 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	}
 
 	
-	
 	/**
+	 * 
+	 * 
 	 * @return void
 	 */
 	private function receiver()
@@ -202,7 +197,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 				}
 
 				$index = $task->getIndex();
-				$task->finish($cid);
+				$task->evaluate($cid);
 				
 				if ($this->groupTasks == true) { 
 					
@@ -219,10 +214,12 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		
 		return;		
 	}
-	
 
 	
 	/**
+	 * executes the assigned tasks and stores the serialized task-object in
+	 * the task-file. 
+	 * 
 	 * @param  int	$cid	the child-id
 	 * @return void
 	 */
@@ -231,24 +228,26 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		$indexList = file_get_contents(self::TMP_FILE.$cid);
 		$indexList = explode(';', $indexList);
 		array_pop($indexList);
-		
-		$response = '';
+
+		file_put_contents(self::TMP_FILE.$cid, '');
 
 		foreach ($indexList as $index) {
 
 			if ($this->groupTasks == true) { 
-				$task = $this->taskList[$cid][$index]; 
+				$task = $this->taskList[$cid][$index];
 			} else {
 				$task = $this->taskList[$index];
 			}
 
 			$task->run();
 			$task->setIndex($index);
-
-			$response .= serialize($task)."[END-TEST-OBJECT]";
+			
+			print "$cid - ".$task->getDir()." - ".round(memory_get_usage()/1024, 2)."\n";
+			flush();
+			
+			$response = serialize($task)."[END-TEST-OBJECT]";
+			file_put_contents(self::TMP_FILE.$cid, $response, FILE_APPEND);
 		}
-		
-		file_put_contents(self::TMP_FILE.$cid, $response);
 
 		exit(0);
 	}

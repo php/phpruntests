@@ -75,5 +75,12 @@ class rtPhpTestGroup
         $testOutputWriter = rtTestOutputWriter::getInstance($this->results, $outType);
         $testOutputWriter->write($this->testDirectory, $cid);
     }
+    
+    
+    public function getResults()
+    {
+    	return $this->results;
+    }
+
 }
 ?>

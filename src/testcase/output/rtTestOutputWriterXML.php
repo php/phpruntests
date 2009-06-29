@@ -52,10 +52,8 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
 
 
     /**
-     *
-     *
+	 *
      * @param array of rtTestResults
-     *
      */
     public function init (array $testResults)
     {
@@ -103,5 +101,6 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
     	
     	return null;
     }
+    
 }
 ?>
