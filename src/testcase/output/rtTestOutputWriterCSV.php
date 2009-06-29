@@ -44,11 +44,16 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
     }
 
 
-    public function write($testDirectory = null)
+    public function write($testDirectory = null, $cid = null)
     {
         sort($this->testOutput);
         foreach ($this->testOutput as $line) {
-            echo $line ."\n";
+            
+        	if (!is_null($cid)) {
+        		echo "$cid - ";
+        	}
+        	
+        	echo $line ."\n";
         }
     }
 }

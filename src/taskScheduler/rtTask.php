@@ -11,6 +11,9 @@ abstract class rtTask
 	private $message = NULL;
 	
 	
+	public function finish() {}
+	
+	
 	public function setState($state)
 	{
 		$this->state = $state;		

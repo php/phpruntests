@@ -21,12 +21,14 @@ abstract class rtTestOutputWriter
     
     public static function getInstance (array $testResults, $outputType)
     {
-        if ($outputType == 'list') {
+    	if ($outputType == 'list') {
             return new rtTestOutputWriterList($testResults);
         }
         
         if ($outputType == 'xml') {
-            return new rtTestOutputWriterXML($testResults);
+            $writer = rtTestOutputWriterXML::getInstance();
+            $writer->setTestResults($testResults);
+            return $writer;
         }
         if ($outputType == 'csv') {
             return new rtTestOutputWriterCSV($testResults);

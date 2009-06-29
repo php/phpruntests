@@ -46,13 +46,18 @@ class rtTestOutputWriterList extends rtTestOutputWriter
     }
 
 
-    public function write($testDirectory = null)
+    public function write($testDirectory = null,  $cid = null)
     {
         if ($testDirectory != null) {
             echo "\n\nTest output for tests in " . $testDirectory . "\n";
         }
         sort($this->testOutput);
         foreach ($this->testOutput as $line) {
+        	
+             if (!is_null($cid)) {
+        		echo "$cid - ";
+        	}
+        	
             echo $line ."\n";
         }
     }

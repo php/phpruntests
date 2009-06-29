@@ -187,22 +187,22 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	private function receiver()
 	{
 		for ($cid=0; $cid<$this->processCount; $cid++) {
-		
+
 			$response = file_get_contents(self::TMP_FILE.$cid);
-			$response = explode("\n", $response);
+			$response = explode("[END-TEST-OBJECT]", $response);
 			array_pop($response);
 
 			foreach ($response as $task) {
 				
 				$task = unserialize($task);
 				
-				if ($task->getState() == rtTask::PASS) {
-					$this->countPass++;
-				} else {
-					$this->countFail++;
+				if ($task === false) {
+					print "ERROR unserialize $cid\n";
+					continue;
 				}
-				
+
 				$index = $task->getIndex();
+				$task->finish($cid);
 				
 				if ($this->groupTasks == true) { 
 					
@@ -213,7 +213,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 					$this->taskList[$index] = $task;
 				}
 			}
-			
+
 			unlink(self::TMP_FILE.$cid);
 		}
 		
@@ -242,16 +242,10 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 				$task = $this->taskList[$index];
 			}
 
-			if ($task->run() === true) {			
-				$task->setState(rtTask::PASS);
-				
-			} else {
-				$task->setState(rtTask::FAIL);
-			}
-			
+			$task->run();
 			$task->setIndex($index);
 
-			$response .= serialize($task)."\n";
+			$response .= serialize($task)."[END-TEST-OBJECT]";
 		}
 		
 		file_put_contents(self::TMP_FILE.$cid, $response);
