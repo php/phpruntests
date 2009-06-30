@@ -121,13 +121,13 @@ class rtPhpTestRun
                     //Read the test file
                     $testFile = new rtPhpTestFile();
                     $testFile->doRead($testName);
-                    $testFile->normaliseLineEndings($testName);
+                    $testFile->normaliseLineEndings();
+                   
                     
                     $testStatus = new rtTestStatus($testFile->getTestName());
                    
 
                     if ($testFile->arePreconditionsMet()) {
-
                         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
                          
                         //Setup and set the local environment for the test case
@@ -137,7 +137,9 @@ class rtPhpTestRun
                         $results->processResults($testCase, $runConfiguration);
 
                     } else {
-                        $results = new rtTestResults(null, $testFile->getExitMessage(), $testFile->getTestName());
+                        $testStatus->setTrue('bork');
+                        $testStatus->setMessage('bork', $testFile->getExitMessage());
+                        $results = new rtTestResults(null, $testStatus);
                     }
 
                     $testOutputWriter = rtTestOutputWriter::getInstance(array($results), 'list');
