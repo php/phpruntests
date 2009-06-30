@@ -3,7 +3,7 @@
  * rtTestOutputWriterCSV
  *
  * Write minimal testoutput and status a CSV
- * 
+ *
  * @category   Testing
  * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
@@ -11,7 +11,7 @@
  * @copyright  2009 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @link       http://qa.php.net/
- * 
+ *
  */
 class rtTestOutputWriterCSV extends rtTestOutputWriter
 {
@@ -36,7 +36,7 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
             foreach($testStatus->getTestStateNames() as $name) {
                 if($testStatus->getValue($name)) {
                     $outputString .= " , ". strtoupper($name);
-                    
+
                 }
             }
             $this->testOutput[] = $outputString;
@@ -47,13 +47,15 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
     public function write($testDirectory = null, $cid = null)
     {
         sort($this->testOutput);
-        foreach ($this->testOutput as $line) {
-            
-        	if (!is_null($cid)) {
-        		echo "$cid - ";
-        	}
-        	
-        	echo $line ."\n";
+        foreach ($this->testOutput as $line) {        
+             
+            echo $line;
+             
+            if (!is_null($cid)) {
+                echo ", $cid \n";
+            } else {
+                echo "\n";
+            }
         }
     }
 }
