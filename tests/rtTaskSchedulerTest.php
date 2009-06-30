@@ -57,7 +57,10 @@ class rtTaskIncTest extends rtTask implements rtTaskInterface
 	public function getNumber()
 	{
 		return $this->num;
-	}	
+	}
+	
+	// temp - remove this function
+	public function getDir() {}
 }
 
 ?>

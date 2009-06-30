@@ -62,9 +62,8 @@ class rtPhpTestRun
             		// create the task-list
             		$taskList = array();
 	            	foreach ($subDirectories as $subDirectory) {
-	            		$taskList[] = new rtTaskTestGroup($runConfiguration, $subDirectory);
+	            		$taskList[] = new rtTaskTestGroup($runConfiguration, $subDirectory, $this->outType);
 	                }
-
 	                
 	                // start the task-scheduler for multi-processing	
 	                $scheduler = rtTaskScheduler::getInstance();

@@ -15,13 +15,15 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 {
 	private $runConfiguration;
 	private $subDirectory;
+	private $outType;
 	private $results;
 
 	
-	public function __construct($runConfiguration, $subDirectory)
+	public function __construct($runConfiguration, $subDirectory, $outType='list')
 	{
 		$this->runConfiguration = $runConfiguration;
 		$this->subDirectory = $subDirectory;
+		$this->outType = $outType;
 	}
 	
 	
@@ -46,12 +48,7 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	 */
 	public function evaluate($cid=null)
 	{
-		$outType = 'list';
-        if ($this->runConfiguration->hasCommandLineOption('o')) {           		
-        	$outType = $this->runConfiguration->getCommandLineOption('o');
-        } 
-
-    	$testOutputWriter = rtTestOutputWriter::getInstance($this->results, $outType);
+    	$testOutputWriter = rtTestOutputWriter::getInstance($this->results, $this->outType);
         $testOutputWriter->write($this->subDirectory, $cid);
 	}
 	

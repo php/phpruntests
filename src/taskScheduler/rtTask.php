@@ -11,7 +11,7 @@ abstract class rtTask
 	private $message = NULL;
 	
 	
-	public function finish() {}
+	public function evaluate() {}
 	
 	
 	public function setState($state)
