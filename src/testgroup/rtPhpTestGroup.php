@@ -25,12 +25,12 @@ class rtPhpTestGroup
     }
 
     public function init(rtRuntestsConfiguration $runConfiguration)
-    {
+    {      
         $this->testFiles = rtUtil::getTestList($this->testDirectory);
 
         foreach ($this->testFiles as $testFileName) {
        
-            //testFiles is a list of file namnes relative to the current working directory
+            //testFiles is a list of file names relative to the current working directory
 
             if (!file_exists($testFileName)) {
                 echo rtText::get('invalidTestFileName', array($testFileName));
@@ -60,6 +60,9 @@ class rtPhpTestGroup
 
     public function runGroup(rtRuntestsConfiguration $runConfiguration)
     {
+        if (count($this->testCases) == 0) {
+            return;
+        }
         foreach ($this->testCases as $testCase) {
 
             $testCase->executeTest($runConfiguration);
