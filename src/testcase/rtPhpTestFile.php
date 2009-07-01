@@ -48,7 +48,7 @@ class rtPhpTestFile
             for ($i=0; $i<count($this->testContents); $i++) {
                 //This is not nice but there are a huge number of tests with random spacs at the end of the section header
                 //and empty sections.
-                if (preg_match("/--([A-Z]+(_[A-Z]+|))--/", $this->testContents[$i], $matches)) {
+                if (preg_match("/^\s*--([A-Z]+(_[A-Z]+|))--/", $this->testContents[$i], $matches)) {
                     //look ahead to next section unless this is the last test section. 
                     //if the EXPECT section is empty (missing) it will be caught by preconditions.
                     //If the next line is also a section heading than skip adding it to the test case or headings.
@@ -63,6 +63,7 @@ class rtPhpTestFile
                 }
             }
             $this->testContents = $tempArray;
+           
         }
 
         public function arePreConditionsMet()
