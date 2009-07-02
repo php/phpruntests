@@ -32,7 +32,7 @@ class rtPhpTestRun
         $runConfiguration->configure();
         
         //Check help message
-        if($runConfiguration->hasCommandLineOption('help')) {
+        if($runConfiguration->hasCommandLineOption('help') || $runConfiguration->hasCommandLineOption('h')) {
             echo rtText::get('help');
             exit;
         }
