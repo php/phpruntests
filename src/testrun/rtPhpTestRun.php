@@ -30,6 +30,12 @@ class rtPhpTestRun
         $runConfiguration = rtRuntestsConfiguration::getInstance($this->commandLineArguments);
         $runConfiguration->getUserEnvironment();
         $runConfiguration->configure();
+        
+        //Check help message
+        if($runConfiguration->hasCommandLineOption('help')) {
+            echo rtText::get('help');
+            exit;
+        }
 
         //Check the preconditions
         $preConditionList = rtPreConditionList::getInstance();
