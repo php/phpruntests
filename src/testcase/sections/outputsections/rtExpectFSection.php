@@ -1,7 +1,7 @@
 <?php
 /**
  * rtExpectFSection
- * 
+ *
  * Class for handling EXPECTF sections
  *
  * @category  Testing
@@ -25,8 +25,8 @@ class rtExpectFSection extends rtOutputSection
      *
      */
     protected function createPattern()
-    {  
-       
+    {
+         
         $this->expectedPattern = $this->expectfEmbeddedRegex($this->expectedPattern);
         $this->expectedPattern = $this->expectfUnicodeSubstitutions ($this->expectedPattern);
         $this->expectedPattern = $this->expectfRegexSubstitutions($this->expectedPattern);
@@ -56,6 +56,14 @@ class rtExpectFSection extends rtOutputSection
         $string
         );
 
+        $string = str_replace(
+        array('%binary_string_optional%'),
+        version_compare(PHP_VERSION, '6.0.0-dev') == -1 ? 'string' : 'binary string',
+        $string
+        );
+
+
+
         return $string;
     }
 
@@ -80,9 +88,9 @@ class rtExpectFSection extends rtOutputSection
 
         return $string;
     }
-    
+
     /*
-     * Deal with embedded regular expressions between %r tags. 
+     * Deal with embedded regular expressions between %r tags.
      * @param string
      * @return string
      */
@@ -90,7 +98,7 @@ class rtExpectFSection extends rtOutputSection
         $temp = "";
         $r = "%r";
         $startOffset = 0;
-        
+
         $length = strlen($string);
         while($startOffset < $length) {
             $start = strpos($string, $r, $startOffset);
