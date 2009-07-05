@@ -26,7 +26,7 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
         $testFile->doRead($this->sample_test);
         $testFile->normaliseLineEndings();
         $fileArray = $testFile->getContents();
-        $this->assertEquals('TEST', $fileArray[0]);
+        $this->assertEquals('--TEST--', $fileArray[0]);
 
         $this->assertEquals($this->path_to_tests."/sample_test", $testFile->getTestName());
     }

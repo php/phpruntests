@@ -40,30 +40,44 @@ class rtPhpTest
      */
     public function parse()
     {
-        for ($i=0; $i<count($this->contents); $i++) {
-            //Create an array of section objects
-            if ($this->isSectionKey($this->contents[$i])) {
-                $sectionKey = $this->contents[$i];
+        $lastSection = end($this->sectionHeadings);
 
-                $tempArray = array();
-                for ($j=$i+1; $j<count($this->contents); $j++) {
-                     
-                    if ($this->isSectionKey($this->contents[$j]) || stripos($this->contents[$j], "===done===") !== false) {
-                        if(stripos($this->contents[$j], "===done===") !== false) {
-                            $tempArray[] = trim($this->contents[$j]);
+        foreach($this->sectionHeadings as $keyNumber => $sectionKey) {
+            if($keyNumber < count($this->sectionHeadings) - 1) {
+                $nextKey = $this->sectionHeadings[$keyNumber + 1];
+            }
+            $tempArray=array();
+            foreach($this->contents as $lineNumber => $line) {
+                if($line == "--".$sectionKey."--") {
+                //Found the beginning of the section
+                
+                    for($contentsLine=$lineNumber + 1; $contentsLine<count($this->contents); $contentsLine ++) {
+                         
+                        if( ($this->contents[$contentsLine] == "--".$nextKey."--") || ($contentsLine == count($this->contents))) {
+                        //Found the end of the section OR the end of the test
+                            $lineNumber --;
+                            $sectionContents = array();
+                            foreach($tempArray as $line) {
+                            //Check for a ===DONE== 
+                                $sectionContents[] = $line;
+                                if(stripos($line, "===done===") !== false) {
+                                    break;
+                                }
+                            }
+                            $testSection = rtSection::getInstance($sectionKey, $sectionContents);
+                            $this->sections[$sectionKey] = $testSection;
+                            break;
+                        } else {
+                            $tempArray[] = $this->contents[$contentsLine];
                         }
-                        $testSection = rtSection::getInstance($sectionKey, $tempArray);
-                        $this->sections[$sectionKey] = $testSection;
-                        break;
                     }
-                    $tempArray[] = $this->contents[$j];
                 }
             }
         }
+         
+        $testSection = rtSection::getInstance($lastSection, $tempArray);
+        $this->sections[$lastSection] = $testSection;
 
-        $testSection = rtSection::getInstance($sectionKey, $tempArray);
-        $this->sections[$sectionKey] = $testSection;
-        
 
         //Identify the file and expect section types
         $this->fileSection = $this->setFileSection();
@@ -71,23 +85,23 @@ class rtPhpTest
 
         $this->fileSection->setExecutableFileName($this->getName());
     }
-    
+
 
     /**
      * Initialises the configuration for this test. Uses the configuration sections from teh test case
-     * 
+     *
      * @param rtRunTEstsConfiuration $runConfiguration
-     * 
+     *
      */
     public function init(rtRuntestsConfiguration $runConfiguration)
     {
         $this->testConfiguration = new rtTestConfiguration($runConfiguration, $this->sections, $this->sectionHeadings, $this->fileSection);
     }
-    
+
 
     /**
      * Executes the test case
-     * 
+     *
      * @param rtRunTEstsConfiuration $runConfiguration
      */
     public function executeTest(rtRuntestsConfiguration $runConfiguration)
@@ -119,7 +133,7 @@ class rtPhpTest
 
     /**
      * Test the output against the expect section
-     * 
+     *
      */
     public function compareOutput()
     {
@@ -132,10 +146,10 @@ class rtPhpTest
         }
     }
 
-    
+
     /**
      * Test the expected headers against actual headers. Only relevant for CGI tests.
-     * 
+     *
      */
     public function compareHeaders()
     {
@@ -148,10 +162,10 @@ class rtPhpTest
         }
     }
 
-    
+
     /**
      * Identify a section heading
-     * 
+     *
      */
     private function isSectionKey($line)
     {
@@ -180,7 +194,7 @@ class rtPhpTest
         }
     }
 
-    
+
     /**
      * Sets the test's expect section
      */
@@ -223,9 +237,9 @@ class rtPhpTest
     {
         return $this->sections[$sectionKey];
     }
-    
+
     /*
-     * Return the object containing all test status 
+     * Return the object containing all test status
      */
     public function getStatus()
     {

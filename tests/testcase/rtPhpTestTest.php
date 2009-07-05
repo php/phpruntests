@@ -9,15 +9,15 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
     {
         $this->php = trim(shell_exec("which php"));
         $this->testCase = array (
-                            'TEST', 
+                            '--TEST--', 
                             'This is a test',
-                            'FILE',
+                            '--FILE--',
                             '<?php',
                             ' echo "hello world"; ',
                             '?>',
                             '===Done===',
                             'blah blah blah',
-                            'EXPECTF',
+                            '--EXPECTF--',
                             'hello world',
         );
     }

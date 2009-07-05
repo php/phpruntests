@@ -55,7 +55,7 @@ class rtPhpTestFile
                     if($i< count($this->testContents) - 1) {
                         if (!preg_match("/--([A-Z]+(_[A-Z]+|))--/", $this->testContents[$i+1])) {
                             $this->sectionHeadings[] = $matches[1];
-                            $tempArray[] = $matches[1];
+                            $tempArray[] = "--".$matches[1]."--";
                         }
                     }
                 } else {
