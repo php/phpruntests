@@ -41,35 +41,35 @@ class rtPhpTest
     public function parse()
     {
         $lastSection = end($this->sectionHeadings);
+        $start=0;
 
         foreach($this->sectionHeadings as $keyNumber => $sectionKey) {
+
             if($keyNumber < count($this->sectionHeadings) - 1) {
                 $nextKey = $this->sectionHeadings[$keyNumber + 1];
             }
+
             $tempArray=array();
-            foreach($this->contents as $lineNumber => $line) {
-                if($line == "--".$sectionKey."--") {
+            for($index=$start; $index<count($this->contents); $index++)
+            if($this->contents[$index] == "--".$sectionKey."--") {
                 //Found the beginning of the section
-                
-                    for($contentsLine=$lineNumber + 1; $contentsLine<count($this->contents); $contentsLine ++) {
-                         
-                        if( ($this->contents[$contentsLine] == "--".$nextKey."--") || ($contentsLine == count($this->contents))) {
+
+                for($contentsLine=$index + 1; $contentsLine<count($this->contents); $contentsLine ++) {
+                     
+                    if( ($this->contents[$contentsLine] == "--".$nextKey."--") || ($contentsLine == count($this->contents))) {
                         //Found the end of the section OR the end of the test
-                            $lineNumber --;
-                            $sectionContents = array();
-                            foreach($tempArray as $line) {
-                            //Check for a ===DONE== 
-                                $sectionContents[] = $line;
-                                if(stripos($line, "===done===") !== false) {
-                                    break;
-                                }
-                            }
-                            $testSection = rtSection::getInstance($sectionKey, $sectionContents);
-                            $this->sections[$sectionKey] = $testSection;
-                            break;
-                        } else {
-                            $tempArray[] = $this->contents[$contentsLine];
+                        $start = $contentsLine - 1;
+                        if($this->isFileSection($sectionKey)) {
+                            $tempArray = $this->removeDone($tempArray);
                         }
+
+                        if(count($tempArray) > 0) {
+                            $testSection = rtSection::getInstance($sectionKey, $tempArray);
+                            $this->sections[$sectionKey] = $testSection;
+                        }
+                        break;
+                    } else {
+                        $tempArray[] = $this->contents[$contentsLine];
                     }
                 }
             }
@@ -84,6 +84,7 @@ class rtPhpTest
         $this->expectSection = $this->setExpectSection();
 
         $this->fileSection->setExecutableFileName($this->getName());
+
     }
 
 
@@ -164,15 +165,30 @@ class rtPhpTest
 
 
     /**
-     * Identify a section heading
+     * Identify a FILE section
      *
      */
-    private function isSectionKey($line)
+    private function isFileSection($key)
     {
-        if (in_array($line, $this->sectionHeadings)) {
+        if (strpos($key, "FILE") !== false) {
             return true;
         }
         return false;
+    }
+
+
+    /*
+     * Strip the lines after ===DONE=== from the file section of a test
+     */
+    private function removeDone($array) {
+        $result = array();
+        foreach($array as $line) {
+            $result[] = $line;
+            if(stripos($line, "===done===") !== false) {
+                break;
+            }
+        }
+        return $result;
     }
 
 
