@@ -20,22 +20,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	private $pidStore = array(); 	// stores the pids of all child-processes
 	private $groupTasks = false;	// are the tasks stored in groups?
 
-	
-	/**
-	 * the constructor
-	 * 
-	 * @param array $taskList		(optional)
-	 * @param int	$processCount	(optional)
-	 */
-    public function __construct(array $taskList=NULL, $processCount=NULL)
-	{
-		if (is_array($taskList)) {
-			$this->setTaskList($taskList);
-		}
-		
-		$this->setProcessCount($processCount);
-    }
-
     
     /**
      * sets the task-list which has to be an array of task-objects.
@@ -94,7 +78,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		}
 
 		// distribute the task to the children
-		$this->createTaskFiles();
+		$this->distributeTasks();
 
 		// fork the child-processes
 		for ($i=0; $i<$this->processCount; $i++) {
@@ -135,21 +119,19 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 	
 	/**
-	 * creates a temporary file for each child which stores the allocated 
-	 * array-indices.
+	 * creates a temporary file for each child which stores serialized task-objects
 	 * 
 	 */
-	private function createTaskFiles() {
-
-		$taskStr = array();
+	private function distributeTasks() {
 
 		if ($this->groupTasks == true) { 
 
-			foreach ($this->taskList as $key => $list) {
+			foreach ($this->taskList as $cid => $list) {
 				
 				for ($i=0; $i<sizeof($list); $i++) {
 
-					$taskStr[$key] .= $i.';';
+					$str = serialize($list[$i])."[END]";
+					file_put_contents(self::TMP_FILE.$cid, $str, FILE_APPEND);
 				}
 			}
 			 
@@ -158,18 +140,9 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			for ($i=0; $i<sizeof($this->taskList); $i++) {
 
 				$cid = $i%$this->processCount;
-				
-				if (!isset($taskStr[$cid])) {
-					$taskStr[$cid] = '';
-				}
-				
-				$taskStr[$cid] .= $i.';';
+				$str = serialize($this->taskList[$i])."[END]";
+				file_put_contents(self::TMP_FILE.$cid, $str, FILE_APPEND);
 			}
-		}
-
-		for ($i=0; $i<$this->processCount; $i++) {
-						
-			file_put_contents(self::TMP_FILE.$i, $taskStr[$i]);
 		}
 	}
 
@@ -184,35 +157,23 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		for ($cid=0; $cid<$this->processCount; $cid++) {
 
 			$response = file_get_contents(self::TMP_FILE.$cid);
-			$response = explode("[END-TEST-OBJECT]", $response);
+			$response = explode("[END]", $response);
 			array_pop($response);
 
-			foreach ($response as $task) {
+			foreach ($response as $resultList) {
 				
-				$task = unserialize($task);
+				$resultList = unserialize($resultList);
 				
-				if ($task === false) {
-					print "ERROR unserialize $cid\n";
+				if ($resultList === false) {
+					print "ERROR unserialize - receiver $cid\n";
 					continue;
 				}
-
-				$index = $task->getIndex();
-				$task->evaluate($cid);
 				
-				if ($this->groupTasks == true) { 
-					
-					$this->taskList[$cid][$index] = $task;	
-				
-				} else {
-					
-					$this->taskList[$index] = $task;
-				}
+				$this->resultList = array_merge($this->resultList, $resultList);
 			}
 
 			unlink(self::TMP_FILE.$cid);
 		}
-		
-		return;		
 	}
 
 	
@@ -225,27 +186,27 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	 */
 	private function child($cid)
 	{
-		$indexList = file_get_contents(self::TMP_FILE.$cid);
-		$indexList = explode(';', $indexList);
-		array_pop($indexList);
+		$taskList = file_get_contents(self::TMP_FILE.$cid);
+		$taskList = explode('[END]', $taskList);
+		array_pop($taskList);
 
 		file_put_contents(self::TMP_FILE.$cid, '');
 
-		foreach ($indexList as $index) {
+		foreach ($taskList as $task) {
 
-			if ($this->groupTasks == true) { 
-				$task = $this->taskList[$cid][$index];
-			} else {
-				$task = $this->taskList[$index];
+			$task = unserialize($task);
+			
+			if ($task === false) {
+				print "ERROR unserialize - cid $cid\n";
+				continue;
 			}
 
 			$task->run();
-			$task->setIndex($index);
+			$results = $task->getResult();
 			
-			print "$cid - ".$task->getDir()." - ".round(memory_get_usage()/1024, 2)."\n";
-			flush();
+			rtTestOutputWriter::flushResult($results, $this->reportStatus, $cid);
 			
-			$response = serialize($task)."[END-TEST-OBJECT]";
+			$response = serialize($results)."[END]";
 			file_put_contents(self::TMP_FILE.$cid, $response, FILE_APPEND);
 		}
 

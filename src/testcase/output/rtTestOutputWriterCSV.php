@@ -8,6 +8,7 @@
  * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
  * @author     Stefan Priebsch <spriebsch@php.net>
+ * @author     Georg Gradwohl <g2@php.net>
  * @copyright  2009 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @link       http://qa.php.net/
@@ -15,22 +16,16 @@
  */
 class rtTestOutputWriterCSV extends rtTestOutputWriter
 {
-    protected $testOutput = array();
 
-    public function __construct(array $testResults)
+    public function __construct()
     {
-        $this->init($testResults);
+        $this->type = 'csv';
     }
 
-    /**
-     *
-     *
-     * @param array of rtTestResults
-     *
-     */
-    public function init (array $testResults)
+
+    public function createOutput()
     {
-        foreach ($testResults as $testResult) {
+        foreach ($this->resultList as $testResult) {
             $outputString = $testResult->getName();
             $testStatus = $testResult->getStatus();
             foreach($testStatus->getTestStateNames() as $name) {
@@ -39,24 +34,9 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
 
                 }
             }
-            $this->testOutput[] = $outputString;
+            $this->output .= $outputString."\n";
         }
     }
 
-
-    public function write($testDirectory = null, $cid = null)
-    {
-        sort($this->testOutput);
-        foreach ($this->testOutput as $line) {        
-             
-            echo $line;
-             
-            if (!is_null($cid)) {
-                echo ", $cid \n";
-            } else {
-                echo "\n";
-            }
-        }
-    }
 }
 ?>

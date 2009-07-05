@@ -43,73 +43,66 @@ class rtPhpTestRun
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
         $preConditionList->check($runConfiguration);
         
-        //Set the type of output. Defaults to 'list' - comatible with old version
-        $this->outType = 'list';
-        if ($runConfiguration->hasCommandLineOption('o')) {            		
-            		$this->outType = $runConfiguration->getCommandLineOption('o');
-        } 
 
         if ($runConfiguration->getSetting('TestDirectories') != null) {
 
+        	// make a list of subdirectories which contain tests, includes the top level directory
+        	$subDirectories = array();
             foreach ($runConfiguration->getSetting('TestDirectories') as $testDirectory) {
+            	$subDirectories = array_merge($subDirectories, rtUtil::parseDir($testDirectory));
+            }
+            
+            // check for the cmd-line-option 'z' which defines parellel-execution
+            $processCount = 0;
+            if ($runConfiguration->hasCommandLineOption('z')) {
             	
-            	// make list of subdirectories which contain tests, includes the top level directory
-            	$subDirectories = rtUtil::parseDir($testDirectory);
+            	$processCount = $runConfiguration->getCommandLineOption('z');
             	
-            	// check for the cmd-line-option 'z' which defines parellel-execution
-            	if ($runConfiguration->hasCommandLineOption('z')) {
-            		
-            		$processCount = $runConfiguration->getCommandLineOption('z');
-            		
-            		if (!is_numeric($processCount) || $processCount <= 0) {
-            			$processCount = sizeof($subDirectories);
-            		}
-            		
-            		// create the task-list
-            		$taskList = array();
-	            	foreach ($subDirectories as $subDirectory) {
-	            		$taskList[] = new rtTaskTestGroup($runConfiguration, $subDirectory, $this->outType);
-	                }
-	                
-	                // start the task-scheduler for multi-processing	
-	                $scheduler = rtTaskScheduler::getInstance();
-	                $scheduler->setTaskList($taskList);
-	                $scheduler->setProcessCount($processCount);
-					$scheduler->run();
-					$scheduler->printStatistic();
- 
-            	} else {
-            		
-            	    //Run tests in each subdirectory in sequence
-	                foreach ($subDirectories as $subDirectory) {
-	                    $testGroup = new rtPhpTestGroup($runConfiguration, $subDirectory);
-	                    $testGroup->runGroup($runConfiguration);
-	                    $testGroup->writeGroup($this->outType);
-	                }
-            		
+            	if (!is_numeric($processCount) || $processCount < 0) {
+            		$processCount = 2;
             	}
             }
 
-            //*have a directory or list of directories to test.
-            /* if (single directory) {
-            * 	if(contains sub-directories with .phpt files) {
-            * 		if (parallel) {
-            * 			initate parallel run
-            *        } else {
-            *            initaite sequential run
-            *        }
-            *    } else {
-            *        initiate sequential run
-            *    }
-            * } else {    //multiple directories
-            *    if (parallel) {
-            *       initiate parallel (runs the list of dirs in parallel
-            *    } else {
-            *       run each directory in sequence
-            *    }
-            * }
-            *
-            */
+            // check for the cmd-line-option 'g' which defines the report-status
+            $reportStatus = 0;
+            if ($runConfiguration->hasCommandLineOption('g')) {
+            	
+            	$reportStatus = $runConfiguration->getCommandLineOption('g');
+            	
+            	if (!is_numeric($reportStatus) || $processCount < 0) {
+            		$reportStatus = 1;
+            	}
+            }
+            	
+            // create the task-list
+            $taskList = array();
+            foreach ($subDirectories as $subDirectory) {
+            	$taskList[] = new rtTaskTestGroup($runConfiguration, $subDirectory);
+            }
+                
+            // run the task-scheduler	
+            $scheduler = rtTaskScheduler::getInstance();
+            $scheduler->setTaskList($taskList);
+            $scheduler->setProcessCount($processCount);
+            $scheduler->setReportStatus($reportStatus);
+			$scheduler->run();
+			
+			$resultList = $scheduler->getResultList();
+			
+			// create output
+			$type = null;
+        	if ($runConfiguration->hasCommandLineOption('o')) {
+            	$type = $runConfiguration->getCommandLineOption('o');
+	        }
+			
+			$outputWriter = rtTestOutputWriter::getInstance($type);
+			$outputWriter->setResultList($resultList);
+			$outputWriter->printOverview(sizeof($taskList), $scheduler->getProcessCount());
+			
+        	if ($runConfiguration->hasCommandLineOption('o')) {
+	            $outputWriter->write();	
+            }
+
         } else {
 
             if ($runConfiguration->getSetting('TestFiles') == null) {
@@ -147,8 +140,7 @@ class rtPhpTestRun
                         $results = new rtTestResults(null, $testStatus);
                     }
 
-                    $testOutputWriter = rtTestOutputWriter::getInstance(array($results), 'list');
-                    $testOutputWriter->write();
+                    rtTestOutputWriter::flushResult(array($results), 3);
                 }
             }
         }

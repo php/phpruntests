@@ -2,49 +2,19 @@
 
 abstract class rtTask
 {
-	const NOEX = 0;
-	const PASS = 1;
-	const FAIL = -1;
-
-	private $state = self::NOEX;
-	private $index = NULL;
-	private $message = NULL;
-	
-	
-	public function evaluate() {}
-	
-	
-	public function setState($state)
-	{
-		$this->state = $state;		
-	}
-	
-	public function getState()
-	{
-		return $this->state;
-	}
-	
-	
-	public function setMessage($msg)
-	{
-		$this->message = $msg;
-	}
-
-	public function getMessage()
-	{
-		return $this->message;
-	}
+	protected $result = NULL;
 
 	
-	public function setIndex($index)
-	{
-		$this->index = $index;
-	}
+	
+    public function getResult()
+    {
+    	return $this->result;
+    }
+	
+    
+    public function run() {}
+	
 
-	public function getIndex()
-	{
-		return $this->index;
-	}
 	
 }
 

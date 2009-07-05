@@ -39,7 +39,7 @@ class rtTestStatus {
     {
         foreach ($this->testStateNames as $name) {
             $this->states[$name] = false;
-            $this->messages[$name] = '';
+            $this->messages[$name] = '-- none --';
         }
     }
 
@@ -63,12 +63,26 @@ class rtTestStatus {
         return $this->messages[$name];
     }
     
-    public function getTestStateNames() {
+    public function getTestStateNames()
+    {
         return $this->testStateNames;
     }
     
-    public function getTestName() {
+    public function getTestName()
+    {
         return $this->testName;
+    }
+
+    public function __toString()
+    {
+		foreach($this->testStateNames as $name) {
+
+       		if ($this->states[$name] === true) {
+            	return $name;
+        	}
+    	}
+    	
+    	return 'UNDEFINED';
     }
 
 }

@@ -15,15 +15,12 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 {
 	private $runConfiguration;
 	private $subDirectory;
-	private $outType;
-	private $results;
 
 	
-	public function __construct($runConfiguration, $subDirectory, $outType='list')
+	public function __construct($runConfiguration, $subDirectory)
 	{
 		$this->runConfiguration = $runConfiguration;
 		$this->subDirectory = $subDirectory;
-		$this->outType = $outType;
 	}
 	
 	
@@ -35,35 +32,10 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	{
 		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory);
 		$testGroup->runGroup($this->runConfiguration);
-        $this->results = $testGroup->getResults();
+        $this->result = $testGroup->getResults();
 		return true;
 	}
-	
-	
-	/**
-	 * called by the receiver (parent-process)
-	 * writes the results to the OutputWriter
-	 * 
-	 * @param $cid	the child-id
-	 */
-	public function evaluate($cid=null)
-	{
-    	$testOutputWriter = rtTestOutputWriter::getInstance($this->results, $this->outType);
-        $testOutputWriter->write($this->subDirectory, $cid);
-	}
-	
-	
-	public function getDir()
-	{
-		return $this->subDirectory;
-	}
-	
-	
-    public function getResults()
-    {
-    	return $this->results;
-    }
-    
+
 }
 
 

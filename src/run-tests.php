@@ -3,7 +3,7 @@
  * Main php file for run-tests.php
  */
 
-
+error_reporting(E_ALL);
 
 /**
  * rtExceptionHandler
@@ -13,7 +13,7 @@
  */
 function rtExceptionHandler(Exception $e) {
 	
-	print $e;
+	print $e->__toString();
 }
 
 set_exception_handler('rtExceptionHandler');

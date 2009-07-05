@@ -24,7 +24,7 @@ class rtCommandLineOptions
         'q',
         'x',
         'v',
-        'h',        
+        'h',
     );
 
     /**
@@ -39,8 +39,9 @@ class rtCommandLineOptions
         'd',
         'p',
         's',
-        'o', //new for output type (list, xml, csv...)
+        'o',  //new for output type (list, xml, csv...)
     	'z',  //parallel - run out of obvious letters
+    	'g', // flushing report durring test-execution 
     );
 
     /**

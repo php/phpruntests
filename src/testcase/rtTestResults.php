@@ -21,7 +21,7 @@ class rtTestResults
 {
     private $testStatus;
     private $testName = '';
-    private $savedResultsFiles = array();
+    private $savedFileNames = array();
     private $title = '';
 
     public function __construct(rtPhpTest $testCase = null, rtTestStatus $testStatus = null) 
