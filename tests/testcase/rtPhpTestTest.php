@@ -19,7 +19,27 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
                             'blah blah blah',
                             '--EXPECTF--',
                             'hello world',
+                            '===Done===',
+                            'gah',
         );
+        
+        $this->testCase2 = array (
+                            '--TEST--', 
+                            'This is a test',
+                            '--GET--',
+                            '--POST--',
+                            '--FILE--',
+                            '<?php',
+                            ' echo "hello world"; ',
+                            '?>',
+                            '===Done===',
+                            'blah blah blah',
+                            '--EXPECTF--',
+                            'hello world',
+                            '===Done===',
+                            'gah',
+        );
+        
     }
 
     public function testCreateInstance()
@@ -54,7 +74,23 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
         $status = new rtTestStatus('nameOfTest');
         $test = new rtPhpTest($this->testCase, 'nameOfTest', array('TEST', 'FILE', 'EXPECTF'), $config, $status);
         
-       // var_dump($test->getSection('FILE'));
+        $contents = $test->getSection('FILE')->getContents();
+        $this->assertEquals('===Done===', end($contents));
+        
+        $contents = $test->getSection('EXPECTF')->getContents();
+        $this->assertEquals('gah', end($contents));
+
+    } 
+    
+    public function testEmptySection()
+    {
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config->configure();
+
+        $status = new rtTestStatus('nameOfTest');
+       // $test = new rtPhpTest($this->testCase2, 'nameOfTest', array('TEST', 'GET', 'POST', 'FILE', 'EXPECTF'), $config, $status);
+        
+        
 
     } 
 }
