@@ -63,15 +63,14 @@ class rtPhpTestRun
             	}
             }
 
-            // check for the cmd-line-option 'g' which defines the report-status
+            // check for the cmd-line-option 'v' which defines the report-status
             $reportStatus = 0;
-            if ($runConfiguration->hasCommandLineOption('g')) {
-            	
-            	$reportStatus = $runConfiguration->getCommandLineOption('g');
-            	
-            	if (!is_numeric($reportStatus) || $processCount < 0) {
-            		$reportStatus = 1;
-            	}
+            if ($runConfiguration->hasCommandLineOption('v')) {
+				$reportStatus = 1;
+            } else if ($runConfiguration->hasCommandLineOption('vv')) {
+				$reportStatus = 2;
+            } else if ($runConfiguration->hasCommandLineOption('vvv')) {
+				$reportStatus = 3;
             }
             	
             // create the task-list
@@ -98,9 +97,14 @@ class rtPhpTestRun
 			$outputWriter = rtTestOutputWriter::getInstance($type);
 			$outputWriter->setResultList($resultList);
 			$outputWriter->printOverview(sizeof($taskList), $scheduler->getProcessCount());
+
+			$filename = null;
+			if ($runConfiguration->hasCommandLineOption('s')) {
+				$filename = $runConfiguration->getCommandLineOption('s');
+			}
 			
-        	if ($runConfiguration->hasCommandLineOption('o')) {
-	            $outputWriter->write();	
+        	if ($type || $filename) {
+	            $outputWriter->write($filename);	
             }
 
         } else {

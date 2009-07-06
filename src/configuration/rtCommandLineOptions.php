@@ -23,7 +23,7 @@ class rtCommandLineOptions
         'm',
         'q',
         'x',
-        'v',
+        'v', // verbose-mode level 1
         'h',
     );
 
@@ -38,17 +38,17 @@ class rtCommandLineOptions
         'c',
         'd',
         'p',
-        's',
-        'o',  //new for output type (list, xml, csv...)
-    	'z',  //parallel - run out of obvious letters
-    	'g', // flushing report durring test-execution 
+        's',  // save - defines the filename to store the results
+        'o',  // output type (list, xml, csv...)
+    	'z',  // parallel - run out of obvious letters
     );
 
     /**
      * @var array
      */
     protected $longOptions = array(
-        'verbose',
+        'vv',	// verbose-mode level 2
+    	'vvv',	// verbose-mode level 3
         'help',
         'keep-all',
         'keep-php',

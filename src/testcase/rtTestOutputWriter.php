@@ -70,7 +70,7 @@ abstract class rtTestOutputWriter
     
     
     
-    public function write()
+    public function write($filename=null)
     {
     	$this->createOutput();
     	
@@ -80,10 +80,12 @@ abstract class rtTestOutputWriter
 	    		mkdir(self::OUTPUT_DIR);
 	    	}
 
-    		$file = self::OUTPUT_DIR.'/results_'.microtime(true).'.'.$this->type;
+	    	if (is_null($filename)) {
+    			$filename = self::OUTPUT_DIR.'/results_'.round(microtime(true)).'.'.$this->type;
+	    	}
     		
-    		if (file_put_contents($file, $this->output)) {
-    			print "\nThe Test-Results were saved in <$file>\n";
+    		if (file_put_contents($filename, $this->output)) {
+    			print "\nThe Test-Results were saved in <$filename>\n";
     		} else {
     			print "\nError while saving results.\n";
     		}
