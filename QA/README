@@ -1,0 +1,15 @@
+Checking the the output from phpruntests against run-tests.php
+==============================================================
+
+1) The output from running run-tests.php for each of the top-level directories is 
+in the directory 'results'. For example rt_ext is the output from running all the tests under  ext.
+
+2) Run the new run tests with flags -o csv, against each of the top level directories.
+
+3) Cpmpare the number of failures by using:
+
+php fail_compare.php new_run_tests_output old_run_tests_output ext
+
+(or substitute Zend/tests/sapi for ext).
+
+
