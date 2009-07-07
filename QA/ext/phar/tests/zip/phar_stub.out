@@ -1,8 +1,0 @@
-timestamp changed, was 1246893412, now 1246893413!
-<?php echo "first stub\n"; __HALT_COMPILER(); ?>
-<?php echo "second stub\n"; __HALT_COMPILER(); ?>
-<?php echo "third stub\n"; __HALT_COMPILER(); ?>
-<?php echo "third stub\n"; __HALT_COMPILER(); ?>booya
-<?php echo "third stub\n"; __HALT_COMPILER(); ?>
-<?php echo "third stub\n"; __HALT_COMPILER(); ?>
-===DONE===
