@@ -1,3 +1,0 @@
-006+ <font size='1'><table dir='ltr' border='1' cellspacing='0' cellpadding='1'>
-007+ <tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Parse error: syntax error, unexpected T_PRIVATE, expecting '{' in /mnt/workspace/php53_tmp/sapi/cgi/tests/006.test.php on line <i>5</i></th></tr>
-006- <b>Parse error</b>: %s expecting %s{%s in <b>%s006.test.php</b> on line <b>5</b><br />
