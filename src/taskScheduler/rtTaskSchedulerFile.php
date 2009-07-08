@@ -116,9 +116,10 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		
 		
 		// register signal-handler
+		/*
 		pcntl_signal(SIGINT, "rtTaskSchedulerFile::signalHandler");
 		pcntl_signal(SIGQUIT, "rtTaskSchedulerFile::signalHandler");
-
+		*/
 		
 		// wait until all child-processes are terminated
 		for ($i=0; $i<$this->processCount; $i++) {
