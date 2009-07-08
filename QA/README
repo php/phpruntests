@@ -5,9 +5,12 @@ Checking the the output from phpruntests against run-tests.php
 
 2) Run the new run tests with flags -o csv against the QA directory, eg run-tests.php -o csv -s phprt_out QA
 
-3) Run the old run-tests.php against the QA directory and redirect the output to a file called rt_out
+3) cd to teh QA directory and run all teh tests like this:
+php run-tests.php Zend ext sapi tests > rt_out
+It's no good trying to run all the tests by just giving run-tests the top level directory name, 
+the PDO tests fail if you do.
 
-4) compare teh reulsts using
+4) Compare the reulsts using
    php compareNewOld.php phprt_out rt_out QA
 
 
