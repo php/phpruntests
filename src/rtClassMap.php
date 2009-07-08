@@ -8,7 +8,6 @@
  */
 $rtClassMap = array(
     'rtEnvironmentException'                   => 'configuration/exceptions/rtEnvironmentException.php',
-    'rtException'                              => 'configuration/exceptions/rtException.php',
     'rtMissingArgumentException'               => 'configuration/exceptions/rtMissingArgumentException.php',
     'rtUnknownIniSettingException'             => 'configuration/exceptions/rtUnknownIniSettingException.php',
     'rtUnknownOptionException'                 => 'configuration/exceptions/rtUnknownOptionException.php',
@@ -46,6 +45,7 @@ $rtClassMap = array(
     'rtAutoload'                               => 'rtAutoload.php',
     'rtClassMap'                               => 'rtClassMap.php',
     'rtDirectoryList'                          => 'rtDirectoryList.php',
+    'rtException'                              => 'rtException.php',
     'rtPhptFilterIterator'                     => 'rtPhptFilterIterator.php',
     'rtText'                                   => 'rtText.php',
     'rtUtil'                                   => 'rtUtil.php',
@@ -55,7 +55,6 @@ $rtClassMap = array(
     'rtTaskSchedulerFile'                      => 'taskScheduler/rtTaskSchedulerFile.php',
     'rtTaskSchedulerMsgQ'                      => 'taskScheduler/rtTaskSchedulerMsgQ.php',
     'rtTaskTestGroup'                          => 'taskScheduler/rtTaskTestGroup.php',
-    'rtCodeRunnerException'                    => 'testcase/exceptions/rtCodeRunnerException.php',
     'rtPhpRunnerException'                     => 'testcase/exceptions/rtPhpRunnerException.php',
     'rtTestOutputWriterCSV'                    => 'testcase/output/rtTestOutputWriterCSV.php',
     'rtTestOutputWriterList'                   => 'testcase/output/rtTestOutputWriterList.php',

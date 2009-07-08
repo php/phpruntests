@@ -58,6 +58,8 @@ class rtPhpRunner
 
         fclose($pipes[0]);
 
+        $counter = 0;
+
         while (true) {
             /* hide errors from interrupted syscalls */
             $r = $pipes;
@@ -67,14 +69,19 @@ class rtPhpRunner
             $n = @stream_select($r, $w, $e, $this->timeOut);
 
             if ($n === false) {
-                throw new rtPhpRunnerException('Stream select failure in rtPhpRunner');
+                throw new rtException('Stream select failure in rtPhpRunner');
             } else if ($n === 0) {
                 proc_terminate($proc);
-                throw new rtPhpRunnerException ('The process running test code has timed out in rtPhpRunner');
+                throw new rtException('The process running test code has timed out in rtPhpRunner');
             } else if ($n > 0) {
-                $line = fread($pipes[1], 8192);
+            	$counter++;
+            	if ($counter > 10) {
+            		proc_terminate($proc);
+            		throw new rtException('The process running test code has timed out in rtPhpRunner');
+            	}
+            	$line = fread($pipes[1], 8192);
                 if (strlen($line) == 0) {
-                    /* EOF */
+                    // EOF
                     break;
                 }
                 $data .= (binary) $line;
