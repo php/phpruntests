@@ -75,7 +75,7 @@ class rtPhpRunner
                 throw new rtException('The process running test code has timed out in rtPhpRunner');
             } else if ($n > 0) {
             	$counter++;
-            	if ($counter > 10) {
+            	if ($counter > 100) {
             		proc_terminate($proc);
             		throw new rtException('The process running test code has timed out in rtPhpRunner');
             	}
