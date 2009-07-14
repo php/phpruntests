@@ -20,6 +20,7 @@ set_exception_handler('rtExceptionHandler');
 
 
 
+
 /*
  * check the version of the running php-executable and
  * ensure that is 5.3 or higher
