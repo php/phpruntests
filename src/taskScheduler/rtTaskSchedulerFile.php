@@ -21,6 +21,18 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	private $groupTasks = false;	// are the tasks stored in groups?
 
     
+	/**
+	 * the signal-handler is called by the interrupt- or quit-signal. this is
+	 * necessary to cleanup the tmp files and terminate the script correct.
+	 * 
+	 * @param int $signal
+	 */
+	public static function signalHandler($signal)
+	{
+		exit(0);
+	}
+	
+    
     /**
      * sets the task-list which has to be an array of task-objects.
      * it's also possible to use a multidimensional array. in this case the
@@ -33,7 +45,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
      */
 	public function setTaskList(array $taskList)
 	{
-		if (is_array($taskList[0])) {
+		if (isset($taskList[0]) && is_array($taskList[0])) {
 			$this->groupTasks = true;
 			$this->processCount = sizeof($taskList);
 		}
@@ -77,6 +89,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$this->processCount = sizeof($this->taskList);
 		}
 
+		
 		// distribute the task to the children
 		$this->distributeTasks();
 
@@ -99,7 +112,12 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 					break;
 			}
 		}
+		
+		// register signal-handler
+		pcntl_signal(SIGINT, "rtTaskSchedulerFile::signalHandler");
+		pcntl_signal(SIGQUIT, "rtTaskSchedulerFile::signalHandler");
 
+		
 		// wait until all child-processes are terminated
 		for ($i=0; $i<$this->processCount; $i++) {
 			pcntl_waitpid($this->pidStore[$i], $status);
@@ -160,16 +178,16 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$response = explode("[END]", $response);
 			array_pop($response);
 
-			foreach ($response as $resultList) {
+			foreach ($response as $testGroupResults) {
 				
-				$resultList = unserialize($resultList);
+				$testGroupResults = unserialize($testGroupResults);
 				
-				if ($resultList === false) {
+				if ($testGroupResults === false) {
 					print "ERROR unserialize - receiver $cid\n";
 					continue;
 				}
-				
-				$this->resultList = array_merge($this->resultList, $resultList);
+
+				$this->resultList[] = $testGroupResults;
 			}
 
 			unlink(self::TMP_FILE.$cid);
@@ -194,6 +212,8 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 		foreach ($taskList as $task) {
 
+			$s = microtime(true);
+			
 			$task = unserialize($task);
 			
 			if ($task === false) {
@@ -202,8 +222,15 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			}
 
 			$task->run();
+			
+			$e = microtime(true);
+			
 			$results = $task->getResult();
 			
+			if (isset($results[0]) && is_object($results[0])) {
+				$results[0]->setTime($e-$s);
+			}
+
 			rtTestOutputWriter::flushResult($results, $this->reportStatus, $cid);
 			
 			$response = serialize($results)."[END]";
