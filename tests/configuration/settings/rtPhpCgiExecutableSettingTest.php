@@ -25,8 +25,14 @@ class rtPhpCgiExecutableSettingTest extends PHPUnit_Framework_TestCase
         $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', 'test.phpt'));
         $configuration->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', '');
         $setting = new rtPhpCgiExecutableSetting($configuration);
-
-        $this->assertEquals(null, $setting->get());
+        
+        $setPhp = $configuration->getSetting('TEST_PHP_EXECUTABLE');
+        
+        if   (preg_match("/sapi/", $setPhp)) {
+            // Make no assertion bacuse the CGI executable can be guesed
+        } else {
+            $this->assertEquals(null, $setting->get());
+        }
     }
 
     public function testSetFromCliExecutableName() {
