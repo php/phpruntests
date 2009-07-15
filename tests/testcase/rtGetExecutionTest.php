@@ -49,7 +49,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $status = $testCase->getStatus();
          
         $this->assertEquals('85', strlen($output));
-          $this->assertFalse($testCase->getStatus()->getValue('fail'));
+        $this->assertFalse($testCase->getStatus()->getValue('fail'));
 
 
     }
@@ -78,13 +78,20 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $testCase->executeTest($config);
         $output = $testCase->getOutput();
         //var_dump($output);
-        
+
         $status = $testCase->getStatus();
-     
          
-        $this->assertEquals(0, strlen($output));
-        $this->assertTrue($testCase->getStatus()->getValue('skip'));
-        $this->assertEquals('The CGI executable is unavailable', $testCase->getStatus()->getMessage('skip'));
+         
+        $setPhp = $configuration->getSetting('TEST_PHP_EXECUTABLE');
+
+        if   (preg_match("/sapi/", $setPhp)) {
+            // Make no assertion bacuse the CGI executable can be guesed
+        } else {
+            $this->assertEquals(0, strlen($output));
+            $this->assertTrue($testCase->getStatus()->getValue('skip'));
+            $this->assertEquals('The CGI executable is unavailable', $testCase->getStatus()->getMessage('skip'));
+        }
+
 
 
     }
