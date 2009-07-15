@@ -183,7 +183,8 @@ class rtPhpTest
         $result = array();
         foreach($array as $line) {
             $result[] = $line;
-            if(stripos($line, "===done===") !== false) {
+            // If found at the start of the line, so ' ===done===' won't work.        
+            if(stripos($line, "===done===") === 0) {
                 break;
             }
         }
