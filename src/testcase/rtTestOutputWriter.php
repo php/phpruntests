@@ -2,8 +2,7 @@
 /**
  * rtTestOutputWriter
  *
- * Writes test output. This is concerned with status (PASS, FAIL etc) not
- * with the log files.
+ * Writes test output.
  *
  * @category   Testing
  * @package    RUNTESTS
@@ -20,9 +19,7 @@ abstract class rtTestOutputWriter
     protected $output = NULL;
     protected $type = 'list';
     protected $overview = NULL;
-    
-    const OUTPUT_DIR = 'results';
-    
+
     
     public static function getInstance($type='list')
     {
@@ -34,7 +31,7 @@ abstract class rtTestOutputWriter
         		break;
 
         	case 'html':
-        		
+        		return new rtTestOutputWriterHTML();
         		break;
         		
         	case 'csv':
@@ -46,42 +43,43 @@ abstract class rtTestOutputWriter
         	case 'txt':
         		return new rtTestOutputWriterList();
         		break;
-        	
         }
     } 
+
     
-    
+    /**
+     * 
+     * @param array $resultList    an array of arrays (testgroups) of rtTestResults
+     */
     public function setResultList(array $resultList)
     {
     	$this->resultList = $resultList;
     }
-    
 
     
-    
-    /**
-     * 
-     */
+	/**
+	 * 
+	 * @return string $output
+	 */
     public function getOutput()
     {
         return $this->output;
     }
     
-    
-    
-    
+
+    /**
+     * writes the the results to a file
+     * 
+     * @param $filename 
+     */
     public function write($filename=null)
     {
     	$this->createOutput();
     	
     	if (!is_null($this->output)) {
-    		
-    	    if (!file_exists(self::OUTPUT_DIR)) {
-	    		mkdir(self::OUTPUT_DIR);
-	    	}
 
 	    	if (is_null($filename)) {
-    			$filename = self::OUTPUT_DIR.'/results_'.round(microtime(true)).'.'.$this->type;
+    			$filename = 'results_'.round(microtime(true)).'.'.$this->type;
 	    	}
     		
     		if (file_put_contents($filename, $this->output)) {
@@ -93,6 +91,13 @@ abstract class rtTestOutputWriter
     }
     
     
+    /**
+     * creates an overview about the test-results
+     * 
+     * @param  integer $groups
+     * @param  integer $processCount
+     * @return string
+     */
     public function getOverview($groups=NULL, $processCount=NULL)
     {
     	// if the overview was already created retun it
@@ -104,16 +109,19 @@ abstract class rtTestOutputWriter
     	$state = array();
     	$count = 0;
     	
-    	foreach ($this->resultList as $result) {
+    	foreach ($this->resultList as $testGroupResults) {
+        	
+        	foreach ($testGroupResults as $testResult) {
     	 	
-			$s = $result->getStatus()->__toString();
-			
-			if (!isset($state[$s])) {
-				$state[$s] = 0;
-			}
-			
-			$state[$s]++;
-			$count++;
+				$s = $testResult->getStatus()->__toString();
+				
+				if (!isset($state[$s])) {
+					$state[$s] = 0;
+				}
+				
+				$state[$s]++;
+				$count++;
+	    	}
     	}
     	
     	// create the output-string
@@ -153,11 +161,11 @@ abstract class rtTestOutputWriter
     			$str .= ' ';
     		}
     		
-    		$str .= $v;
+    		$str .= $v.' ';
     		
     		$p = round($v/$count*100,2);
     		
-    	    $blanks = 5-strlen($v);
+    	    $blanks = 5-strlen($p);
     		for ($b=0; $b<$blanks; $b++) {
     			$str .= ' ';
     		}
@@ -180,7 +188,13 @@ abstract class rtTestOutputWriter
     }
     
     
-    
+    /**
+     * prints out the results of a testgroup
+     * 
+     * @param array $results
+     * @param $state
+     * @param $cid
+     */
     public static function flushResult(array $results, $state=0, $cid=NULL)
     {
     	switch ($state) {
@@ -189,7 +203,6 @@ abstract class rtTestOutputWriter
     			return;
     			break;
 
-    			
     		default:
     		case 0: 	// a dot per test-case
     			
@@ -198,7 +211,6 @@ abstract class rtTestOutputWriter
 				}
     			break;
 
-    			
     		case 1: 	// every test-case incl. status
     			print "\n";
 				foreach ($results as $result) {
@@ -206,7 +218,6 @@ abstract class rtTestOutputWriter
 				}
     			break;
 
-    			
     		case 2: 	// details about not-passed tests
 
 				foreach ($results as $result) {
@@ -221,15 +232,19 @@ abstract class rtTestOutputWriter
 					print strtoupper($name)."\t".$result->getName()."\n";
 
 	    			 if ($name !== 'pass') {
-	    			 	print "desc:\t".$result->getTitle()."\n";
-	   			 		print "msg:\t".$s->getMessage($name)."\n";
+	    			 	print "DESC:\t".$result->getTitle()."\n";
+	    			 	
+		    			$msg = $s->getMessage($name);
+		    			if (!is_null($msg)) {
+		    				print "MSG:\t".$msg."\n";
+		    			}
+
 	   			 		print "\n";
 	    			 }
 				}
 
     			break;
 
-    			
     		case 3: 	// all available details
 
 				foreach ($results as $result) {
@@ -239,31 +254,30 @@ abstract class rtTestOutputWriter
 
 					print "\n";
 					print strtoupper($name)."\t".$result->getName()."\n";
-	    			print "desc:\t".$result->getTitle()."\n";
-	   			 	print "msg:\t".$s->getMessage($name)."\n";
+	    			print "DESC:\t".$result->getTitle()."\n";
+	   			 	
+	    			$msg = $s->getMessage($name);
+
+	    			if (!is_null($msg)) {
+	    				print "MSG:\t".$msg."\n";
+	    			}
 
 	   			 	if (!is_null($cid)) {
 						print "CID:\t$cid\n";
 					}
-					
-					print "mem:\t".round(memory_get_usage()/1024, 2)." kB\n";
+
+					print "MEM:\t".round(memory_get_usage()/1024, 2)." kB\n";
 					
 					$files = $result->getSavedFileNames();
 					
 					if (sizeof($files) > 0) {
 						
-						print "files:\t";
-						
-						foreach ($files as $file) {
-							print $file.', ';
+						print "FILES:\n";
+						foreach ($files as $t => $file) {
+							print "$t:\t$file\n";
 						}
-						
-						print "\n";
 					}
-
-	   			 	
 				}
-
     			break;
     	}
 		

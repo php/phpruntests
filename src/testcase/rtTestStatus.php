@@ -39,7 +39,7 @@ class rtTestStatus {
     {
         foreach ($this->testStateNames as $name) {
             $this->states[$name] = false;
-            $this->messages[$name] = '-- none --';
+            $this->messages[$name] = null;
         }
     }
 

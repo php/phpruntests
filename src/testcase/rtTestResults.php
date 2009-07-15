@@ -23,6 +23,7 @@ class rtTestResults
     private $testName = '';
     private $savedFileNames = array();
     private $title = '';
+    private $time = 0;
 
     public function __construct(rtPhpTest $testCase = null, rtTestStatus $testStatus = null) 
     {
@@ -165,6 +166,16 @@ class rtTestResults
     public function getTitle()
     {
         return $this->title;
+    }
+    
+    public function getTime()
+    {
+    	return $this->time;
+    }
+    
+    public function setTime($time)
+    {
+    	$this->time = $time;
     }
 }
 ?>

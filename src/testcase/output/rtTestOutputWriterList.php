@@ -24,18 +24,25 @@ class rtTestOutputWriterList extends rtTestOutputWriter
     
     public function createOutput()
     {
-        foreach ($this->resultList as $testResult) {
-            $outputString = "";
-            $testStatus = $testResult->getStatus();
-            foreach($testStatus->getTestStateNames() as $name) {
-                if($testStatus->getValue($name)) {
-                    $outputString .= " ". strtoupper($name);
-                    $outputString .= " " . $testStatus->getMessage($name);
-                }
-            }
-            $outputString .= " " . $testResult->getTitle();
-            $outputString .= " [" . $testResult->getName() . ".phpt]";
-            $this->output .= $outputString."\n";
+        foreach ($this->resultList as $testGroupResults) {
+        	
+        	foreach ($testGroupResults as $testResult) {
+
+	            $outputString = "";
+	            $testStatus = $testResult->getStatus();
+	            
+	            foreach($testStatus->getTestStateNames() as $name) {
+
+	            	if ($testStatus->getValue($name)) {
+	                    $outputString .= " ". strtoupper($name);
+	                    $outputString .= " " . $testStatus->getMessage($name);
+	                }
+	            }
+	            
+	            $outputString .= " " . $testResult->getTitle();
+	            $outputString .= " [" . $testResult->getName() . ".phpt]";
+	            $this->output .= $outputString."\n";
+        	}
         }
     }
 

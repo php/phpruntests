@@ -38,14 +38,97 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
      */
     public function createOutput()
     {
-        foreach ($this->resultList as $result) {
+    	$wdir = getcwd();
+    	
+    	$global_state = array();
+    	$global_count = 0;
+    	
+    	foreach ($this->resultList as $testGroupResults) {
+			
+    		// creat group-node
+    		$groupNode = $this->dom->createElement('testgroup');
+    		$this->rootNode->appendChild($groupNode);
 
-        	$test = $this->dom->createElement('testcase');
-        	$test->appendChild($this->dom->createElement('name', $result->getName()));
-        	$test->appendChild($this->dom->createElement('status',  $result->getStatus()));
-        	$this->rootNode->appendChild($test);
-        }
+    		$state = array();
+    		
+	        foreach ($testGroupResults as $testResult) {
+	
+	        	// create test-node
+	        	$testNode = $this->dom->createElement('testcase');
+	        	$groupNode->appendChild($testNode);
+
+	        	// name
+	        	$n = explode($wdir, $testResult->getName());
+	        	$n = explode('/', $n[1]);
+    			$n = array_pop($n);
+    			$testNode->setAttribute('name', $n);
+				
+    			// status
+    			$status = $testResult->getStatus();
+    			$s = $status->__toString();
+				$testNode->setAttribute('status', strtoupper($s));
+		
+	        	// title
+        	    $title = $testResult->getTitle();
+
+    			if (strlen($title) > 0) {
+    				$titleNode = $this->dom->createElement('title', utf8_encode(htmlentities($title)));
+    				$testNode->appendChild($titleNode);
+    			}
+				
+				// message
+        	    $msg = $status->getMessage($s);
+
+    			if (!is_null($msg)) {
+    				$msgNode = $this->dom->createElement('message', utf8_encode(htmlentities($msg)));
+    				$testNode->appendChild($msgNode);
+    			}
+    			
+    			// files
+    			$files = $testResult->getSavedFileNames();
+					
+				if (sizeof($files) > 0) {
+					
+					$fileNode = $this->dom->createElement('files');
+    				$testNode->appendChild($fileNode);
+					
+					foreach ($files as $type => $file) {
+						$fileNode->setAttribute($type, $file);
+					}
+				}
+				
+				// count
+				if (!isset($state[$s])) {
+					$state[$s] = 0;
+					$global_state[$s] = 0;
+				}
+
+				$state[$s]++;
+				$global_state[$s]++;
+	    	}
+	    	
+	    	$global_count += sizeof($testGroupResults);
+
+	    	// add group-node attributes
+
+    		$n = explode($wdir, $testGroupResults[0]->getName());
+    		$n = explode('/', $n[1]);
+    		array_pop($n);
+    		$n = implode('/', $n);
+    		
+    		$groupNode->setAttribute('name', $n);
+    		$groupNode->setAttribute('tests', sizeof($testGroupResults));
+    		
+    		$time = round($testGroupResults[0]->getTime(), 2);
+    		$groupNode->setAttribute('time', $time);
+	        
+    		foreach ($state as $k => $v) {
+	    		$groupNode->setAttribute($k, $v);
+	    	}
+    	}
         
+    	$this->dom->formatOutput = true;
+    	$this->dom->normalizeDocument();
         $this->output = $this->dom->saveXML();
     }
 
