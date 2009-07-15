@@ -82,7 +82,8 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $status = $testCase->getStatus();
          
          
-        $setPhp = $configuration->getSetting('TEST_PHP_EXECUTABLE');
+        $setPhp = $config->getSetting('PhpExecutable');
+
 
         if   (preg_match("/sapi/", $setPhp)) {
             // Make no assertion bacuse the CGI executable can be guesed
