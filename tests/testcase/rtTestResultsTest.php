@@ -43,6 +43,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -72,6 +73,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -101,6 +103,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -130,6 +133,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -162,6 +166,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -192,6 +197,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -221,6 +227,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -251,6 +258,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
         $testFile =new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         if (!$testFile->arePreConditionsMet()) {
             $testStatus = new rtTestStatus($testFile->getTestName());

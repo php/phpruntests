@@ -37,6 +37,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -67,6 +68,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
+        $testFile->removeEmptySections();
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
