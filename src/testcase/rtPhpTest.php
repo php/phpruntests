@@ -42,7 +42,7 @@ class rtPhpTest
     {
         $lastSection = end($this->sectionHeadings);
         $start=0;
-
+        
         foreach($this->sectionHeadings as $keyNumber => $sectionKey) {
 
             if($keyNumber < count($this->sectionHeadings) - 1) {
@@ -53,9 +53,9 @@ class rtPhpTest
             for($index=$start; $index<count($this->contents); $index++)
             if($this->contents[$index] == "--".$sectionKey."--") {
                 //Found the beginning of the section
-
+               
                 for($contentsLine=$index + 1; $contentsLine<count($this->contents); $contentsLine ++) {
-                     
+                
                     if( ($this->contents[$contentsLine] == "--".$nextKey."--") || ($contentsLine == count($this->contents))) {
                         //Found the end of the section OR the end of the test
                         $start = $contentsLine - 1;
@@ -82,7 +82,6 @@ class rtPhpTest
         //Identify the file and expect section types
         $this->fileSection = $this->setFileSection();
         $this->expectSection = $this->setExpectSection();
-
         $this->fileSection->setExecutableFileName($this->getName());
 
     }

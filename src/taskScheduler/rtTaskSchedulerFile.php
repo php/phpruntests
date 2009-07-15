@@ -21,18 +21,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	private $groupTasks = false;	// are the tasks stored in groups?
 
     
-	/**
-	 * the signal-handler is called by the interrupt- or quit-signal. this is
-	 * necessary to cleanup the tmp files and terminate the script correct.
-	 * 
-	 * @param int $signal
-	 */
-	public static function signalHandler($signal)
-	{
-		exit(0);
-	}
-	
-    
     /**
      * sets the task-list which has to be an array of task-objects.
      * it's also possible to use a multidimensional array. in this case the
@@ -88,8 +76,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		if ($this->processCount > sizeof($this->taskList)) {
 			$this->processCount = sizeof($this->taskList);
 		}
-		
-
 
 		// distribute the task to the children
 		$this->distributeTasks();
@@ -113,14 +99,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 					break;
 			}
 		}
-		
-		
-		// register signal-handler
-		/*
-		pcntl_signal(SIGINT, "rtTaskSchedulerFile::signalHandler");
-		pcntl_signal(SIGQUIT, "rtTaskSchedulerFile::signalHandler");
-		*/
-		
+
 		// wait until all child-processes are terminated
 		for ($i=0; $i<$this->processCount; $i++) {
 			pcntl_waitpid($this->pidStore[$i], $status);
@@ -195,8 +174,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 			unlink(self::TMP_FILE.$cid);
 		}
-		
-		$this->pidStore = array();
 	}
 
 	

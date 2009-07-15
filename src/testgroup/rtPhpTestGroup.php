@@ -41,6 +41,7 @@ class rtPhpTestGroup
             $testFile = new rtPhpTestFile();
             $testFile->doRead($testFileName);
             $testFile->normaliseLineEndings();
+            $testFile->removeEmptySections();
             
             //The test name is the full path to the test file name without the .phpt
 

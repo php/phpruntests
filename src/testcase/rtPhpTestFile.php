@@ -29,6 +29,21 @@ class rtPhpTestFile
         'rtIsValidSectionName',
         'rtIsSectionImplemented'
         );
+        
+        private function isSectionHeading($string) {
+            return preg_match("/^\s*--[A-Z]+(_[A-Z]+|)--/", $string);
+        }
+        
+        private function getUntrimmedSectionHeading($string) {
+            preg_match("/^\s*(--[A-Z]+(_[A-Z]+|)--)/", $string, $matches);
+            return $matches[1];
+        }
+        
+        private function getSectionHeading($string) {
+            preg_match("/^\s*--([A-Z]+(_[A-Z]+|))--/", $string, $matches);
+            return $matches[1];
+        }
+        
 
         /**
          * Reads the contents of the test file and creates an array of the contents.
@@ -42,17 +57,47 @@ class rtPhpTestFile
             $this->testContents = file($this->testFileName);
         }
 
+        /*
+         * Trims the  lines endings - if the line is a section header it gets trimmed to either side of the --. 
+         * This is to avoid problems with tests that have spurious characters after the header.
+         */
         public function normaliseLineEndings()
         {
             for ($i=0; $i<count($this->testContents); $i++) {
-                //This is not nice but there are a huge number of tests with random spacs at the end of the section header
-                if (preg_match("/^\s*--([A-Z]+(_[A-Z]+|))--/", $this->testContents[$i], $matches)) {
-                    $this->sectionHeadings[] = $matches[1];
-                    $this->testContents[$i] = '--' . $matches[1] . '--';
-                } else {
+                //Just trim the contents lines here not the section header lines
+                if ($this->isSectionHeading($this->testContents[$i])) {
+                    $this->testContents[$i] = $this->getUntrimmedSectionHeading($this->testContents[$i]);
+                }else {
                     $this->testContents[$i] = rtrim($this->testContents[$i], $this->carriageReturn.$this->newLine);
                 }
             }
+        }
+        
+        /*
+         * Removes and discards any empty test sections
+         * Constructs a list of section headingg, stripped of their -- identifiers.
+         */
+        public function removeEmptySections() {
+            $tempArray = array();
+            
+            for ($i=0; $i<count($this->testContents) - 1; $i++) {
+                $nextLine = $this->testContents[$i+1];
+                $thisLine = $this->testContents[$i];
+                if ($this->isSectionHeading($thisLine)) {
+                     if (!$this->isSectionHeading($nextLine)) {
+                        $tempArray[] = $this->getUntrimmedSectionHeading($thisLine);
+                        $this->sectionHeadings[] = $this->getSectionHeading($thisLine);
+                    }
+                } else {
+                    $tempArray[] = $thisLine;
+                }
+            }
+            
+            if($this->isSectionHeading(end($this->testContents))) {
+                $this->sectionHeadings[] = $this->getSectionHeading(end($this->testContents));
+            }
+            $tempArray[] = end($this->testContents);
+            $this->testContents = $tempArray;
         }
 
         public function arePreConditionsMet()
@@ -94,5 +139,6 @@ class rtPhpTestFile
         {
             return $this->testExitMessage;
         }
+        
 }
 ?>

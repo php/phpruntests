@@ -51,7 +51,7 @@ class rtSkipIfSection extends rtExecutableSection
                     $testStatus->setMessage('warn', $matches[1]);
                 }
             }
-        } catch (rtException $e) {
+        } catch (rtPhpRunnerException $e) {
             $testStatus->setTrue('fail_skip');
             $testStatus->setMessage('fail_skip', 'Failed to execute skipif section' . $e->getMessage());
         }

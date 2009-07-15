@@ -67,7 +67,7 @@ class rtFileSection extends rtExecutableSection
             }
 
 
-        } catch (rtException $e) {
+        } catch (rtPhpRunnerException $e) {
             $testStatus->setTrue('fail');
             $testStatus->setMessage('fail', $e->getMessage() );         
         }
