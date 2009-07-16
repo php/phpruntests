@@ -41,7 +41,7 @@ class rtTestConfiguration
         $this->setCgiTest($sectionHeadings);
 
         $this->setEnvironmentVariables($runConfiguration, $sections, $fileSection);
-        $this->setPhpCommandLineArguments($runConfiguration, $sections);
+        $this->setPhpCommandLineArguments($runConfiguration, $sections, $fileSection);
         $this->setTestCommandLineArguments($sections);
         $this->setPhpExecutable($runConfiguration, $sectionHeadings);
         $this->setInputFileString($runConfiguration, $sections, $sectionHeadings);
@@ -86,10 +86,11 @@ class rtTestConfiguration
 
     }
 
-    private function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections)
+    private function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
     {
         $this->phpCommandLineArguments = $runConfiguration->getSetting('PhpCommandLineArguments');
         if (array_key_exists('INI', $sections)) {
+            $sections['INI']->substitutePWD($fileSection->getFileName());
             $additionalArguments = $sections['INI']->getCommandLineArguments();
             $args = new rtIniAsCommandLineArgs();
             $this->phpCommandLineArguments = $args->settingsToArguments($additionalArguments, $this->phpCommandLineArguments);
