@@ -20,15 +20,13 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
 	private $rootNode = null;
 	
 	
-	public function __construct() {
-
+	public function __construct()
+	{
 		$this->type = 'xml';
 		
     	$this->dom = new DOMDocument();
     	$this->rootNode = $this->dom->createElement('RUNTESTS');
     	$this->dom->appendChild($this->rootNode);
-    	
-    	$this->stamp = round(microtime(true));
 	}
 
 
@@ -127,15 +125,11 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
 	    	}
     	}
         
+    	$this->dom->encoding = 'UTF-8';
     	$this->dom->formatOutput = true;
     	$this->dom->normalizeDocument();
         $this->output = $this->dom->saveXML();
     }
 
-
-
-    
-
-    
 }
 ?>
