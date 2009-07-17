@@ -3,7 +3,7 @@
  * rtTestOutputWriterList
  *
  * Write test output line by line
- * 
+ *
  * @category   Testing
  * @package    RUNTESTS
  * @author     Zoe Slattery <zoe@php.net>
@@ -12,37 +12,32 @@
  * @copyright  2009 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @link       http://qa.php.net/
- * 
+ *
  */
 class rtTestOutputWriterList extends rtTestOutputWriter
 {
     public function __construct()
     {
-         $this->type = 'txt';
+        $this->type = 'txt';
     }
 
-    
+
     public function createOutput()
     {
-        foreach ($this->resultList as $testGroupResults) {
-        	
-        	foreach ($testGroupResults as $testResult) {
+        foreach ($this->resultList as $testResult) {          
+            $outputString = "";
+            $testStatus = $testResult->getStatus();
+             
+            foreach($testStatus->getTestStateNames() as $name) {
 
-	            $outputString = "";
-	            $testStatus = $testResult->getStatus();
-	            
-	            foreach($testStatus->getTestStateNames() as $name) {
-
-	            	if ($testStatus->getValue($name)) {
-	                    $outputString .= " ". strtoupper($name);
-	                    $outputString .= " " . $testStatus->getMessage($name);
-	                }
-	            }
-	            
-	            $outputString .= " " . $testResult->getTitle();
-	            $outputString .= " [" . $testResult->getName() . ".phpt]";
-	            $this->output .= $outputString."\n";
-        	}
+                if ($testStatus->getValue($name)) {
+                    $outputString .= " ". strtoupper($name);
+                    $outputString .= " " . $testStatus->getMessage($name);
+                }
+            }          
+            $outputString .= " " . $testResult->getTitle();
+            $outputString .= " [" . $testResult->getName() . ".phpt]";
+            $this->output .= $outputString."\n";
         }
     }
 
