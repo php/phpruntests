@@ -1,0 +1,46 @@
+
+
+In the new code (phpruntests)...
+     Number of Warnings: 0
+     Number of Notices: 0
+     Number of Fatal: 0
+
+ =====> 2 tests fail in phpruntests and do not fail in run-tests
+ext/phar/tests/zip/phar_stub.phpt 
+ext/standard/tests/general_functions/phpinfo.phpt 
+
+ =====> 0 tests fail in run-tests and do not fail in phpruntests
+
+ =====> 25 tests bork in phpruntests and do not bork in run-tests
+ext/pdo_sqlite/tests/common.phpt 
+ext/posix/tests/posix_access.phpt 
+ext/posix/tests/posix_access_error_modes.phpt 
+ext/posix/tests/posix_access_error_wrongparams.phpt 
+ext/posix/tests/posix_ctermid.phpt 
+ext/posix/tests/posix_getcwd.phpt 
+ext/posix/tests/posix_getgrnam.phpt 
+ext/posix/tests/posix_getpwnam.phpt 
+ext/posix/tests/posix_getrlimit.phpt 
+ext/posix/tests/posix_getsid.phpt 
+ext/posix/tests/posix_getsid_error.phpt 
+ext/posix/tests/posix_initgroups.phpt 
+ext/posix/tests/posix_isatty.phpt 
+ext/posix/tests/posix_mkfifo_safemode.phpt 
+ext/posix/tests/posix_mknod.phpt 
+ext/posix/tests/posix_times.phpt 
+ext/posix/tests/posix_ttyname.phpt 
+ext/posix/tests/posix_ttyname_error_wrongparams.phpt 
+ext/posix/tests/posix_uname.phpt 
+ext/sqlite/tests/pdo/common.phpt 
+ext/standard/tests/general_functions/phpcredits2.phpt 
+ext/standard/tests/misc/time_nanosleep_error4.phpt 
+tests/lang/bug35382.phpt 
+tests/lang/comments2.phpt 
+tests/run-test/test010.phpt 
+
+ =====> 0 tests bork in run-tests and do not bork in phpruntests
+
+ =====> 0 tests skip in phpruntests and do not skip in run-tests
+
+ =====> 1 tests skip in run-tests and do not skip in phpruntests
+ext/posix/tests/posix_ttyname_error_wrongparams.phpt
