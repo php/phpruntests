@@ -25,9 +25,18 @@ class rtSkipIfSection extends rtExecutableSection
         $testStatus = $testCase->getStatus();
         $this->setExecutableFileName($testCase->getName());
         $this->writeExecutableFile();
+        
+        $phpExecutable = $testCase->testConfiguration->getPhpExecutable();
 
-        $phpCommand = $runConfiguration->getSetting('PhpExecutable');
-        $phpCommand .= ' '.$runConfiguration->getSetting('PhpCommandLineArguments');
+        // The CGI excutable is null if it is not available, check and SKIP if necessary
+        if (is_null($phpExecutable)) {
+            $testStatus->setTrue('skip');
+            $testStatus->setMessage('skip', 'The CGI executable is unavailable' );         
+            return $testStatus;
+        }
+
+        $phpCommand = $phpExecutable;
+        $phpCommand .= ' '.$testCase->testConfiguration->getPhpCommandLineArguments();
         $phpCommand .= ' -f '.$this->fileName;
         
         $PhpRunner = new rtPhpRunner($phpCommand,
