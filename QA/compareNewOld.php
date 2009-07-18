@@ -72,7 +72,7 @@ return $result;
 function parseOld($output, $searchFor) {
 	$result = array();
 	foreach($output as $line) {
-		if (preg_match("/$searchFor.*\[(.+\.phpt)\]/", $line, $matches)) {
+		if (preg_match("/^TEST\s+\d+\/\d+\s+\[(.+\.phpt)\]\s+$searchFor/", $line, $matches)) {
        	         	$result[] = $matches[1];
 		}
 	}
