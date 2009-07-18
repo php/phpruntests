@@ -57,7 +57,7 @@ function parseNew($output, $searchFor, $top_level) {
 	foreach($output as $line) {
 		if (preg_match("/$top_level\/((ext|sapi|Zend|tests)\/\S+)\s{1},(.*)\s{1}$searchFor\s{1}/", $line, $matches)) {
        		         if($searchFor == 'FAIL') {
-                                 if(!preg_match("/XFAIL/", $matches[2])) {
+                                 if(!preg_match("/XFAIL/", $line)) {
        		         		$result[] = $matches[1] . ".phpt";
 				}
        		         } else {
@@ -65,14 +65,14 @@ function parseNew($output, $searchFor, $top_level) {
                          }
 		}
 
-	} 
+	}
 return $result;
 }
 
 function parseOld($output, $searchFor) {
 	$result = array();
 	foreach($output as $line) {
-		if (preg_match("/^TEST\s+\d+\/\d+\s+\[(.+\.phpt)\]\s+$searchFor/", $line, $matches)) {
+		if (preg_match("/^TEST\s+\d+\/\d+\s+\[(.+\.phpt)\]\s+$searchFor\s+/", $line, $matches)) {
        	         	$result[] = $matches[1];
 		}
 	}
