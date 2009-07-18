@@ -42,7 +42,7 @@ class rtPhpTest
     {
         $lastSection = end($this->sectionHeadings);
         $start=0;
-        
+
         foreach($this->sectionHeadings as $keyNumber => $sectionKey) {
 
             if($keyNumber < count($this->sectionHeadings) - 1) {
@@ -53,20 +53,17 @@ class rtPhpTest
             for($index=$start; $index<count($this->contents); $index++)
             if($this->contents[$index] == "--".$sectionKey."--") {
                 //Found the beginning of the section
-               
+                 
                 for($contentsLine=$index + 1; $contentsLine<count($this->contents); $contentsLine ++) {
-                
+
                     if( ($this->contents[$contentsLine] == "--".$nextKey."--") || ($contentsLine == count($this->contents))) {
                         //Found the end of the section OR the end of the test
                         $start = $contentsLine - 1;
                         if($this->isFileSection($sectionKey)) {
                             $tempArray = $this->removeDone($tempArray);
-                        }
-
-                        if(count($tempArray) > 0) {
-                            $testSection = rtSection::getInstance($sectionKey, $tempArray);
-                            $this->sections[$sectionKey] = $testSection;
-                        }
+                        }                        
+                        $testSection = rtSection::getInstance($sectionKey, $tempArray);
+                        $this->sections[$sectionKey] = $testSection;
                         break;
                     } else {
                         $tempArray[] = $this->contents[$contentsLine];
@@ -183,7 +180,7 @@ class rtPhpTest
         $result = array();
         foreach($array as $line) {
             $result[] = $line;
-            // If found at the start of the line, so ' ===done===' won't work.        
+            // If found at the start of the line, so ' ===done===' won't work.
             if(stripos($line, "===done===") === 0) {
                 break;
             }
