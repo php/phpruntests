@@ -31,12 +31,12 @@ class rtHasMandatorySections implements rtTestPreCondition
      * @param array $testCaseContents
      * @return boolean
      */
-    public function isMet(array $sectionHeadings)
+    public function isMet(array $testContents, array $sectionHeaders)
     {
 
-        if (in_array('TEST', $sectionHeadings )) {
-            if (in_array('FILE', $sectionHeadings ) || in_array('FILEOF', $sectionHeadings) || in_array('FILE_EXTERNAL', $sectionHeadings)) {
-                if (in_array('EXPECT', $sectionHeadings ) || in_array('EXPECTF', $sectionHeadings) || in_array('EXPECTREGEX', $sectionHeadings)) {
+        if (in_array('TEST', $sectionHeaders )) {
+            if (in_array('FILE', $sectionHeaders ) || in_array('FILEOF', $sectionHeaders) || in_array('FILE_EXTERNAL', $sectionHeaders)) {
+                if (in_array('EXPECT', $sectionHeaders ) || in_array('EXPECTF', $sectionHeaders) || in_array('EXPECTREGEX', $sectionHeaders)) {
                     return true;
                 }
             }

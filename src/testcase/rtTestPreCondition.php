@@ -14,7 +14,7 @@
  */
 interface rtTestPreCondition
 {
-    public function isMet(array $testContents);    
+    public function isMet(array $testContents, array $sectionHeaders);    
 
     public function getMessage(); 
 }

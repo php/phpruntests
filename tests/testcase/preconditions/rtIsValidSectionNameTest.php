@@ -10,7 +10,7 @@ class rtIsValidSectionNameTest extends PHPUnit_Framework_TestCase
         $precondition = new rtIsValidSectionName();
         $test = array('TEST',  'FILE');
 
-        $this->assertTrue($precondition->isMet($test));
+        $this->assertTrue($precondition->isMet(array(), $test));
     }
 
     public function testInvalid()
@@ -19,7 +19,7 @@ class rtIsValidSectionNameTest extends PHPUnit_Framework_TestCase
         $test = array('TEXT', 'FILE');
 
         $this->assertEquals("Test case contains an invalid section.", trim($precondition->getMessage()));
-        $this->assertFalse($precondition->isMet($test));
+        $this->assertFalse($precondition->isMet(array(), $test));
     }
 }
 

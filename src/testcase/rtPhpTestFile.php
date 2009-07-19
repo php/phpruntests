@@ -27,7 +27,8 @@ class rtPhpTestFile
         'rtHasMandatorySections',
         'rtHasNoDuplicateSections',
         'rtIsValidSectionName',
-        'rtIsSectionImplemented'
+        'rtIsSectionImplemented',
+        'rtHasNoEmptySections',
         );
         
         private function isSectionHeading($string) {
@@ -67,17 +68,18 @@ class rtPhpTestFile
                 //Just trim the contents lines here not the section header lines
                 if ($this->isSectionHeading($this->testContents[$i])) {
                     $this->testContents[$i] = $this->getUntrimmedSectionHeading($this->testContents[$i]);
+                    $this->sectionHeadings[] = $this->getSectionHeading($this->testContents[$i]);
                 }else {
                     $this->testContents[$i] = rtrim($this->testContents[$i], $this->carriageReturn.$this->newLine);
                 }
             }
         }
         
-        /*
+       /*
          * Removes and discards any empty test sections
          * Constructs a list of section headingg, stripped of their -- identifiers.
          */
-        public function removeEmptySections() {
+       /* public function removeEmptySections() {
             $tempArray = array();
             
             for ($i=0; $i<count($this->testContents) - 1; $i++) {
@@ -98,13 +100,13 @@ class rtPhpTestFile
             }
             $tempArray[] = end($this->testContents);
             $this->testContents = $tempArray;
-        }
+        }*/
 
         public function arePreConditionsMet()
         {
             foreach ($this->preConditions as $preCondition) {
                 $condition = new $preCondition;
-                if (!$condition->isMet($this->sectionHeadings)) {
+                if (!$condition->isMet($this->testContents, $this->sectionHeadings)) {
                     $this->testExitMessage = $condition->getMessage();
                     return false;
                 }

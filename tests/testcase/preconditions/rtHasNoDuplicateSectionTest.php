@@ -10,7 +10,7 @@ class rtHasNoDuplicateSectionTest extends PHPUnit_Framework_TestCase
         $precondition = new rtHasNoDuplicateSections();
         $test = array('TEST', 'FILE');
 
-        $this->assertTrue($precondition->isMet($test));
+        $this->assertTrue($precondition->isMet(array(), $test));
     }
 
     public function testDup()
@@ -19,7 +19,7 @@ class rtHasNoDuplicateSectionTest extends PHPUnit_Framework_TestCase
         $test = array('TEST', 'TEST');
 
         $this->assertEquals("The test has duplicate sections.", trim($precondition->getMessage()));
-        $this->assertFalse($precondition->isMet($test));
+        $this->assertFalse($precondition->isMet(array(), $test));
     }
 }
 ?>

@@ -28,14 +28,14 @@ class rtHasNoDuplicateSections implements rtTestPreCondition
     /**
      * Check that the PHP executable is a valid executable
      *
-     * @param array $testCaseContents
+     * @param array $testCaseContents, array $sectionHeaders
      * @return boolean
      */
-    public function isMet(array $sectionHeadings)
+    public function isMet(array $testContents, array $sectionHeaders)
     {
-        $uniqueSections = array_unique($sectionHeadings);
+        $uniqueSections = array_unique($sectionHeaders);
         
-        if (count($uniqueSections) < count($sectionHeadings)) {
+        if (count($uniqueSections) < count($sectionHeaders)) {
             return false;
         }
 

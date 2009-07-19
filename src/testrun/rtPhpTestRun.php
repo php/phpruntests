@@ -124,7 +124,6 @@ class rtPhpTestRun
                     $testFile = new rtPhpTestFile();
                     $testFile->doRead($testName);
                     $testFile->normaliseLineEndings();
-                    $testFile->removeEmptySections();
                     
                    // var_dump($testFile->getSectionHeadings());
                    // var_dump($testFile->getContents());

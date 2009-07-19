@@ -50,10 +50,10 @@ class rtIsSectionImplemented implements rtTestPreCondition
     /**
      * Check that the section has been implemented
      *
-     * @param array $testCaseContents
+     * @param array $testCaseContents, array $sectionHeaders
      * @return boolean
      */
-    public function isMet(array $sectionHeaders)
+    public function isMet(array $testContents, array $sectionHeaders)
     {
         foreach ($sectionHeaders as $section) {
             if (!array_key_exists($section, $this->sectionMap)) {

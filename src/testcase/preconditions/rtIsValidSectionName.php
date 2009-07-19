@@ -55,12 +55,12 @@ class rtIsValidSectionName implements rtTestPreCondition
     /**
      * Check that the section name is valid
      *
-     * @param array $testCaseContents
+     * @param array $testCaseContents, array $sectionHeaders
      * @return boolean
      */
-    public function isMet(array $sectionHeadings)
+    public function isMet(array $testContents, array $sectionHeaders)
     {
-        foreach ($sectionHeadings as $section) {
+        foreach ($sectionHeaders as $section) {
             if (!in_array($section, $this->validSectionNames)) {
                 return false;
             }

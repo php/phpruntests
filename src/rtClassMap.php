@@ -64,6 +64,7 @@ $rtClassMap = array(
     'rtTestOutputWriterXML'                    => 'testcase/output/rtTestOutputWriterXML.php',
     'rtHasMandatorySections'                   => 'testcase/preconditions/rtHasMandatorySections.php',
     'rtHasNoDuplicateSections'                 => 'testcase/preconditions/rtHasNoDuplicateSections.php',
+    'rtHasNoEmptySections'                     => 'testcase/preconditions/rtHasNoEmptySections.php',
     'rtIsSectionImplemented'                   => 'testcase/preconditions/rtIsSectionImplemented.php',
     'rtIsValidSectionName'                     => 'testcase/preconditions/rtIsValidSectionName.php',
     'rtPhpRunner'                              => 'testcase/rtPhpRunner.php',

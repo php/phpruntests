@@ -27,7 +27,7 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($this->sample_test);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
+     
         $fileArray = $testFile->getContents();
         $this->assertEquals('--TEST--', $fileArray[0]);
 
@@ -39,7 +39,7 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($this->sample_windows_test);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
+   
         
         $fileArray = $testFile->getContents();
         $fileString = implode(' ', $fileArray);
@@ -58,7 +58,7 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($this->sample_test);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
+     
         $fileArray = $testFile->getContents();
         $fileString = implode(' ', $fileArray);
 
@@ -76,24 +76,9 @@ class rtPhpTestFileTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($this->sample_test);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
+
 
         $this->assertTrue($testFile->arePreConditionsMet());       
     } 
-
- public function testEmptySections()
-    {
-        $testFile = new rtPhpTestFile();
-        $testFile->doRead($this->sample_es_test);
-        $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
-        $fileArray = $testFile->getContents();
-        
-
-
-        //Check that there are windows line endings in the original
-        $this->assertFalse(in_array('--GET--', $fileArray)); 
-
-    }
 }
 ?>

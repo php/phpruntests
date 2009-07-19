@@ -9,7 +9,7 @@ class rtHasMandatorySectionsTest extends PHPUnit_Framework_TestCase
     {
         $precondition = new rtHasMandatorySections();
         $test = array('TEST','FILE', 'EXPECT');
-        $this->assertTrue($precondition->isMet($test));
+        $this->assertTrue($precondition->isMet(array(), $test));
     }
 
     public function testHasNot()
@@ -17,7 +17,7 @@ class rtHasMandatorySectionsTest extends PHPUnit_Framework_TestCase
         $precondition = new rtHasMandatorySections();
         $test = array('TEST', 'FILE');
         $this->assertEquals("The test case is missing one or more mandatory sections.", trim($precondition->getMessage()));
-        $this->assertFalse($precondition->isMet($test));
+        $this->assertFalse($precondition->isMet(array(), $test));
     }
 }
 ?>

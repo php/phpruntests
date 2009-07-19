@@ -37,8 +37,7 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
-
+ 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);
@@ -64,7 +63,7 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
+    
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
@@ -90,7 +89,7 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
         $testFile = new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
-        $testFile->removeEmptySections();
+ 
 
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
