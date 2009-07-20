@@ -1,23 +1,35 @@
 <?xml version="1.0"?>
 
-<project name="runtests" default="test" basedir=".">
+<project name="runtests" default="qa" basedir=".">
 
-  <property name="build.dir" value="_build" />
-  
-  <target name="doc" description="Create API documentation in docs/html/.">
-    <delete dir="docs" />
-    <exec command="doxygen" />
+  <target name="clean">
+    <delete dir="_compare" />
+    <delete dir="_coverage" />
+    <delete dir="_docs" />
+    <delete dir="_sniff" />
+    <delete dir="QA/ext" />
+    <delete dir="QA/sapi" />
+    <delete dir="QA/tests" />
+    <delete dir="QA/Zend" />
   </target>
 
-  <target name="lint" description="Run a lint check on all PHP files.">
-    <phplint>
+  <target name="qa" depends="lint, test, coverage, compare, doc" description="Perform quality assurance.">
+  </target>
+  
+  <target name="doc" description="Create API documentation in _docs/html/.">
+    <delete dir="_docs" />
+    <exec command="doxygen" checkReturn="true"/>
+  </target>
+
+  <target name="lint" description="Lint check all PHP files.">
+    <phplint haltonfailure="true">
       <fileset dir="src">
         <include name="*.php"/>
         <include name="**/*.php"/>
       </fileset>
     </phplint>
 
-    <phplint>
+    <phplint haltonfailure="true">
       <fileset dir="tests">
         <include name="*.php"/>
         <include name="**/*.php"/>
@@ -26,32 +38,37 @@
   </target>
 
   <target name="test" description="Run all unit tests.">
-    <delete dir="coverage" />
-    <exec command="phpunit --coverage-html coverage tests" passthru="true" />
+    <delete dir="_coverage" />
+    <exec command="phpunit tests" passthru="true" checkReturn="true"/>
+  </target>
+
+  <target name="coverage" description="Create code coverage report in _coverage.">
+    <delete dir="_coverage" />
+    <exec command="phpunit --coverage-html _coverage tests" />
+  </target>
+
+  <target name="compare" description="Old/New comparison of phpt results.">
+    <fail unless="php" message="Path to PHP executable not defined, use -Dphp=/path/to/php" />
+
+    <delete dir="_compare" />
+    <mkdir dir="_compare" />
+
+    <delete dir="QA/ext" />
+    <delete dir="QA/sapi" />
+    <delete dir="QA/tests" />
+    <delete dir="QA/Zend" />
+
+    <exec command="tar xfz QATESTS.tgz" dir="QA" passthru="true" />
+    <exec command="${php} run-tests.php -p ${php} Zend ext sapi tests > ${project.basedir}/_compare/old.out" dir="QA" passthru="true" checkReturn="true"/>
+    <exec command="${php} ${project.basedir}/src/run-tests.php -p ${php} -o csv -s ${project.basedir}/_compare/new.out QA" dir="${project.basedir}" passthru="true" checkReturn="true" />
+    <exec command="${php} QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out QA  > ${project.basedir}/_compare/compare.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
   </target>
 
   <target name="sniff" description="Run all PHP_CodeSniffer sniffs.">
-    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/all src" passthru="true" />
-  </target>
-
-  <target name="sniff-compatibility" description="Run PHP_CodeSniffer compatibility sniffs.">
-    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/compatibility src" passthru="true" />
-  </target>
-
-  <target name="sniff-formatting" description="Run PHP_CodeSniffer formatting sniffs.">
-    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/formatting src" passthru="true" />
-  </target>
-
-  <target name="sniff-naming" description="Run PHP_CodeSniffer naming sniffs.">
-    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/naming src" passthru="true" />
-  </target>
-
-  <target name="sniff-documentation" description="Run PHP_CodeSniffer documentation sniffs.">
-    <exec command="phpcs -n --extensions=php --standard=${project.basedir}/cs/documentation src" passthru="true" />
-  </target>
-
-  <target name="sniff-guidelines" description="Run PHP_CodeSniffer guidelines sniffs.">
-    <exec command="phpcs -n  --extensions=php --standard=${project.basedir}/cs/guidelines src" passthru="true" />
+    <delete dir="_sniff" />
+    <mkdir dir="_sniff" />
+    
+    <exec command="phpcs -n --extensions=php --report=full src > ${project.basedir}/_sniff/sniff.out" passthru="true"/>
   </target>
 
 </project>
