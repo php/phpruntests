@@ -134,7 +134,7 @@ class rtTestResults
     {
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-skip')) {
             $this->savedFileNames['skipif'] = $this->testName. 'skipif.php';
-        } else {
+        } else if($testCase->hasSection('SKIPIF')) {
             $skipSection = $testCase->getSection('SKIPIF');
             $skipSection->deleteFile();
         }
