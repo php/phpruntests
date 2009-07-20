@@ -25,16 +25,22 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
 
     public function createOutput()
     {
-    	foreach ($this->resultList as $testResult) {	            
+    	foreach ($this->resultList as $testGroupResults) {
+        	
+        	foreach ($testGroupResults as $testResult) {
+	            
         		$outputString = $testResult->getName();
 	            $testStatus = $testResult->getStatus();
-	            foreach($testStatus->getTestStateNames() as $name) {	                
+	            
+	            foreach($testStatus->getTestStateNames() as $name) {
+	                
 	            	if($testStatus->getValue($name)) {
 	                    $outputString .= " , ". strtoupper($name);
 	                }
 	            }
 	            $this->output .= $outputString."\n";
         	}
+        }
     }
 
 }
