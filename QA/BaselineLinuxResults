@@ -1,0 +1,24 @@
+
+
+In the new code (phpruntests)...
+     Number of Warnings: 0
+     Number of Notices: 0
+     Number of Fatal: 0
+
+ =====> 1 tests fail in phpruntests and do not fail in run-tests
+ext/standard/tests/general_functions/phpinfo.phpt 
+
+ =====> 1 tests fail in run-tests and do not fail in phpruntests
+ext/standard/tests/mail/mail_variation2.phpt
+
+ =====> 4 tests bork in phpruntests and do not bork in run-tests
+ext/pdo_sqlite/tests/common.phpt 
+ext/sqlite/tests/pdo/common.phpt 
+tests/lang/bug35382.phpt 
+tests/lang/comments2.phpt 
+
+ =====> 0 tests bork in run-tests and do not bork in phpruntests
+
+ =====> 0 tests skip in phpruntests and do not skip in run-tests
+
+ =====> 0 tests skip in run-tests and do not skip in phpruntests
