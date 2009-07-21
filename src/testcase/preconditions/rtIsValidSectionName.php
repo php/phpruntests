@@ -17,6 +17,7 @@ class rtIsValidSectionName implements rtTestPreCondition
 {
     private $validSectionNames = array(
         'TEST',
+        'DESCRIPTION',
         'SKIPIF',
         'FILE',
         'FILEEOF', 
@@ -27,6 +28,7 @@ class rtIsValidSectionName implements rtTestPreCondition
         'INI',
         'ARGS', 
         'ENV',
+        'STDIN',
         'XFAIL', 
         'STDIN',
         'CREDITS',

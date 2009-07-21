@@ -17,6 +17,7 @@ abstract class rtSection
 {
     private static $sectionMap = array (
         'TEST'        => 'rtTestHeaderSection',
+        'DESCRIPTION' => 'rtDescriptionSection',
         'SKIPIF'      => 'rtSkipIfSection',
         'FILE'        => 'rtFileSection',
         'EXPECT'      => 'rtExpectSection',
@@ -25,6 +26,7 @@ abstract class rtSection
         'INI'         => 'rtIniSection',
         'ARGS'        => 'rtArgsSection',
         'ENV'         => 'rtEnvSection',
+        'STDIN'       => 'rtStdinSection',
         'CREDITS'     => 'rtCreditsSection',
         'CLEAN'       => 'rtCleanSection',
         'XFAIL'       => 'rtXfailSection',

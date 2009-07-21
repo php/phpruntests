@@ -20,6 +20,7 @@ class rtTestConfiguration
     private $testCommandLineArguments;
     private $phpExecutable;
     private $inputFileString;
+    private $stdin = null;
     private $cgiTest = false;
     private $cgiSections = array(
                             'GET',
@@ -45,6 +46,7 @@ class rtTestConfiguration
         $this->setTestCommandLineArguments($sections);
         $this->setPhpExecutable($runConfiguration, $sectionHeadings);
         $this->setInputFileString($runConfiguration, $sections, $sectionHeadings);
+        $this->setStdin($sections, $sectionHeadings);
 
     }
 
@@ -143,6 +145,12 @@ class rtTestConfiguration
             $this->cgiTest = true;
         }
     }
+    
+    private function setStdin($sections, $sectionHeadings) {
+     if(in_array('STDIN', $sectionHeadings)) {
+            $this->stdin = $sections['STDIN']->getInputString();
+        }
+    }
 
     public function getPhpExecutable()
     {
@@ -168,6 +176,11 @@ class rtTestConfiguration
     public function getInputFileString()
     {
         return $this->inputFileString;
+    }
+    
+    public function getStdin()
+    {
+        return $this->stdin;
     }
 
     public function isCgiTest()

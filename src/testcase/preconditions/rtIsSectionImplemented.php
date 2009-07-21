@@ -17,6 +17,7 @@ class rtIsSectionImplemented implements rtTestPreCondition
 {
     private $sectionMap = array(
         'TEST'        => 'rtTestHeaderSection',
+        'DESCRIPTION' => 'rtDescriptionSection',
         'SKIPIF'      => 'rtSkipIfSection',
         'FILE'        => 'rtFileSection',
         'EXPECT'      => 'rtExpectSection',
@@ -25,6 +26,7 @@ class rtIsSectionImplemented implements rtTestPreCondition
         'INI'         => 'rtIniSection',
         'ARGS'        => 'rtArgsSection',
         'ENV'         => 'rtEnvSection',
+        'STDIN'       => 'rtStdinSection',
         'CREDITS'     => 'rtCreditsSection',
         'CLEAN'       => 'rtCleanSection',
         'XFAIL'       => 'rtXfailSection',

@@ -49,7 +49,8 @@ class rtFileSection extends rtExecutableSection
 
         $PhpRunner = new rtPhpRunner($phpCommand,
         $testCase->testConfiguration->getEnvironmentVariables(),
-        $runConfiguration->getSetting('WorkingDirectory')
+        $runConfiguration->getSetting('WorkingDirectory'),
+        $testCase->testConfiguration->getStdin()
         );
 
         try {
