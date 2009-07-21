@@ -19,7 +19,7 @@ class rtStdinSection extends rtConfigurationSection
     
     protected function init()
     {
-        $this->inputString = join($this->sectionContents, PHP_EOL) . clPHP_EOL;
+        $this->inputString = join($this->sectionContents, PHP_EOL) . PHP_EOL;
     } 
 
     public function getInputString() {
