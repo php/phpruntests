@@ -59,9 +59,9 @@
     <delete dir="QA/Zend" />
 
     <exec command="tar xfz QATESTS.tgz" dir="QA" passthru="true" />
-    <exec command="${php} run-tests.php -p ${php} Zend ext sapi tests > ${project.basedir}/_compare/old.out" dir="QA" passthru="true" checkReturn="true"/>
-    <exec command="${php} ${project.basedir}/src/run-tests.php -p ${php} -o csv -s ${project.basedir}/_compare/new.out QA" dir="${project.basedir}" passthru="true" checkReturn="true" />
-    <exec command="${php} QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out QA  > ${project.basedir}/_compare/compare.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
+    <exec command="${php} -n run-tests.php -p ${php} Zend ext sapi tests > ${project.basedir}/_compare/old.out" dir="QA" passthru="true" checkReturn="true"/>
+    <exec command="${php} -n ${project.basedir}/src/run-tests.php -p ${php} -o csv -s ${project.basedir}/_compare/new.out QA" dir="${project.basedir}" passthru="true" checkReturn="true" />
+    <exec command="${php}  -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out QA  > ${project.basedir}/_compare/compare.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
   </target>
 
   <target name="sniff" description="Run all PHP_CodeSniffer sniffs.">
