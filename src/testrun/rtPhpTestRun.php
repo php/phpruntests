@@ -31,6 +31,7 @@ class rtPhpTestRun
         $runConfiguration->getUserEnvironment();
         $runConfiguration->configure();
         
+        
         //Check help message
         if($runConfiguration->hasCommandLineOption('help') || $runConfiguration->hasCommandLineOption('h')) {
             echo rtText::get('help');
@@ -42,6 +43,12 @@ class rtPhpTestRun
 
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
         $preConditionList->check($runConfiguration);
+        
+        
+        //Write PHP executable name to the array of env variables. Some 
+        //test cases expect to be able to use it.
+        $php = $runConfiguration->getSetting('PhpExecutable');
+        $runConfiguration->setEnvironmentVariable('TEST_PHP_EXECUTABLE', $php);
         
 
         if ($runConfiguration->getSetting('TestDirectories') != null) {
