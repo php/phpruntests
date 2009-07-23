@@ -53,15 +53,19 @@
     <delete dir="_compare" />
     <mkdir dir="_compare" />
 
-    <delete dir="QA/ext" />
-    <delete dir="QA/sapi" />
-    <delete dir="QA/tests" />
-    <delete dir="QA/Zend" />
+    <delete dir="/tmp/phpruntests" />
+    <mkdir dir="/tmp/phpruntests" />
 
-    <exec command="tar xfz QATESTS.tgz" dir="QA" passthru="true" />
-    <exec command="${php} -n run-tests.php -p ${php} Zend ext sapi tests > ${project.basedir}/_compare/old.out" dir="QA" passthru="true" checkReturn="true"/>
-    <exec command="${php} -n ${project.basedir}/src/run-tests.php -p ${php} -o csv -s ${project.basedir}/_compare/new.out QA" dir="${project.basedir}" passthru="true" checkReturn="true" />
-    <exec command="${php}  -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out QA  > ${project.basedir}/_compare/compare.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
+    <copy file="${project.basedir}/QA/QATESTS.tgz" tofile="/tmp/phpruntests/QATESTS.tgz" />
+
+    <exec command="tar xfz QATESTS.tgz" dir="/tmp/phpruntests" />
+
+    <exec command="${php} -n run-tests.php -p ${php} /tmp/phpruntests/Zend /tmp/phpruntests/ext /tmp/phpruntests/sapi /tmp/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="/tmp/phpruntests" passthru="true" checkReturn="true"/>
+    <exec command="${php} -n ${project.basedir}/src/run-tests.php -p ${php} -o csv -s ${project.basedir}/_compare/new.out /tmp/phpruntests" dir="${project.basedir}" passthru="true" checkReturn="true" />
+    
+    <exec command="${php} -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out phpruntests > ${project.basedir}/_compare/compare_new_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
+    
+    <exec command="${php} -n QA/compareNewNew.php ${project.basedir}/QA/BaselineLinuxResults ${project.basedir}/_compare/new.out phpruntests > ${project.basedir}/_compare/compare_baseline_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
   </target>
 
   <target name="sniff" description="Run all PHP_CodeSniffer sniffs.">
