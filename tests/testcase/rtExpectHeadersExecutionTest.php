@@ -1,7 +1,7 @@
 <?php
 
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once __DIR__ . '/../rtTestBootstrap.php';
 
 class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
 {
@@ -11,9 +11,6 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
-        $this->php_cgi = trim(shell_exec("which php-cgi"));
-
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests . '/sample_expectheaders.phpt';
         $this->sample_test_fail = $this->path_to_tests . '/sample_expectheaders_tofail.phpt';
@@ -24,12 +21,12 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         @unlink($this->path-to_tests . '/sample_expectheaders.php');
         @unlink($this->path-to_tests . '/sample_expectheaders_tofail.php');
     }
-
+    
     public function testFileRun()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
-        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE',$this->php_cgi);
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
+        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', RT_PHP_CGI_PATH);
         $config->configure();
 
         //Retrieve the array of test file names
@@ -40,7 +37,6 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
 
-
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);
@@ -48,18 +44,14 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
       
-      
-
         $this->assertFalse($testCase->getStatus()->getValue('fail_headers'));
-    
-      
-
     }
+    
     public function testForFail()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test_fail));
-        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE',$this->php_cgi);
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test_fail));
+        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', RT_PHP_CGI_PATH);
         $config->configure();
 
         //Retrieve the array of test file names
@@ -70,7 +62,6 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         $testFile->doRead($testFiles[0]);
         $testFile->normaliseLineEndings();
 
-
         //Create a new test case
         $status = new rtTestStatus($testFile->getTestName());
         $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $config, $status);
@@ -78,10 +69,7 @@ class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase
         //Setup and set the local environment for the test case
         $testCase->executeTest($config);
       
-        
         $this->assertTrue($testCase->getStatus()->getValue('fail_headers'));
-       
-
     }
 }
 ?>
