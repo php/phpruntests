@@ -49,7 +49,7 @@ class rtPhpRunner
         );
 
         if (!$proc) {
-            throw new rtPhpRunnerException('Failed to open process to run PHP code in rtPhpRunner');
+            throw new rtException('Failed to open process to run PHP code in rtPhpRunner');
         }
 
         if (!is_null($this->stdin)) {
@@ -67,10 +67,10 @@ class rtPhpRunner
             $n = @stream_select($r, $w, $e, $this->timeOut);
 
             if ($n === false) {
-                throw new rtPhpRunnerException('Stream select failure in rtPhpRunner');
+                throw new rtException('Stream select failure in rtPhpRunner');
             } else if ($n === 0) {
                 proc_terminate($proc);
-                throw new rtPhpRunnerException ('The process running test code has timed out in rtPhpRunner');
+                throw new rtException ('The process running test code has timed out in rtPhpRunner');
             } else if ($n > 0) {
                 $line = fread($pipes[1], 8192);
                 if (strlen($line) == 0) {
@@ -84,7 +84,7 @@ class rtPhpRunner
         /* check the process status. Note that this will always be FALSE on windows */
         $stat = proc_get_status($proc);
         if ($stat['signaled']) {
-            throw new rtPhpRunnerException('The process was terminated by uncaught signal number in rtPhpRunners');
+            throw new rtException('The process was terminated by uncaught signal number in rtPhpRunners');
         }
 
         $code = proc_close($proc);

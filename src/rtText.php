@@ -29,7 +29,7 @@ class rtText
         $filename = dirname(__FILE__) . '/texts/' . $name . '.txt';
 
         if (!file_exists($filename)) {
-            throw new LogicException('The text ' . $name . ' does not exist');
+            throw new rtException('The text ' . $name . ' does not exist');
         }
 
         $text = file_get_contents($filename);

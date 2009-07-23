@@ -54,7 +54,7 @@ abstract class rtPreConditionList
             $p = new $preCon;
             
             if (!$p->check($config)) {
-                throw new Exception($p->getMessage());
+                throw new rtException($p->getMessage());
             }
         }
 

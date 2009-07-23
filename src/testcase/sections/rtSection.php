@@ -58,7 +58,7 @@ abstract class rtSection
     public static function getInstance($sectionName, $contents)
     {
         if (!isset(self::$sectionMap[$sectionName])) {
-            throw new RuntimeException('Unknown section type ' . $sectionName);
+            throw new rtException('Unknown section type ' . $sectionName);
         }
 
         return new rtSection::$sectionMap[$sectionName]($sectionName, $contents);

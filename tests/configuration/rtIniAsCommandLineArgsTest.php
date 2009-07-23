@@ -45,7 +45,7 @@ class rtIniAsCommandLineArgsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException rtUnknownIniSettingException
+     * @expectedException rtException
      */
     public function testInvalidArg()
     {

@@ -43,7 +43,7 @@ class rtCleanSection extends rtExecutableSection
                 $testStatus->setMessage('fail_clean','Execution of clean section failed: '.trim($this->output) );
         
             } 
-        } catch (rtPhpRunnerException $e) {
+        } catch (rtException $e) {
             $testStatus->setTrue('fail_clean');
             $testStatus->setMessage('fail_clean',$e->getMessage);
         }

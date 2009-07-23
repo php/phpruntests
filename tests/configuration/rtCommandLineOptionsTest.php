@@ -58,7 +58,7 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException rtException
      */
     public function testMissingShortOptionArgument()
     {
@@ -68,7 +68,7 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException rtException
      */
     public function testMissingLongOptionArgument()
     {

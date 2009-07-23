@@ -68,7 +68,7 @@ class rtIniAsCommandLineArgs
                 $setting = $this->stripSpaces($setting);
                 $args .= " -d \"$setting\"";
             } else {
-                throw new rtUnknownIniSettingException("Invalid INI setting $setting");
+                throw new rtException("Invalid INI setting $setting");
             }
         }
 

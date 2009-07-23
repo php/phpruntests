@@ -12,7 +12,7 @@ class rtSectionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * @expectedException RuntimeException
+    * @expectedException rtException
     */
     public function testGetInstanceThrowsExceptionOnUnknownSection()
     {

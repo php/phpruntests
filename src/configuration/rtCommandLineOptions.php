@@ -156,7 +156,7 @@ class rtCommandLineOptions
             }
 
             if (!in_array($option, array_merge($this->shortOptions, $this->shortOptionsWithArgs, $this->longOptions, $this->longOptionsWithArgs))) {
-                throw new rtUnknownOptionException('Unknown option ' . $argv[$i]);
+                throw new rtException('Unknown option ' . $argv[$i]);
             }
 
             if (in_array($option, array_merge($this->shortOptions, $this->longOptions))) {
@@ -165,7 +165,7 @@ class rtCommandLineOptions
             }
 
             if (!$this->isValidOptionArg($argv, $i + 1)) {
-                throw new rtMissingArgumentException('Missing argument for command line option ' . $argv[$i]);
+                throw new rtException('Missing argument for command line option ' . $argv[$i]);
             }
 
             $i++;
