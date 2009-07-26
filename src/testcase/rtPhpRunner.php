@@ -21,7 +21,7 @@ class rtPhpRunner
     private $stdin;
     private $timeOut;
 
-    public function __construct($phpCommand, $environmentVariables, $currentWorkingDirectory, $stdin = null, $timeOut = 60)
+    public function __construct($phpCommand, $environmentVariables=null, $currentWorkingDirectory=null, $stdin = null, $timeOut = 60)
     {
         $this->phpCommand = $phpCommand;
         $this->environmentVariables = $environmentVariables;

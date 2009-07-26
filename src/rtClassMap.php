@@ -19,6 +19,7 @@ $rtClassMap = array(
     'rtIsProcOpenAvailable'                    => 'configuration/preconditions/rtIsProcOpenAvailable.php',
     'rtIsSafeModeDisabled'                     => 'configuration/preconditions/rtIsSafeModeDisabled.php',
     'rtIsTestFileSpecified'                    => 'configuration/preconditions/rtIsTestFileSpecified.php',
+    'rtIsValgrindAvailable'                    => 'configuration/preconditions/rtIsValgrindAvailable.php',
     'rtAddToCommandLine'                       => 'configuration/rtAddToCommandLine.php',
     'rtCommandLineOptions'                     => 'configuration/rtCommandLineOptions.php',
     'rtEnvironmentVariables'                   => 'configuration/rtEnvironmentVariables.php',

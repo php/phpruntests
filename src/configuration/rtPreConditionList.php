@@ -23,6 +23,7 @@ abstract class rtPreConditionList
         'rtIsSafeModeDisabled',
         'rtIsTestFileSpecified',
         'rtIsPhpVersionCorrect',
+        'rtIsValgrindAvailable',
     );
 
     /**
