@@ -74,6 +74,7 @@ class rtCommandLineOptions
         'temp-source',
         'temp-target',
         'set-timeout',
+        'mopts',
     );
                               
     /**

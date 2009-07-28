@@ -109,7 +109,7 @@ class rtTestConfiguration
     }
 
     private function setPhpExecutable($runConfiguration, $sectionHeadings)
-    {
+    {     
         if ($this->cgiTest) {
             if($runConfiguration->getSetting('PhpCgiExecutable') != null) {
                 $this->phpExecutable =  $runConfiguration->getSetting('PhpCgiExecutable'). " -C";

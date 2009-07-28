@@ -16,10 +16,12 @@ class rtFileSection extends rtExecutableSection
 {
     private $twoBlankLines = '\r?\n\r?\n';
     private $headers;
+    private $memFileName;
 
     public function setExecutableFileName($testName)
     {
-        $this->fileName = $testName.".php";
+        $this->fileName = $testName . ".php";
+        $this->memFileName = $testName . ".mem";
     }
 
     protected function init() {
@@ -27,8 +29,16 @@ class rtFileSection extends rtExecutableSection
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
+       
         $testStatus = $testCase->getStatus();
         $this->writeExecutableFile();
+        
+        $commandPrefix = "";
+        if($runConfiguration->hasExternalTool()) {
+            $commandPrefix = $runConfiguration->getExternalToolCommand();
+            //This assumes that the external tool write its output to a *.mem file
+            $commandPrefix .= $this->memFileName;
+        }
 
         $phpExecutable = $testCase->testConfiguration->getPhpExecutable();
 
@@ -40,12 +50,12 @@ class rtFileSection extends rtExecutableSection
         }
 
 
-        $phpCommand = $phpExecutable;
+        $phpCommand = $commandPrefix . " " . $phpExecutable;
         $phpCommand .= ' '. $testCase->testConfiguration->getPhpCommandLineArguments();
         $phpCommand .= ' -f '.$this->fileName;
         $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
         $phpCommand .= ' 2>&1 '.$testCase->testConfiguration->getInputFileString();
-         
+
 
         $PhpRunner = new rtPhpRunner($phpCommand,
         $testCase->testConfiguration->getEnvironmentVariables(),

@@ -22,6 +22,8 @@ abstract class rtRuntestsConfiguration
     private $settings;
     private $environmentVariables;
     private $commandLine;
+    
+    private $externalTool = null;
 
     private $settingNames = array (
     
@@ -67,6 +69,15 @@ abstract class rtRuntestsConfiguration
         //extend test command line using TEST_PHP_ARGS
         $options = new rtAddToCommandLine();
         $options->parseAdditionalOptions($this->commandLine, $this->environmentVariables);
+        
+        //if there is an external tool - configure it
+        
+        if($this->commandLine->hasOption('m') || $this->commandLine->hasOption('mtool')) {
+            $this->externalTool = rtExternalTool::getInstance($this);
+            $this->externalTool->checkAvailable($this);
+            $this->externalTool->init($this);
+            
+        }
 
         //set configuration
         foreach ($this->settingNames as $name => $className) {
@@ -144,5 +155,17 @@ abstract class rtRuntestsConfiguration
     public function getUserEnvironment() {
         $this->environmentVariables->getUserSuppliedVariables();
     }
+    
+    public function hasExternalTool() {
+        if($this->externalTool != null) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function getExternalToolCommand() {
+        return $this->externalTool->getCommand();
+    }
+    
 }
 ?>
