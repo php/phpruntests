@@ -15,7 +15,7 @@
  */
 
 
-class rtValgrind extends rtExternalTool
+class rtValgrind extends rtMemoryTool
 {
     public function checkAvailable($configuration)
     {
@@ -47,6 +47,10 @@ class rtValgrind extends rtExternalTool
         } else {
              $this->command .= " " . $options . " --log-file-exactly=";
         }
+    }
+    
+    public function setEnvironment($configuration) {
+        $configuration->setEnvironmentVariable('USE_ZEND_ALLOC', '0');
     }
 }
 ?>

@@ -14,7 +14,7 @@
  * 
  */
  
-class rtExternalTool
+class rtMemoryTool
 {
     protected $command;
     protected $options;
@@ -34,6 +34,7 @@ class rtExternalTool
         $this->setVersion();
         $this->setCommand($configuration);
         $this->setOptions($configuration);
+        $this->setEnvironment($configuration);
     }
     
     public function getCommand() {

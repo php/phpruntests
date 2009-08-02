@@ -23,7 +23,7 @@ abstract class rtRuntestsConfiguration
     private $environmentVariables;
     private $commandLine;
     
-    private $externalTool = null;
+    private $memoryTool = null;
 
     private $settingNames = array (
     
@@ -70,12 +70,12 @@ abstract class rtRuntestsConfiguration
         $options = new rtAddToCommandLine();
         $options->parseAdditionalOptions($this->commandLine, $this->environmentVariables);
         
-        //if there is an external tool - configure it
+        //if there is an memory tool - configure it
         
         if($this->commandLine->hasOption('m') || $this->commandLine->hasOption('mtool')) {
-            $this->externalTool = rtExternalTool::getInstance($this);
-            $this->externalTool->checkAvailable($this);
-            $this->externalTool->init($this);
+            $this->memoryTool = rtMemoryTool::getInstance($this);
+            $this->memoryTool->checkAvailable($this);
+            $this->memoryTool->init($this);
             
         }
 
@@ -136,7 +136,7 @@ abstract class rtRuntestsConfiguration
     }
 
     /**
-     * required for testing?
+     * required for testing - also used by memory tools
      *
      * @param unknown_type $name
      * @param unknown_type $value
@@ -156,15 +156,15 @@ abstract class rtRuntestsConfiguration
         $this->environmentVariables->getUserSuppliedVariables();
     }
     
-    public function hasExternalTool() {
-        if($this->externalTool != null) {
+    public function hasMemoryTool() {
+        if($this->memoryTool != null) {
             return true;
         }
         return false;
     }
     
-    public function getExternalToolCommand() {
-        return $this->externalTool->getCommand();
+    public function getMemoryToolCommand() {
+        return $this->memoryTool->getCommand();
     }
     
 }

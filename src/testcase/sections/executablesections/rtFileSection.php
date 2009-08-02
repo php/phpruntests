@@ -29,13 +29,13 @@ class rtFileSection extends rtExecutableSection
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
-       
+         
         $testStatus = $testCase->getStatus();
         $this->writeExecutableFile();
-        
+
         $commandPrefix = "";
-        if($runConfiguration->hasExternalTool()) {
-            $commandPrefix = $runConfiguration->getExternalToolCommand();
+        if($runConfiguration->hasMemoryTool()) {
+            $commandPrefix = $runConfiguration->getMemoryToolCommand();
             //This assumes that the external tool write its output to a *.mem file
             $commandPrefix .= $this->memFileName;
         }
@@ -45,7 +45,7 @@ class rtFileSection extends rtExecutableSection
         // The CGI excutable is null if it is not available, check and SKIP if necessary
         if (is_null($phpExecutable)) {
             $testStatus->setTrue('skip');
-            $testStatus->setMessage('skip', 'The CGI executable is unavailable' );         
+            $testStatus->setMessage('skip', 'The CGI executable is unavailable' );
             return $testStatus;
         }
 
@@ -80,20 +80,24 @@ class rtFileSection extends rtExecutableSection
 
         } catch (rtException $e) {
             $testStatus->setTrue('fail');
-            $testStatus->setMessage('fail', $e->getMessage() );         
+            $testStatus->setMessage('fail', $e->getMessage() );
         }
-    
-    return $testStatus;
-}
 
-/**
- *
- */
-public function getHeaders()
-{
-    return $this->headers;
-}
+        return $testStatus;
+    }
 
+    /**
+     *
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+
+    public function deleteMemFile() {
+        @unlink($this->memFileName);
+    }
 
 }
 ?>

@@ -57,6 +57,7 @@ class rtEnvironmentVariables
                 $this->environmentVariables[$variable] = getenv($variable);
             }
         }
+        
     }
 
     public function setVariable($var,$value)
