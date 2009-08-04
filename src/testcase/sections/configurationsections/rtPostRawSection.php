@@ -36,8 +36,8 @@ class rtPostRawSection extends rtConfigurationSection
     $this->postVariables['CONTENT_LENGTH'] = strlen($postString);
     $this->postVariables['REQUEST_METHOD'] = 'POST';
 
-    $this->postFileName = tempnam(sys_get_temp_dir(), 'post');
-
+    $this->postFileName = $this->testName . ".post";
+   
     file_put_contents($this->postFileName, $postString);
 }
 

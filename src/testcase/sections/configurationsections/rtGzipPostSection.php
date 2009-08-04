@@ -26,7 +26,7 @@ class rtGzipPostSection extends rtConfigurationSection
         $this->postVariables['CONTENT_LENGTH'] = strlen($gzipPostString);
         $this->postVariables['REQUEST_METHOD'] = 'POST';
 
-        $this->postFileName = tempnam(sys_get_temp_dir(), 'post');
+        $this->postFileName = $this->testName . ".post";
         
         file_put_contents($this->postFileName, $gzipPostString);
     }

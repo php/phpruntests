@@ -62,7 +62,7 @@ class rtPhpTest
                         if($this->isFileSection($sectionKey)) {
                             $tempArray = $this->removeDone($tempArray);
                         }                        
-                        $testSection = rtSection::getInstance($sectionKey, $tempArray);
+                        $testSection = rtSection::getInstance($sectionKey, $tempArray, $this->testName);
                         $this->sections[$sectionKey] = $testSection;
                         break;
                     } else {
@@ -72,7 +72,7 @@ class rtPhpTest
             }
         }
          
-        $testSection = rtSection::getInstance($lastSection, $tempArray);
+        $testSection = rtSection::getInstance($lastSection, $tempArray, $this->testName);
         $this->sections[$lastSection] = $testSection;
 
 

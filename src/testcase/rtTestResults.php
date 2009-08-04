@@ -64,6 +64,13 @@ class rtTestResults
                 @unlink($this->testName . '.mem');
             }  
         }
+        
+        //always delete temporary files used in POST sections
+        if(file_exists($this->testName . '.post')) {
+            @unlink($this->testName . '.post');
+        }
+        
+        
     }
 
     /**

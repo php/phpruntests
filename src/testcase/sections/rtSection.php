@@ -1,7 +1,7 @@
 <?php
 /**
  * rtSection
- * 
+ *
  * Parent class for all test sections
  *
  *
@@ -42,12 +42,14 @@ abstract class rtSection
 
     protected $sectionName;
     protected $sectionContents;
+    protected $testName;
 
     protected $carriageReturnLineFeed = "\r\n";
     protected $lineFeed = "\n";
 
-    protected function __construct($sectionName, $contents)
+    protected function __construct($sectionName, $contents, $testName)
     {
+        $this->testName = $testName;
         $this->sectionName = $sectionName;
         $this->sectionContents = $contents;
         $this->init();
@@ -55,13 +57,14 @@ abstract class rtSection
 
     abstract protected function init();
 
-    public static function getInstance($sectionName, $contents)
+    public static function getInstance($sectionName, $contents, $testName)
     {
+        
         if (!isset(self::$sectionMap[$sectionName])) {
             throw new rtException('Unknown section type ' . $sectionName);
         }
 
-        return new rtSection::$sectionMap[$sectionName]($sectionName, $contents);
+        return new rtSection::$sectionMap[$sectionName]($sectionName, $contents, $testName);
     }
 
     public function getName()
@@ -73,5 +76,6 @@ abstract class rtSection
     {
         return $this->sectionContents;
     }
+
 }
 ?>
