@@ -6,7 +6,7 @@ class rtDeflatePostSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance() 
     {
-        $postSection = rtDeflatePostSection::getInstance('DEFLATE_POST', array('hello=World&goodbye=MrChips'));  
+        $postSection = rtDeflatePostSection::getInstance('DEFLATE_POST', array('hello=World&goodbye=MrChips'), 'testname');  
         
         $envVars = $postSection->getPostVariables();
         $this->assertEquals('POST', $envVars['REQUEST_METHOD']);

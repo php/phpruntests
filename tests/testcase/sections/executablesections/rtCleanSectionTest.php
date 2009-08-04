@@ -7,7 +7,7 @@ class rtCleanSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance()
     {
-        $cleanSection = rtCleanSection::getInstance('CLEAN', array('<?php', 'echo "hello world";', '?>')); 
+        $cleanSection = rtCleanSection::getInstance('CLEAN', array('<?php', 'echo "hello world";', '?>'), 'testname'); 
         $code = $cleanSection->getContents();
  
         $this->assertEquals('<?php', $code[0]);

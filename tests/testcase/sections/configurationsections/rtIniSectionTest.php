@@ -7,7 +7,7 @@ class rtIniSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateInstance()
     {
-        $iniSection = rtIniSection::getInstance('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'));
+        $iniSection = rtIniSection::getInstance('INI', array('error_reporting=E_ALL | E_STRICT | E_DEPRECATED', 'assert.active = 1'), 'testname');
         $iniSection->substitutePWD('a-file-name');
         $inilist = $iniSection->getCommandLineArguments();
 
@@ -16,7 +16,7 @@ class rtIniSectionTest extends PHPUnit_Framework_TestCase
     }
     public function testSubtitutePWD()
     {
-        $iniSection = rtIniSection::getInstance('INI', array('include_path={PWD}'));
+        $iniSection = rtIniSection::getInstance('INI', array('include_path={PWD}'), 'testname');
         $afile = __FILE__;
         $iniSection->substitutePWD($afile);
         $inilist = $iniSection->getCommandLineArguments();

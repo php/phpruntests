@@ -12,7 +12,7 @@ class rtPostRawSectionTest extends PHPUnit_Framework_TestCase
                              'Content-Type:the second',
                              'mary',
                             );
-        $postSection = rtPostRawSection::getInstance('POST_RAW', $post_array);  
+        $postSection = rtPostRawSection::getInstance('POST_RAW', $post_array, 'testname');  
         
         $envVars = $postSection->getPostVariables();
         $this->assertEquals('POST', $envVars['REQUEST_METHOD']);

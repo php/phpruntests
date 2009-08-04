@@ -7,7 +7,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreatePattern()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello World'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello World'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello World', $pattern);
@@ -15,7 +15,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentE()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %e'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %e'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals("Hello \\/", $pattern);
@@ -23,7 +23,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentS()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %s'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %s'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello [^\r\n]+', $pattern);
@@ -31,7 +31,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentA() 
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %a'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %a'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello .+', $pattern);
@@ -39,7 +39,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentW()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %w'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %w'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello \s*', $pattern);
@@ -47,7 +47,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentI()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %i'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %i'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello [+-]?\d+', $pattern);
@@ -55,7 +55,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentD()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %d'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %d'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello \d+', $pattern);
@@ -63,7 +63,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentX()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %x'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %x'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello [0-9a-fA-F]+', $pattern);
@@ -71,7 +71,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentF() 
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %f'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %f'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello [+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?', $pattern);
@@ -79,7 +79,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
     
     public function testPercentR() 
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('%unicode|string%(18) "%r\0%rMyClass%r\0%rpri_value%r\0%r"'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('%unicode|string%(18) "%r\0%rMyClass%r\0%rpri_value%r\0%r"'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('string\(18\) "(\0)MyClass(\0)pri_value(\0)"', $pattern);
@@ -87,7 +87,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testPercentC() 
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %c'));
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %c'), 'testname');
         $pattern = $expectFSection->getPattern();
 
         $this->assertEquals('Hello .', $pattern);
@@ -95,7 +95,7 @@ class rtExpectFSectionTest extends PHPUnit_Framework_TestCase
 
     public function testCompare()
     {
-        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %s') );
+        $expectFSection = rtExpectFSection::getInstance('EXPECTF', array('Hello %s'), 'testname' );
         $result = $expectFSection->compare('Hello World');
 
         $this->assertTrue($result);
