@@ -25,8 +25,9 @@ abstract class rtExecutableSection extends rtSection
      
     protected function writeExecutableFile()
     {    
-        // @todo I think \n could be replaced with PHP_EOL here - need to check on Windows.   
-        $contentsAsString = implode("\n", $this->sectionContents) . PHP_EOL;
+        // Don't even think anout replacing the \n with PHP_EOL   
+        // It causes stuff (ext/phar/tests/005.phpt) on windows.
+        $contentsAsString = implode("\n", $this->sectionContents) . "\n";
         file_put_contents($this->fileName,  (binary) $contentsAsString);
     }
 
