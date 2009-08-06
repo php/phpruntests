@@ -16,14 +16,14 @@ class rtPhpTest
 {
     public $testConfiguration;
 
-    private $testName;
-    private $contents;
-    private $testStatus;
-    private $output;
-    private $sections;
-    private $fileSection;
-    private $expectSection;
-    private $sectionHeadings;
+    protected $testName;
+    protected $contents;
+    protected $testStatus;
+    protected $output;
+    protected $sections;
+    protected $fileSection;
+    protected $expectSection;
+    protected $sectionHeadings;
 
     public function __construct(array $contents, $testName, $sectionHeadings, $runConfiguration, $testStatus)
     {
@@ -164,7 +164,7 @@ class rtPhpTest
      * Identify a FILE section
      *
      */
-    private function isFileSection($key)
+    protected function isFileSection($key)
     {
         if (strpos($key, "FILE") !== false) {
             return true;
@@ -176,7 +176,7 @@ class rtPhpTest
     /*
      * Strip the lines after ===DONE=== from the file section of a test
      */
-    private function removeDone($array) {
+    protected function removeDone($array) {
         $result = array();
         foreach($array as $line) {
             $result[] = $line;
@@ -192,7 +192,7 @@ class rtPhpTest
     /**
      * Set the test's file section
      */
-    private function setFileSection()
+    protected function setFileSection()
     {
         if (array_key_exists('FILE', $this->sections)) {
             return $this->sections['FILE'];
@@ -211,7 +211,7 @@ class rtPhpTest
     /**
      * Sets the test's expect section
      */
-    private function setExpectSection()
+    protected function setExpectSection()
     {
         if (array_key_exists('EXPECT', $this->sections)) {
             return $this->sections['EXPECT'];

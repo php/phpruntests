@@ -14,9 +14,9 @@
  */
 class rtPhpTestGroup
 {
-    private $testDirectory;
-    private $testCases;
-    private $results;
+    protected $testDirectory;
+    protected $testCases;
+    protected $results;
 
     public function __construct(rtRuntestsConfiguration $runConfiguration, $directory)
     {

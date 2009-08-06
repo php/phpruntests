@@ -16,8 +16,8 @@
  */
 class rtTestOutputWriterHTML extends rtTestOutputWriter
 {
-	private $dom = null;
-	private $stage = null;	// base-node which holds the content
+	protected $dom = null;
+	protected $stage = null;	// base-node which holds the content
 
 	
 	public function __construct()

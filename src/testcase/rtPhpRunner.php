@@ -15,11 +15,11 @@
  */
 class rtPhpRunner
 {
-    private $phpCommand;
-    private $environmentVariables;
-    private $currentWorkingDirectory;
-    private $stdin;
-    private $timeOut;
+    protected $phpCommand;
+    protected $environmentVariables;
+    protected $currentWorkingDirectory;
+    protected $stdin;
+    protected $timeOut;
 
     public function __construct($phpCommand, $environmentVariables=null, $currentWorkingDirectory=null, $stdin = null, $timeOut = 60)
     {

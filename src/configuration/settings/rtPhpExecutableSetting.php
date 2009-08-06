@@ -17,7 +17,7 @@ class rtPhpExecutableSetting extends rtSetting
 {
     const SAPI_CLI =  "/sapi/cli/php";
 
-    private $phpExecutable;
+    protected $phpExecutable;
 
     /**
      * Sets the PHP executable, note the dependency on working directory

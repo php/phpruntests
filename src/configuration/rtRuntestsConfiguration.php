@@ -19,13 +19,13 @@ abstract class rtRuntestsConfiguration
 {
     protected $commandLineArgs;
 
-    private $settings;
-    private $environmentVariables;
-    private $commandLine;
+    protected $settings;
+    protected $environmentVariables;
+    protected $commandLine;
     
-    private $memoryTool = null;
+    protected $memoryTool = null;
 
-    private $settingNames = array (
+    protected $settingNames = array (
     
         'CurrentDirectory' => 'rtCurrentDirectorySetting',
         'WorkingDirectory' => 'rtWorkingDirectorySetting',

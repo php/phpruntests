@@ -15,10 +15,10 @@
  */
 class rtTestDifference
 {
-    private $difference;
-    private $expectedOutput;
-    private $output;
-    private $expectedRegularExpression;
+    protected $difference;
+    protected $expectedOutput;
+    protected $output;
+    protected $expectedRegularExpression;
 
     public function __construct(rtOutputSection $expectedOutput, $output)
     {

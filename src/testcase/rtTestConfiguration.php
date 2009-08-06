@@ -15,14 +15,14 @@
  */
 class rtTestConfiguration
 {
-    private $environmentVariables;
-    private $phpCommandLineArguments;
-    private $testCommandLineArguments;
-    private $phpExecutable;
-    private $inputFileString;
-    private $stdin = null;
-    private $cgiTest = false;
-    private $cgiSections = array(
+    protected $environmentVariables;
+    protected $phpCommandLineArguments;
+    protected $testCommandLineArguments;
+    protected $phpExecutable;
+    protected $inputFileString;
+    protected $stdin = null;
+    protected $cgiTest = false;
+    protected $cgiSections = array(
                             'GET',
                             'POST',
                             'POST_RAW',
@@ -37,7 +37,7 @@ class rtTestConfiguration
         $this->init($runConfiguration, $sections, $sectionHeadings, $fileSection);
     }
 
-    private function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings, $fileSection)
+    protected function init(rtRuntestsConfiguration $runConfiguration, $sections, $sectionHeadings, $fileSection)
     {
         $this->setCgiTest($sectionHeadings);
 
@@ -50,7 +50,7 @@ class rtTestConfiguration
 
     }
 
-    private function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
+    protected function setEnvironmentVariables(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
     {
         $this->environmentVariables = $runConfiguration->getEnvironmentVariables();
 
@@ -88,7 +88,7 @@ class rtTestConfiguration
 
     }
 
-    private function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
+    protected function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
     {
         $this->phpCommandLineArguments = $runConfiguration->getSetting('PhpCommandLineArguments');
         if (array_key_exists('INI', $sections)) {
@@ -99,7 +99,7 @@ class rtTestConfiguration
         }
     }
 
-    private function setTestCommandLineArguments($sections)
+    protected function setTestCommandLineArguments($sections)
     {
         $this->testCommandLineArguments = '';
 
@@ -108,7 +108,7 @@ class rtTestConfiguration
         }
     }
 
-    private function setPhpExecutable($runConfiguration, $sectionHeadings)
+    protected function setPhpExecutable($runConfiguration, $sectionHeadings)
     {     
         if ($this->cgiTest) {
             if($runConfiguration->getSetting('PhpCgiExecutable') != null) {
@@ -121,7 +121,7 @@ class rtTestConfiguration
         }
     }
 
-    private function setInputFileString($runConfiguration, $sections, $sectionHeadings)
+    protected function setInputFileString($runConfiguration, $sections, $sectionHeadings)
     {
         $this->inputFileString = '';
         if(in_array('POST', $sectionHeadings)) {
@@ -138,7 +138,7 @@ class rtTestConfiguration
         }
     }
 
-    private function setCgiTest($sectionHeadings)
+    protected function setCgiTest($sectionHeadings)
     {
         $tempArray = array_diff($this->cgiSections, $sectionHeadings);
         if (count($tempArray) < count($this->cgiSections)) {
@@ -146,7 +146,7 @@ class rtTestConfiguration
         }
     }
     
-    private function setStdin($sections, $sectionHeadings) {
+    protected function setStdin($sections, $sectionHeadings) {
      if(in_array('STDIN', $sectionHeadings)) {
             $this->stdin = $sections['STDIN']->getInputString();
         }

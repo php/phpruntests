@@ -31,7 +31,7 @@ class rtFileExternalSection extends rtFileSection
     /**
      * @return boolean
      */
-    private function copyExternalFileContent($testStatus)
+    protected function copyExternalFileContent($testStatus)
     {
     	if (sizeof($this->sectionContents) != 1) {
     	    $testStatus->setTrue('fail');

@@ -19,12 +19,12 @@ class rtIsPhpVersionCorrect extends rtPreCondition
     /**
      * @var int
      */
-    private $requiredMajorVersion = 5;
+    protected $requiredMajorVersion = 5;
 
     /**
      * @var int
      */
-    private $requiredMinorVersion = 3;
+    protected $requiredMinorVersion = 3;
 
     /**
      * Return the message associated with an invalid php-version

@@ -17,8 +17,8 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 {
 	const TMP_FILE = 'taskFile';
 	
-	private $pidStore = array(); 	// stores the pids of all child-processes
-	private $groupTasks = false;	// are the tasks stored in groups?
+	protected $pidStore = array(); 	// stores the pids of all child-processes
+	protected $groupTasks = false;	// are the tasks stored in groups?
 
     
 	/**
@@ -140,7 +140,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	 * creates a temporary file for each child which stores serialized task-objects
 	 * 
 	 */
-	private function distributeTasks() {
+	protected function distributeTasks() {
 
 		if ($this->groupTasks == true) { 
 
@@ -170,7 +170,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	 * 
 	 * @return void
 	 */
-	private function receiver()
+	protected function receiver()
 	{
 		for ($cid=0; $cid<$this->processCount; $cid++) {
 
@@ -202,7 +202,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	 * @param  int	$cid	the child-id
 	 * @return void
 	 */
-	private function child($cid)
+	protected function child($cid)
 	{
 		$taskList = file_get_contents(self::TMP_FILE.$cid);
 		$taskList = explode('[END]', $taskList);

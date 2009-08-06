@@ -15,7 +15,7 @@
  */
 abstract class rtSection
 {
-    private static $sectionMap = array (
+    protected static $sectionMap = array (
         'TEST'        => 'rtTestHeaderSection',
         'DESCRIPTION' => 'rtDescriptionSection',
         'SKIPIF'      => 'rtSkipIfSection',

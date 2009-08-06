@@ -15,7 +15,7 @@
  */
 class rtCurrentDirectorySetting extends rtSetting
 {
-    private $currentDirectory;
+    protected $currentDirectory;
 
     /**
      * Set the current directory

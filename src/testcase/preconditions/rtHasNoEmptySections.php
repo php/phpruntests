@@ -15,7 +15,7 @@
  */
 class rtHasNoEmptySections implements rtTestPreCondition
 {
-    private function isSectionHeading($string) {
+    protected function isSectionHeading($string) {
         return preg_match("/^--[A-Z]+(_[A-Z]+|)--/", $string);
     }
 

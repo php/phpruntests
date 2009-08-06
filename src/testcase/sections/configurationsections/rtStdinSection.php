@@ -15,7 +15,7 @@
  */
 class rtStdinSection extends rtConfigurationSection
 {   
-    private $inputString;
+    protected $inputString;
     
     protected function init()
     {

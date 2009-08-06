@@ -16,8 +16,8 @@
  */
 class rtTestOutputWriterXML extends rtTestOutputWriter
 {
-    private $dom = null;
-	private $rootNode = null;
+    protected $dom = null;
+	protected $rootNode = null;
 	
 	
 	public function __construct()

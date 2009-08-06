@@ -15,7 +15,7 @@
  */
 class rtArgsSection extends rtConfigurationSection
 {
-    private $testCommandLineArguments; 
+    protected $testCommandLineArguments; 
     
     protected function init()
     {

@@ -15,7 +15,7 @@
  */
 class rtIniSection extends rtConfigurationSection
 {
-    private $commandLineArguments = array();
+    protected $commandLineArguments = array();
 
     public function init()
     {

@@ -17,7 +17,7 @@
  */
 class rtTestFileSetting extends rtSetting
 {
-    private $testFiles;
+    protected $testFiles;
 
     /**
      * Check each filename - if it's not a directory and the name ends .phpt

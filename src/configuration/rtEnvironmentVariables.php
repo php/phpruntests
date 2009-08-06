@@ -31,7 +31,7 @@ class rtEnvironmentVariables
         'NO_PHPTEST_SUMMARY',
     );
 
-    private $environmentVariables = array();
+    protected $environmentVariables = array();
 
     public function __construct()
     {

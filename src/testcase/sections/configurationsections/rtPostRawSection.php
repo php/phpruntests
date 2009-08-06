@@ -14,8 +14,8 @@
  */
 class rtPostRawSection extends rtConfigurationSection
 {
-    private $postVariables = array();
-    private $postFileName;
+    protected $postVariables = array();
+    protected $postFileName;
 
     protected function init()
     {

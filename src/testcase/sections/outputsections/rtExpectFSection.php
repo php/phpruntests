@@ -37,7 +37,7 @@ class rtExpectFSection extends rtOutputSection
      * @param string
      * @return string
      */
-    private function expectfUnicodeSubstitutions($string)
+    protected function expectfUnicodeSubstitutions($string)
     {
         $string = str_replace(
         array('%unicode_string_optional%'),
@@ -72,7 +72,7 @@ class rtExpectFSection extends rtOutputSection
      * @param string
      * @return string
      */
-    private function expectfRegexSubstitutions($string)
+    protected function expectfRegexSubstitutions($string)
     {
         $string = str_replace('%e', '\\' . DIRECTORY_SEPARATOR, $string);
         $string = str_replace('%s', '[^\r\n]+', $string);
@@ -94,7 +94,7 @@ class rtExpectFSection extends rtOutputSection
      * @param string
      * @return string
      */
-    private function expectfEmbeddedRegex($string) {
+    protected function expectfEmbeddedRegex($string) {
         $temp = "";
         $r = "%r";
         $startOffset = 0;

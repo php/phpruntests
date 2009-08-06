@@ -15,7 +15,7 @@
  */
 class rtPhpTestRun
 {
-    private $commandLineArguments;
+    protected $commandLineArguments;
 
     public function __construct($argv)
     {

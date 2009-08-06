@@ -14,16 +14,16 @@
  */
 class rtPhpTestFile
 {
-    private $fileName;
-    private $testName;
-    private $testContents;
-    private $testExitMessage;
-    private $sectionHeadings = array();
+    protected $fileName;
+    protected $testName;
+    protected $testContents;
+    protected $testExitMessage;
+    protected $sectionHeadings = array();
 
-    private $carriageReturn = "\r";
-    private $newLine = "\n";
+    protected $carriageReturn = "\r";
+    protected $newLine = "\n";
 
-    private $preConditions = array (
+    protected $preConditions = array (
         'rtHasMandatorySections',
         'rtHasNoDuplicateSections',
         'rtIsValidSectionName',
@@ -31,16 +31,16 @@ class rtPhpTestFile
         'rtHasNoEmptySections',
         );
         
-        private function isSectionHeading($string) {
+        protected function isSectionHeading($string) {
             return preg_match("/^\s*--[A-Z]+(_[A-Z]+|)--/", $string);
         }
         
-        private function getUntrimmedSectionHeading($string) {
+        protected function getUntrimmedSectionHeading($string) {
             preg_match("/^\s*(--[A-Z]+(_[A-Z]+|)--)/", $string, $matches);
             return $matches[1];
         }
         
-        private function getSectionHeading($string) {
+        protected function getSectionHeading($string) {
             preg_match("/^\s*--([A-Z]+(_[A-Z]+|))--/", $string, $matches);
             return $matches[1];
         }

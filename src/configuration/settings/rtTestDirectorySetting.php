@@ -17,7 +17,7 @@
  */
 class rtTestDirectorySetting extends rtSetting
 {
-    private $testDir = null;
+    protected $testDir = null;
     
     /**
      * Check each option - if it's a directory add it to the list.

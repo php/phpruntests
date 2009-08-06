@@ -16,7 +16,7 @@
  */
 class rtPhpCommandLineArgSetting extends rtSetting
 {
-    private $phpCommandLineArguments;
+    protected $phpCommandLineArguments;
     
     /**
      * Sets the command line arguments for

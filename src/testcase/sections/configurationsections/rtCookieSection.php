@@ -14,7 +14,7 @@
  */
 class rtCookieSection extends rtConfigurationSection
 {
-    private $cookieVariables = array();
+    protected $cookieVariables = array();
 
     protected function init()
     {

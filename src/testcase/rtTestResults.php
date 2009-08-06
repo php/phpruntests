@@ -19,11 +19,11 @@
  */
 class rtTestResults
 {
-    private $testStatus;
-    private $testName = '';
-    private $savedFileNames = array();
-    private $title = '';
-    private $time = 0;
+    protected $testStatus;
+    protected $testName = '';
+    protected $savedFileNames = array();
+    protected $title = '';
+    protected $time = 0;
 
     public function __construct(rtPhpTest $testCase = null, rtTestStatus $testStatus = null) 
     {
@@ -76,7 +76,7 @@ class rtTestResults
     /**
      * Actions if a test passes
      */
-    private function onPass(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
+    protected function onPass(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
         if (!$runConfiguration->hasCommandLineOption('keep-all') && !$runConfiguration->hasCommandLineOption('keep-php')) {
             $testCase->getFileSection()->deleteFile();
@@ -115,7 +115,7 @@ class rtTestResults
         
     }
 
-    private function onFail(rtPhpTest $testCase)
+    protected function onFail(rtPhpTest $testCase)
     {
         $testDifference = new rtTestDifference($testCase->getExpectSection(), $testCase->getOutput());
         $difference = implode(b"\n",$testDifference->getDifference());
@@ -148,7 +148,7 @@ class rtTestResults
         }
     }
 
-    private function onSkip(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
+    protected function onSkip(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-skip')) {
             $this->savedFileNames['skipif'] = $this->testName. 'skipif.php';

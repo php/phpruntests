@@ -14,10 +14,10 @@
  */
 class rtTestStatus {
 
-    private $testName;
-    private $states = array();
-    private $messages = array();
-    private $testStateNames = array ('skip',
+    protected $testName;
+    protected $states = array();
+    protected $messages = array();
+    protected $testStateNames = array ('skip',
                                 'bork',
                                 'warn',
                                 'xfail',
@@ -35,7 +35,7 @@ class rtTestStatus {
         $this->init();
     }
 
-    private function init()
+    protected function init()
     {
         foreach ($this->testStateNames as $name) {
             $this->states[$name] = false;

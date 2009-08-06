@@ -14,9 +14,9 @@
  */
 class rtFileSection extends rtExecutableSection
 {
-    private $twoBlankLines = '\r?\n\r?\n';
-    private $headers;
-    private $memFileName;
+    protected $twoBlankLines = '\r?\n\r?\n';
+    protected $headers;
+    protected $memFileName;
 
     public function setExecutableFileName($testName)
     {

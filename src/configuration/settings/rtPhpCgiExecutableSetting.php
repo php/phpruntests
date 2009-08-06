@@ -17,9 +17,9 @@ class rtPhpCgiExecutableSetting extends rtSetting
 {
     const SAPI_CGI = "/sapi/cgi/php-cgi";
 
-    private $phpCgiExecutable;
+    protected $phpCgiExecutable;
 
-    private $configuration;
+    protected $configuration;
 
     /**
      * Sets the PHP CGI executable. Note the dependency on having a working directory setting

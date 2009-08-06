@@ -16,7 +16,7 @@
  */
 class rtWorkingDirectorySetting extends rtSetting
 {
-    private $workingDirectory;
+    protected $workingDirectory;
     
     /**
      * Sets the working directory

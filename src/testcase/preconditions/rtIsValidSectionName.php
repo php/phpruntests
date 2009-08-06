@@ -15,7 +15,7 @@
  */
 class rtIsValidSectionName implements rtTestPreCondition
 {
-    private $validSectionNames = array(
+    protected $validSectionNames = array(
         'TEST',
         'DESCRIPTION',
         'SKIPIF',

@@ -19,7 +19,7 @@
  */
 class rtLogFormatSetting extends rtSetting
 {
-    private $logFormat;
+    protected $logFormat;
 
     /**
      * Sets log format to that specifiled by TEST_PHP_LOG_FORMAT or LEOD

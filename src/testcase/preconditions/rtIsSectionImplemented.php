@@ -15,7 +15,7 @@
  */
 class rtIsSectionImplemented implements rtTestPreCondition
 {
-    private $sectionMap = array(
+    protected $sectionMap = array(
         'TEST'        => 'rtTestHeaderSection',
         'DESCRIPTION' => 'rtDescriptionSection',
         'SKIPIF'      => 'rtSkipIfSection',

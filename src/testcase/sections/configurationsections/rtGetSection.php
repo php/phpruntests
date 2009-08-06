@@ -14,7 +14,7 @@
  */
 class rtGetSection extends rtConfigurationSection
 {
-    private $getVariables = array();
+    protected $getVariables = array();
 
     protected function init()
     {

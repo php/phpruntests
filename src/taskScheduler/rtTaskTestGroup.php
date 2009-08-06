@@ -13,8 +13,8 @@
  */
 class rtTaskTestGroup extends rtTask implements rtTaskInterface
 {
-	private $runConfiguration;
-	private $subDirectory;
+	protected $runConfiguration;
+	protected $subDirectory;
 
 	
 	public function __construct($runConfiguration, $subDirectory)

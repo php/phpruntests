@@ -21,9 +21,9 @@ class rtTaskSchedulerMsgQ extends rtTaskScheduler
 	const MSG_QUEUE_SIZE = 1024;	// max-size of a single message
 	const KILL_CHILD = 'killBill';	// kill-signal to terminate a child
 
-	private $inputQueue = NULL;		// the input-queue (only used by the sender)
-	private $pidStore = array(); 	// stores the pids of all child-processes
-	private $groupTasks = false;	// are the tasks stored in groups?
+	protected $inputQueue = NULL;		// the input-queue (only used by the sender)
+	protected $pidStore = array(); 	// stores the pids of all child-processes
+	protected $groupTasks = false;	// are the tasks stored in groups?
 	
 	
 	
@@ -70,7 +70,7 @@ class rtTaskSchedulerMsgQ extends rtTaskScheduler
 	/**
 	 * removes the used message-queues.
 	 */
-    private static function cleanUp()
+    protected static function cleanUp()
     {
 		@msg_remove_queue(msg_get_queue(self::MSG_QUEUE_KEY));
 		@msg_remove_queue(msg_get_queue(self::MSG_QUEUE_KEY+1));
@@ -174,7 +174,7 @@ class rtTaskSchedulerMsgQ extends rtTaskScheduler
 	 * 
 	 * @return void
 	 */
-	private function receiver()
+	protected function receiver()
 	{
 		$resultQueue = msg_get_queue(self::MSG_QUEUE_KEY+1);
 
@@ -241,7 +241,7 @@ class rtTaskSchedulerMsgQ extends rtTaskScheduler
 	 * 
 	 * @return void
 	 */
-	private function sender()
+	protected function sender()
 	{
 		$this->inputQueue = msg_get_queue(self::MSG_QUEUE_KEY);
 
@@ -273,7 +273,7 @@ class rtTaskSchedulerMsgQ extends rtTaskScheduler
 	 * @param  int	$type	the message-type (default=1)
 	 * @return void
 	 */
-	private function sendTask(task $task, $index, $type=1)
+	protected function sendTask(task $task, $index, $type=1)
 	{
 		$task->setIndex($index);
 
@@ -297,7 +297,7 @@ class rtTaskSchedulerMsgQ extends rtTaskScheduler
 	 * @param  int	$cid	the child-id (default=NULL)
 	 * @return void
 	 */
-	private function child($cid=NULL)
+	protected function child($cid=NULL)
 	{
 		if (is_null($cid)) {
 			$cid = 0;

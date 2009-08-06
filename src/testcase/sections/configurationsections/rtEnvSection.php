@@ -15,7 +15,7 @@
  */
 class rtEnvSection extends rtConfigurationSection
 {
-    private $testEnvironmentVariables = array();
+    protected $testEnvironmentVariables = array();
 
     protected function init()
     {
