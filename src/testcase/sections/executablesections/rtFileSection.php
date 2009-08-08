@@ -18,13 +18,9 @@ class rtFileSection extends rtExecutableSection
     protected $headers;
     protected $memFileName;
 
-    public function setExecutableFileName($testName)
-    {
-        $this->fileName = $testName . ".php";
-        $this->memFileName = $testName . ".mem";
-    }
-
     protected function init() {
+        $this->fileName = $this->testName . ".php";
+        $this->memFileName = $this->testName . ".mem";
     }
 
     public function run(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
@@ -83,6 +79,15 @@ class rtFileSection extends rtExecutableSection
             $testStatus->setMessage('fail', $e->getMessage() );
         }
 
+         
+        if($runConfiguration->hasMemoryTool()) {
+            if(filesize($this->memFileName) > 0) {
+                $testStatus->setTrue('leak');
+            } else {
+                $this->deleteMemFile();
+            }
+        }
+
         return $testStatus;
     }
 
@@ -97,6 +102,11 @@ class rtFileSection extends rtExecutableSection
 
     public function deleteMemFile() {
         @unlink($this->memFileName);
+    }
+
+
+    public function getMemFileName() {
+        return $this->memFileName;
     }
 
 }

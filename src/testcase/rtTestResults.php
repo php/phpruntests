@@ -113,6 +113,10 @@ class rtTestResults
             $testCase->getSection('SKIPIF')->deleteFile();
         }
         
+        if($testCase->getStatus()->getValue('leak') == true) {
+            $this->savedFileNames['mem'] = $testCase->getSection('FILE')->getMemFileName();
+        }
+        
     }
 
     protected function onFail(rtPhpTest $testCase)
@@ -146,6 +150,10 @@ class rtTestResults
         if ($testCase->hasSection('SKIPIF')) {
             $this->savedFileNames['skipif'] = $this->testName. 'skipif.php';
         }
+        
+        if($testCase->getStatus()->getValue('leak') == true) {
+            $this->savedFileNames['mem'] = $testCase->getSection('FILE')->getMemFileName();
+        }
     }
 
     protected function onSkip(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
@@ -153,10 +161,10 @@ class rtTestResults
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-skip')) {
             $this->savedFileNames['skipif'] = $this->testName. 'skipif.php';
         } else if($testCase->hasSection('SKIPIF')) {
-            $skipSection = $testCase->getSection('SKIPIF');
-            $skipSection->deleteFile();
+            $testCase->getSection('SKIPIF')->deleteFile();
         }
         
+        //TODO I think this can go? Have since updated code to BORK on finding blank sections
         //It may seem odd to check for an XFAIL if we are skipping the test, on the other hand I found
         //a few windows tests with blank XFAIL sections and wanted to know about those.
         
@@ -166,6 +174,8 @@ class rtTestResults
         }
     }
 
+    
+    
     public function getStatus()
     {
         return $this->testStatus;
