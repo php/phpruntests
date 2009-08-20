@@ -18,6 +18,7 @@ abstract class rtExecutableSection extends rtSection
     protected $fileName;
     protected $output;
     protected $status;
+    protected $phpCommand = null;
 
     protected function init()
     {
@@ -44,6 +45,11 @@ abstract class rtExecutableSection extends rtSection
     public function getOutput()
     {
         return $this->output;
+    }
+
+    public function getPhpCommand()
+    {
+    	return $this->phpCommand;
     }
 
     abstract function run(rtPhpTest $testcase, rtRuntestsConfiguration $runConfiguration);

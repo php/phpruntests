@@ -52,6 +52,7 @@ class rtFileSection extends rtExecutableSection
         $phpCommand .= ' '.$testCase->testConfiguration->getTestCommandLineArguments();
         $phpCommand .= ' 2>&1 '.$testCase->testConfiguration->getInputFileString();
 
+        $this->phpCommand = $phpCommand;
 
         $PhpRunner = new rtPhpRunner($phpCommand,
         $testCase->testConfiguration->getEnvironmentVariables(),
@@ -100,14 +101,17 @@ class rtFileSection extends rtExecutableSection
     }
 
 
-    public function deleteMemFile() {
+    public function deleteMemFile()
+    {
         @unlink($this->memFileName);
     }
 
 
-    public function getMemFileName() {
+    public function getMemFileName()
+    {
         return $this->memFileName;
     }
+
 
 }
 ?>

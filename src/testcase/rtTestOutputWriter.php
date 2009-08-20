@@ -277,6 +277,11 @@ abstract class rtTestOutputWriter
 							print "$t:\t$file\n";
 						}
 					}
+					
+					$cmd = $s->getExecutedPhpCommand();
+					if (!is_null($cmd)) {
+						print "PHP-COMMAND: $cmd\n";
+					}
 				}
     			break;
     	}

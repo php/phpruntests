@@ -104,10 +104,13 @@ class rtPhpTest
 
         if (array_key_exists('SKIPIF', $this->sections)) {
             $this->testStatus = $this->sections['SKIPIF']->run($this, $runConfiguration);
+            $this->testStatus->setExecutedPhpCommand($this->sections['SKIPIF']->getPhpCommand());
         }
 
         if (!$this->testStatus->getValue('skip') && !$this->testStatus->getValue('skip')) {
             $this->testStatus = $this->fileSection->run($this, $runConfiguration);
+            $this->testStatus->setExecutedPhpCommand($this->fileSection->getPhpCommand());
+            
             //The test can be skipped by file sections if the CGI executable is not available
             if(!$this->testStatus->getValue('skip')) {
                 $this->output = $this->fileSection->getOutput();

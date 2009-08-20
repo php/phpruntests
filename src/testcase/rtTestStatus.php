@@ -17,6 +17,7 @@ class rtTestStatus {
     protected $testName;
     protected $states = array();
     protected $messages = array();
+    protected $executedPhpCommand;    
     protected $testStateNames = array ('skip',
                                 'bork',
                                 'warn',
@@ -72,6 +73,16 @@ class rtTestStatus {
     public function getTestName()
     {
         return $this->testName;
+    }
+    
+    public function setExecutedPhpCommand($cmd)
+    {
+    	$this->executedPhpCommand = $cmd;
+    }
+    
+    public function getExecutedPhpCommand()
+    {
+    	return $this->executedPhpCommand;
     }
 
     public function __toString()
