@@ -17,7 +17,8 @@ class rtWinConfiguration extends rtRuntestsConfiguration
 {
     public function __construct($cmdlineArgs)
     {
-        $this->commandLineArgs = $cmdlineArgs;
+        $this->operatingSystem = 'Windows';
+    	$this->commandLineArgs = $cmdlineArgs;
         $this->init();
     }
 

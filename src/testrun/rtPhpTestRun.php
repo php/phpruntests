@@ -26,11 +26,14 @@ class rtPhpTestRun
     {
         //Set SSH variables
 
+    	// check the operation-system (win/unix)
+    	$os = (substr(PHP_OS, 0, 3) == "WIN") ? 'Windows' : 'Unix';
+    	
         //Configure the test environment
-        $runConfiguration = rtRuntestsConfiguration::getInstance($this->commandLineArguments);
+        $runConfiguration = rtRuntestsConfiguration::getInstance($this->commandLineArguments, $os);
         $runConfiguration->getUserEnvironment();
         $runConfiguration->configure();
-        
+
         
         //Check help message
         if($runConfiguration->hasCommandLineOption('help') || $runConfiguration->hasCommandLineOption('h')) {
@@ -39,7 +42,7 @@ class rtPhpTestRun
         }
 
         //Check the preconditions
-        $preConditionList = rtPreConditionList::getInstance();
+        $preConditionList = rtPreConditionList::getInstance($os);
 
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
         $preConditionList->check($runConfiguration);

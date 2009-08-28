@@ -19,7 +19,7 @@ class rtUnixEnvironmentVariables extends rtEnvironmentVariables
      * Adapts the environment to Unix
      *
      */
-    public function adaptEnvironment()
+    public function __construct()
     {
         array_push($this->userSuppliedVariables, 'TEST_PHP_PARALLEL');
     }

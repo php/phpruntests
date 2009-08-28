@@ -22,6 +22,7 @@ abstract class rtRuntestsConfiguration
     protected $settings;
     protected $environmentVariables;
     protected $commandLine;
+    protected $operatingSystem;
     
     protected $memoryTool = null;
 
@@ -58,7 +59,7 @@ abstract class rtRuntestsConfiguration
         $this->commandLine->parse($this->commandLineArgs);
 
         //create object to hold environment variables
-        $this->environmentVariables = rtEnvironmentVariables::getInstance();       
+        $this->environmentVariables = rtEnvironmentVariables::getInstance($this->operatingSystem);
     }
 
     /**

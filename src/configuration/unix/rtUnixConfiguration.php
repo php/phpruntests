@@ -17,7 +17,8 @@ class rtUnixConfiguration extends rtRuntestsConfiguration
 {
     public function __construct($cmdlineArgs)
     {
-        $this->commandLineArgs = $cmdlineArgs;
+        $this->operatingSystem = 'Unix';
+    	$this->commandLineArgs = $cmdlineArgs;
         $this->init();
     }
     

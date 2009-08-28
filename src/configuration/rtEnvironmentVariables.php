@@ -33,10 +33,10 @@ class rtEnvironmentVariables
 
     protected $environmentVariables = array();
 
-    public function __construct()
-    {
-    }
+    
+    protected function __construct() {}
 
+    
     static public function getInstance ($os = 'Unix')
     {
         if ($os == 'Windows') {
@@ -57,7 +57,6 @@ class rtEnvironmentVariables
                 $this->environmentVariables[$variable] = getenv($variable);
             }
         }
-        
     }
 
     public function setVariable($var,$value)

@@ -37,7 +37,6 @@ class rtEnvironmentVariablesTest extends PHPUnit_Framework_TestCase
     {
         putenv('TEST_PHP_PARALLEL=a-parallel-run');
         $ev = rtEnvironmentVariables::getInstance();
-        $ev->adaptEnvironment();
         $ev->getUserSuppliedVariables();
 
         $this->assertEquals('a-parallel-run', $ev->getVariable('TEST_PHP_PARALLEL'));
@@ -47,7 +46,6 @@ class rtEnvironmentVariablesTest extends PHPUnit_Framework_TestCase
     {
         putenv('SystemRoot=some-windows-thing');
         $ev = rtEnvironmentVariables::getInstance('Windows');
-        $ev->adaptEnvironment();
         $ev->getUserSuppliedVariables();
   
         $this->assertEquals('some-windows-thing', $ev->getVariable('SystemRoot'));
