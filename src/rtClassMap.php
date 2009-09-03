@@ -7,11 +7,6 @@
  * To re-generate this file, run the script BuildClassMap.php.
  */
 $rtClassMap = array(
-    'rtEnvironmentException'                   => 'configuration/exceptions/rtEnvironmentException.php',
-    'rtException'                              => 'configuration/exceptions/rtException.php',
-    'rtMissingArgumentException'               => 'configuration/exceptions/rtMissingArgumentException.php',
-    'rtUnknownIniSettingException'             => 'configuration/exceptions/rtUnknownIniSettingException.php',
-    'rtUnknownOptionException'                 => 'configuration/exceptions/rtUnknownOptionException.php',
     'rtIfParallelHasPcntl'                     => 'configuration/preconditions/rtIfParallelHasPcntl.php',
     'rtIsExecutableSet'                        => 'configuration/preconditions/rtIsExecutableSet.php',
     'rtIsPcreLoaded'                           => 'configuration/preconditions/rtIsPcreLoaded.php',
@@ -59,8 +54,6 @@ $rtClassMap = array(
     'rtTaskSchedulerFile'                      => 'taskScheduler/rtTaskSchedulerFile.php',
     'rtTaskSchedulerMsgQ'                      => 'taskScheduler/rtTaskSchedulerMsgQ.php',
     'rtTaskTestGroup'                          => 'taskScheduler/rtTaskTestGroup.php',
-    'rtCodeRunnerException'                    => 'testcase/exceptions/rtCodeRunnerException.php',
-    'rtPhpRunnerException'                     => 'testcase/exceptions/rtPhpRunnerException.php',
     'rtTestOutputWriterCSV'                    => 'testcase/output/rtTestOutputWriterCSV.php',
     'rtTestOutputWriterHTML'                   => 'testcase/output/rtTestOutputWriterHTML.php',
     'rtTestOutputWriterList'                   => 'testcase/output/rtTestOutputWriterList.php',

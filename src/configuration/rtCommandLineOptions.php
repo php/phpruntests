@@ -19,62 +19,46 @@ class rtCommandLineOptions
      * @var array
      */
     protected $shortOptions = array(
-        'n',
-        'm',
-        'q',
-        'x',
+        'n', // pass -n option to the php binary
+        'm', // memory-check (valgrind)
+        'q', // quiet, no user interaction
         'v', // verbose-mode level 1
-        'h',
+        'h', // help
     );
 
     /**
      * @var array
      */
     protected $shortOptionsWithArgs = array(
-        'l',
-        'r',
-        'w',
-        'a',
-        'c',
-        'd',
-        'p',
-        's',  // save - defines the filename to store the results
-        'o',  // output type (list, xml, csv...)
-    	'z',  // parallel - run out of obvious letters
+        'c', // look for php.ini
+        'd', // pass option to the php binary
+        'p', // specify php executable
+        's', // save - defines the filename to store the results
+        'o', // output type (list, xml, csv...)
+    	'z', // parallel - run out of obvious letters
     );
 
     /**
      * @var array
      */
     protected $longOptions = array(
-        'vv',	// verbose-mode level 2
-    	'vvv',	// verbose-mode level 3
-        'help',
-        'keep-all',
-        'keep-php',
-        'keep-skip',
-        'keep-clean',
-        'keep-out',
-        'keep-exp',
-        'show-all',
-        'show-php',
-        'show-skip',
-        'show-clean',
-        'show-exp',
-        'show-diff',
-        'show-out',
-        'no-clean',
+        'vv',	      // verbose-mode level 2
+    	'vvv',	      // verbose-mode level 3
+        'help',	      // help
+        'keep-all',   // keep all files
+        'keep-php',   // keep only php files
+        'keep-skip',  // keep only skip files
+        'keep-clean', // keep only clean files
+        'keep-out',   // keep only out files
+        'keep-exp',   // keep only exp files
+        'no-clean',   // do not execute clean section
     );
 
     /**
      * @var array
      */
     protected $longOptionsWithArgs = array(
-        'html',
-        'temp-source',
-        'temp-target',
-        'set-timeout',
-        'mopts',
+        'mopts',	// memory-options (valgrind)
     );
                               
     /**
