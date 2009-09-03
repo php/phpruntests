@@ -30,6 +30,8 @@ class rtCommandLineOptions
      * @var array
      */
     protected $shortOptionsWithArgs = array(
+        'l', // read the testfiles to be executed from
+        'r', // read the testfiles to be executed from
         'c', // look for php.ini
         'd', // pass option to the php binary
         'p', // specify php executable

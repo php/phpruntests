@@ -33,19 +33,19 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
     public function testShortOptionWithArg()
     {
         $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '-l', 'the-l-arg'));
+        $clo->parse(array('run-tests.php', '-d', 'the-d-arg'));
 
-        $this->assertTrue($clo->hasOption('l'));
-        $this->assertEquals('the-l-arg', $clo->getOption('l'));
+        $this->assertTrue($clo->hasOption('d'));
+        $this->assertEquals('the-d-arg', $clo->getOption('d'));
     }
 
     public function testLongOptionWithArg()
     {
         $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '--html', 'the-html-arg'));
+        $clo->parse(array('run-tests.php', '--keep-all', 'the-keepall-arg'));
 
-        $this->assertTrue($clo->hasOption('html'));
-        $this->assertEquals('the-html-arg', $clo->getOption('html'));
+        $this->assertTrue($clo->hasOption('keep-all'));
+        $this->assertEquals('the-keepall-arg', $clo->getOption('keep-all'));
     }
 
     public function testNonexistingOption()
@@ -63,8 +63,8 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
     public function testMissingShortOptionArgument()
     {
         $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '-l'));
-        $clo->getOption('l');
+        $clo->parse(array('run-tests.php', '-d'));
+        $clo->getOption('d');
     }
 
     /**
@@ -73,8 +73,8 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
     public function testMissingLongOptionArgument()
     {
         $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '--html'));
-        $clo->getOption('html');
+        $clo->parse(array('run-tests.php', '--mopts'));
+        $clo->getOption('--mopts');
     }
 
     public function testFileArgument()

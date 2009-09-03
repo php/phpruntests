@@ -1,4 +1,3 @@
-
 Synopsis:
     php run-tests.php [options] [files] [directories]
 
@@ -24,6 +23,13 @@ Options:
     -o <list|csv|xml>    Output format (default=list)
     
     -s <file>    Write output to <file>
+    
+    -l <file>   Read the testfiles to be executed from <file>. After the test
+                has finished all failed tests are written to the same <file>.
+                If the list is empty and no further test is specified then
+                all tests are executed (same as: -r <file> -w <file>).
+
+    -r <file>   Read the testfiles to be executed from <file>.
 
     -v          verbose-mode level 1
                 basic information, test-name and status
