@@ -1,6 +1,6 @@
 <?php
 
-  public function getTests($aDirectory)
+  function getTests($aDirectory)
   {
     $result = array();
 
