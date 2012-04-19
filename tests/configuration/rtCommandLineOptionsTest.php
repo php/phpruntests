@@ -1,6 +1,5 @@
 <?php
 
-require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
 
 class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
@@ -45,6 +44,7 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
         $clo->parse(array('run-tests.php', '--keep-all', 'the-keepall-arg'));
 
         $this->assertTrue($clo->hasOption('keep-all'));
+        var_dump($clo->getOption('keep-all'));
         $this->assertEquals('the-keepall-arg', $clo->getOption('keep-all'));
     }
 

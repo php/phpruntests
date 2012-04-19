@@ -11,7 +11,6 @@
  * @link      http://qa.php.net/
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
 
@@ -30,7 +29,6 @@ class rtIsValgrindAvailableTest extends PHPUnit_Framework_TestCase
     public function testIsAvailable()
     {
         $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-m'));
-
         $this->assertTrue($this->preCondition->check($runtestsConfiguration));
     }
 

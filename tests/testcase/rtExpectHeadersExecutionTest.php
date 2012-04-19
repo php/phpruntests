@@ -1,6 +1,5 @@
 <?php
 
-require_once 'PHPUnit/Framework.php';
 require_once __DIR__ . '/../rtTestBootstrap.php';
 
 class rtExpectHeadersExecutionTest extends PHPUnit_Framework_TestCase

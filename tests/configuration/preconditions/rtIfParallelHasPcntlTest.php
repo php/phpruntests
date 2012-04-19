@@ -11,7 +11,6 @@
  * @link      http://qa.php.net/
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../src/rtAutoload.php';
 
 /**

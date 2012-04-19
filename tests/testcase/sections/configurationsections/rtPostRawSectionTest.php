@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . '../../../../../src/rtAutoload.php';
 
 class rtPostRawSectionTest extends PHPUnit_Framework_TestCase
