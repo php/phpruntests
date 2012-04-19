@@ -41,11 +41,10 @@ class rtCommandLineOptionsTest extends PHPUnit_Framework_TestCase
     public function testLongOptionWithArg()
     {
         $clo = new rtCommandLineOptions();
-        $clo->parse(array('run-tests.php', '--keep-all', 'the-keepall-arg'));
+        $clo->parse(array('run-tests.php', '--mopts', 'the-memoryoptions-arg'));
 
-        $this->assertTrue($clo->hasOption('keep-all'));
-        var_dump($clo->getOption('keep-all'));
-        $this->assertEquals('the-keepall-arg', $clo->getOption('keep-all'));
+        $this->assertTrue($clo->hasOption('mopts'));
+        $this->assertEquals('the-memoryoptions-arg', $clo->getOption('mopts'));
     }
 
     public function testNonexistingOption()
