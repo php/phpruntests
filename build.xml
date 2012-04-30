@@ -60,8 +60,8 @@
 
     <exec command="tar xfz QATESTS.tgz" dir="/tmp/phpruntests" />
 
-    <exec command="${php} -n run-tests.php -n -p ${php} /tmp/phpruntests/Zend /tmp/phpruntests/ext /tmp/phpruntests/sapi /tmp/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="/tmp/phpruntests" passthru="true" checkReturn="true"/>
-    <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php} -o csv -s ${project.basedir}/_compare/new.out /tmp/phpruntests" dir="${project.basedir}" passthru="true" checkReturn="true" />
+    <exec command="${php} -n /Users/zoe/Applications/PHP/php-5.4.0/run-tests.php -n -p ${php} /tmp/phpruntests/Zend /tmp/phpruntests/ext /tmp/phpruntests/sapi /tmp/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="/tmp/phpruntests" passthru="true" checkReturn="true"/>
+    <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php} -o csv -s ${project.basedir}/_compare/new.out /tmp/phpruntests" dir="/tmp/phpruntests" passthru="true" checkReturn="true" />
     
     <exec command="${php} -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out phpruntests > ${project.basedir}/_compare/compare_new_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
     
