@@ -13,6 +13,9 @@ class rtPostSectionTest extends PHPUnit_Framework_TestCase
         $fileName = $postSection->getPostFileName();
         $string = file_get_contents($fileName);
         
+        //clean up
+        unlink($fileName);
+        
         $this->assertEquals('hello=World&goodbye=MrChips', $string);
     }
 }
