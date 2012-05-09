@@ -11,6 +11,15 @@
     <delete dir="QA/sapi" />
     <delete dir="QA/tests" />
     <delete dir="QA/Zend" />
+    <delete>
+    	<fileset dir="phpt-tests" includes="*.out" />
+    	<fileset dir="phpt-tests" includes="*.exp" />
+    	<fileset dir="phpt-tests" includes="*.diff" />
+    	<fileset dir="phpt-tests" includes="*.log" />
+    	<fileset dir="phpt-tests" includes="*.sh" />
+    	<fileset dir="phpt-tests" includes="*.post" />
+    	<fileset dir="phpt-tests" includes="*.php" />
+    </delete>
   </target>
 
   <target name="qa" depends="lint, test, coverage, compare, doc" description="Perform quality assurance.">
@@ -24,13 +33,6 @@
   <target name="lint" description="Lint check all PHP files.">
     <phplint haltonfailure="true">
       <fileset dir="src">
-        <include name="*.php"/>
-        <include name="**/*.php"/>
-      </fileset>
-    </phplint>
-
-    <phplint haltonfailure="true">
-      <fileset dir="tests">
         <include name="*.php"/>
         <include name="**/*.php"/>
       </fileset>

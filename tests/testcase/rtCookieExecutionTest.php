@@ -12,7 +12,7 @@ class rtCookieExecutionTest extends PHPUnit_Framework_TestCase
     {
         $this->php = trim(shell_exec("which php"));
         $this->php_cgi = trim(shell_exec("which php-cgi"));
-
+ 
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests . '/sample_cookie.phpt';
     }
@@ -31,7 +31,7 @@ class rtCookieExecutionTest extends PHPUnit_Framework_TestCase
 
         //Retrieve the array of test file names
         $testFiles = $config->getSetting('TestFiles');
-
+      
         //Read the test file
         $testFile = new rtPhpTestFile();
         $testFile->doRead($testFiles[0]);
