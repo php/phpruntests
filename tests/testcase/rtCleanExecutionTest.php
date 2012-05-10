@@ -8,6 +8,7 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
     private $path_to_tests;
     private $sample_test;
     private $sample_fail;
+ 
 
     public function setUp()
     {
@@ -25,7 +26,7 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
 
     public function testFileRun()
     { 
-        //Create a new test configuration
+    	//Create a new test configuration
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 

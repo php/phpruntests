@@ -3,14 +3,31 @@
 require_once __DIR__ . '/../src/rtAutoload.php';
 
 /**
- * Define the Path to the PHP executable
+ * Check to see if the PHP and CGI executables are in a config file
  */
+if(file_exists(__DIR__ . '/../phpdefinitions.txt')) {
+	$phpdefs=file(__DIR__ . '/../phpdefinitions.txt');
+	foreach($phpdefs as $line) {
+		if(preg_match('/^php_to_test=(.*)/', $line, $matches)) {
+         define('RT_PHP_PATH', trim($matches[1]));
+		}
+		if(preg_match('/^php_cgi_to_test=(.*)/', $line, $matches)) {		
+    		define('RT_PHP_CGI_PATH', trim($matches[1]));
+		}
+	}
+}
+
+
+/**
+ * Fall back definition of Path to the PHPexecutable
+ */
+
 if (!defined('RT_PHP_PATH')) {
   define('RT_PHP_PATH', trim(shell_exec("which php")));
 }
 
 /**
- * Define the Path to the PHP CGI executable
+ * Fall back definition of Path to the PHP CGI executable
  */
 if (!defined('RT_PHP_CGI_PATH')) {
   define('RT_PHP_CGI_PATH', trim(shell_exec("which php-cgi")));

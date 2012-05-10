@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="runtests" default="qa" basedir=".">
+<property file="phpdefinitions.txt" />
 
   <target name="clean">
     <delete dir="_compare" />
@@ -51,7 +52,8 @@
 
   <target name="compare" description="Old/New comparison of phpt results.">
     <fail unless="php" message="Path to standard PHP executable not defined, use -Dphp=/path/to/php" />
-    <fail unless="php_to_test" message="Path to test PHP source dir not defined, use -Dphp_to_test=/path/to/php_source_dir" />
+    <fail unless="php_to_test" message="Path to test PHP source dir not defined, use -Dphp_to_test=/path/to/php/to/test" />
+    <fail unless="php_source" message="Path to test PHP source dir not defined, use -Dphp_to_test=/path/to/php_source_dir" />
 
 
     <delete dir="_compare" />
@@ -64,8 +66,8 @@
 
     <exec command="tar xfz QATESTS.tgz" dir="/tmp/phpruntests" />
 
-    <exec command="${php} -n ${php_to_test}/run-tests.php -n -p ${php_to_test}/sapi/cli/php /tmp/phpruntests/Zend /tmp/phpruntests/ext /tmp/phpruntests/sapi /tmp/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="/tmp/phpruntests" passthru="true" checkReturn="true"/>
-    <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php_to_test}/sapi/cli/php -o csv -s ${project.basedir}/_compare/new.out /tmp/phpruntests" dir="/tmp/phpruntests" passthru="true" checkReturn="true" />
+    <exec command="${php} -n ${php_source}/run-tests.php -n -p ${php_to_test} /tmp/phpruntests/Zend /tmp/phpruntests/ext /tmp/phpruntests/sapi /tmp/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="/tmp/phpruntests" passthru="true" checkReturn="true"/>
+    <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php_to_test} -o csv -s ${project.basedir}/_compare/new.out /tmp/phpruntests" dir="/tmp/phpruntests" passthru="true" checkReturn="true" />
     
     <exec command="${php} -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out phpruntests > ${project.basedir}/_compare/compare_new_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
     
