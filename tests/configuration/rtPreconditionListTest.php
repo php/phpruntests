@@ -12,6 +12,7 @@
  */
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 /**
  * Tests for rtPreCondtionListTest precondition.
@@ -38,10 +39,9 @@ class rtPreCondtionListTest extends PHPUnit_Framework_TestCase
     
     public function testCheck()
     {
-        $php = trim(shell_exec("which php"));
         
         $preConditionList = rtPreConditionList::getInstance();
-        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $php, 'a-test.phpt'));
+        $runtestsConfiguration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'a-test.phpt'));
         $runtestsConfiguration->configure();
 
         $this->assertTrue($preConditionList->check($runtestsConfiguration));

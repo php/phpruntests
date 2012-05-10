@@ -1,12 +1,12 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtTestResultsTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()   
     {
-        $this->php = trim(shell_exec("which php"));
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests. '/sample_test.phpt';
         $this->sample_test_fail = $this->path_to_tests. '/sample_test_fail.phpt';
@@ -32,7 +32,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testFileDelete()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -62,7 +62,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testFileSaveAll()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test, '--keep-all'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test, '--keep-all'));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -92,7 +92,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testFileSavePHP()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test, '--keep-php'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test, '--keep-php'));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -122,7 +122,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testFailedTest()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test_fail));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test_fail));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -155,7 +155,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testSkippedTest()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_skipif));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_skipif));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -186,7 +186,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testSkippedTestKeep()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_skipif, '--keep-all'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_skipif, '--keep-all'));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -216,7 +216,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testCleanPass()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_clean));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_clean));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -247,7 +247,7 @@ class rtTestResultsTest extends PHPUnit_Framework_TestCase
     public function testBork()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_bork));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_bork));
         $config->configure();
 
         //Retrieve the array of test file names

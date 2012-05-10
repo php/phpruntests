@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
 {
@@ -10,8 +11,6 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
-
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests . '/sample_fileexternal.phpt';
         $this->sample_fail1 = $this->path_to_tests . '/sample_fileexternal1.phpt';
@@ -26,7 +25,7 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRun()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -52,7 +51,7 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
     public function testFail1()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_fail1));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_fail1));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -78,7 +77,7 @@ class rtFileExternalExecutionTest extends PHPUnit_Framework_TestCase
     public function testFail2()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_fail2));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_fail2));
         $config->configure();
 
         //Retrieve the array of test file names

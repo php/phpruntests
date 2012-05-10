@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtTestExecutionTest extends PHPUnit_Framework_TestCase
 {
@@ -12,7 +13,6 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests . '/sample_test.phpt';
         $this->sample_expectf = $this->path_to_tests . '/sample_expectf.phpt';
@@ -31,7 +31,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRun()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -57,7 +57,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRunDone()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_done));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_done));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -83,7 +83,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRunAndCompare()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -112,7 +112,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
     public function testExpectFFileRunAndCompare()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_expectf));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_expectf));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -142,7 +142,7 @@ class rtTestExecutionTest extends PHPUnit_Framework_TestCase
     public function testExpectRegexFileRunAndCompare()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_expectregex));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_expectregex));
         $config->configure();
 
         //Retrieve the array of test file names

@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtPostExecutionTest extends PHPUnit_Framework_TestCase
 {
@@ -8,8 +9,6 @@ class rtPostExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
-        $this->php_cgi = trim(shell_exec("which php-cgi"));
 
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests . '/sample_post.phpt';
@@ -23,8 +22,8 @@ class rtPostExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRun()
     { 
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
-        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE',$this->php_cgi);
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
+        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', RT_PHP_CGI_PATH);
         $config->configure();
 
         //Retrieve the array of test file names

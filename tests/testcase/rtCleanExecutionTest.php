@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
 {
@@ -10,8 +11,6 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
-
         $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $this->path_to_tests . '/sample_clean.phpt';
         $this->sample_fail = $this->path_to_tests . '/sample_clean_fail.phpt';
@@ -27,7 +26,7 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRun()
     { 
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 
         //Retrieve the array of test file names
@@ -55,7 +54,7 @@ class rtCleanExecutionTest extends PHPUnit_Framework_TestCase
     public function testFailedClean()
     { 
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_fail));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_fail));
         $config->configure();
 
         //Retrieve the array of test file names

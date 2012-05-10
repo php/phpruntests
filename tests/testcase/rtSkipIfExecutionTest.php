@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtSkipIfExecutionTest extends PHPUnit_Framework_TestCase
 {
@@ -8,7 +9,6 @@ class rtSkipIfExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
         $path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
         $this->sample_test = $path_to_tests . '/sample_skipif.phpt';
     }
@@ -21,7 +21,7 @@ class rtSkipIfExecutionTest extends PHPUnit_Framework_TestCase
     public function testFileRun()
     {
         //Create a new test configuration
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, $this->sample_test));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
         $config->configure();
 
         //Retrieve the array of test file names

@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 {
@@ -8,7 +9,6 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->php = $this->php = trim(shell_exec("which php"));
         
         $this->sections['ARGS'] = rtArgsSection::getInstance('ARGS', array('-vvv -a value -1111 -2 -v'), 'testname');
         $this->sections['ENV'] = rtEnvSection::getInstance('ENV', array('env1 = ENV1', 'env2=ENV2'), 'testname');
@@ -19,7 +19,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testCreateInstance()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
@@ -29,7 +29,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testEnv()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $testConfiguration = new rtTestConfiguration($config, $this->sections, array(), $this->sections['FILE']);
@@ -41,7 +41,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testArgs()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
@@ -53,7 +53,7 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testIni()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
@@ -65,18 +65,18 @@ class rtTestConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testPHPExecutable()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
  
         $testConfiguration = new rtTestConfiguration($config, $this->sections, array(),$this->sections['FILE']);
         $phpExe = $testConfiguration->getPhpExecutable();
 
-        $this->assertEquals($this->php, $phpExe);
+        $this->assertEquals(RT_PHP_PATH, $phpExe);
     }
 
     public function testPHPCgiExecutable()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', 'a-php-cgi-exe');
         $config->configure();
   

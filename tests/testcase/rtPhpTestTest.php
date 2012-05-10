@@ -1,12 +1,12 @@
 <?php
 
 require_once dirname(__FILE__) . '../../../src/rtAutoload.php';
+require_once dirname(__FILE__) . '/../rtTestBootstrap.php';
 
 class rtPhpTestTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->php = trim(shell_exec("which php"));
         $this->testCase = array (
                             '--TEST--', 
                             'This is a test',
@@ -43,7 +43,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
 
     public function testCreateInstance()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $status = new rtTestStatus('nameOfTest');
@@ -54,7 +54,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
 
     public function testSections()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $status = new rtTestStatus('nameOfTest');
@@ -67,7 +67,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
     
     public function testDone()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $status = new rtTestStatus('nameOfTest');
@@ -83,7 +83,7 @@ class rtPhpTestTest extends PHPUnit_Framework_TestCase
     
     public function testEmptySection()
     {
-        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', $this->php, 'test.phpt'));
+        $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, 'test.phpt'));
         $config->configure();
 
         $status = new rtTestStatus('nameOfTest');
