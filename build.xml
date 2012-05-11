@@ -62,15 +62,28 @@
     <delete dir="${temp_directory}/phpruntests" />
     <mkdir dir="${temp_directory}/phpruntests" />
 
+    <echo msg="Copying QATESTS tar file to temporary directory" />
+
     <copy file="${project.basedir}/QA/QATESTS.tgz" tofile="${temp_directory}/phpruntests/QATESTS.tgz" />
+
+    <echo msg="Extracting QATESTS.." />
 
     <exec command="tar xfz QATESTS.tgz" dir="${temp_directory}/phpruntests" />
 
+    <echo msg="Running the tests using standard (old) run-tests.php.." />
+
     <exec command="${php} -n ${php_source}/run-tests.php -n -p ${php_to_test} ${temp_directory}/phpruntests/Zend ${temp_directory}/phpruntests/ext ${temp_directory}/phpruntests/sapi ${temp_directory}/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="${temp_directory}/phpruntests" passthru="true" checkReturn="true"/>
+
+    <echo msg="Running the tests using new run-tests.php.." />
+
     <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php_to_test} -o csv -s ${project.basedir}/_compare/new.out ${temp_directory}/phpruntests" dir="${temp_directory}/phpruntests" passthru="true" checkReturn="true" />
     
+    <echo msg="Comparing the results from new and old runs" />
+
     <exec command="${php} -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out phpruntests > ${project.basedir}/_compare/compare_new_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
     
+    <echo msg="Comparing the results from new runs with baseline Linux results" />
+
     <exec command="${php} -n QA/compareNewNew.php ${project.basedir}/QA/BaselineLinuxResults ${project.basedir}/_compare/new.out phpruntests > ${project.basedir}/_compare/compare_baseline_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
   </target>
 
