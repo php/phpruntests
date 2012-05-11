@@ -1,0 +1,17 @@
+# This file is used as a phing property file and is also read by rtTestBoootstrap.php to determine which 
+# PHP exectables to use in running unit tests
+
+#These are example settings, you will change them to the right paths on your system
+#then copy this to phpdefinitions.txt
+#
+#Your system defualt PHP
+php=/usr/bin/php
+#
+#The version of PHP that you intend to test
+php_to_test=/usr/local/php540/bin/php
+#
+#The location of a copy run-tests.php for running comparison results (qa target)
+php_source=/Users/zoe/Applications/PHP/php-5.4.0
+#
+#Temporary (writable) directory - also used buy qa target
+temp_directory=/tmp

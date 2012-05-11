@@ -59,15 +59,15 @@
     <delete dir="_compare" />
     <mkdir dir="_compare" />
 
-    <delete dir="/tmp/phpruntests" />
-    <mkdir dir="/tmp/phpruntests" />
+    <delete dir="${temp_directory}/phpruntests" />
+    <mkdir dir="${temp_directory}/phpruntests" />
 
-    <copy file="${project.basedir}/QA/QATESTS.tgz" tofile="/tmp/phpruntests/QATESTS.tgz" />
+    <copy file="${project.basedir}/QA/QATESTS.tgz" tofile="${temp_directory}/phpruntests/QATESTS.tgz" />
 
-    <exec command="tar xfz QATESTS.tgz" dir="/tmp/phpruntests" />
+    <exec command="tar xfz QATESTS.tgz" dir="${temp_directory}/phpruntests" />
 
-    <exec command="${php} -n ${php_source}/run-tests.php -n -p ${php_to_test} /tmp/phpruntests/Zend /tmp/phpruntests/ext /tmp/phpruntests/sapi /tmp/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="/tmp/phpruntests" passthru="true" checkReturn="true"/>
-    <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php_to_test} -o csv -s ${project.basedir}/_compare/new.out /tmp/phpruntests" dir="/tmp/phpruntests" passthru="true" checkReturn="true" />
+    <exec command="${php} -n ${php_source}/run-tests.php -n -p ${php_to_test} ${temp_directory}/phpruntests/Zend ${temp_directory}/phpruntests/ext ${temp_directory}/phpruntests/sapi ${temp_directory}/phpruntests/tests > ${project.basedir}/_compare/old.out" dir="${temp_directory}/phpruntests" passthru="true" checkReturn="true"/>
+    <exec command="${php} -n ${project.basedir}/src/run-tests.php -n -p ${php_to_test} -o csv -s ${project.basedir}/_compare/new.out ${temp_directory}/phpruntests" dir="${temp_directory}/phpruntests" passthru="true" checkReturn="true" />
     
     <exec command="${php} -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out phpruntests > ${project.basedir}/_compare/compare_new_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
     

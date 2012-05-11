@@ -1,9 +1,0 @@
-# This file is used as a phing property file and is also read by rtTestBoootstrap.php to determine which 
-# PHP exectables to use in running unit tests
-
-#These are example settings, you will need to unomment and change them to the right paths on your system
-#
-#php=/usr/bin/php
-#php_to_test=/usr/local/php540/bin/php
-#php_cgi_to_test=/usr/local/php540/bin/php-cgi
-#php_source=/Users/zoe/Applications/PHP/php-5.4.0
