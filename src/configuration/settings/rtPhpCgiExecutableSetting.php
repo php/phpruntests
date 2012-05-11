@@ -43,17 +43,24 @@ class rtPhpCgiExecutableSetting extends rtSetting
     }
 
     /**
-     * @todo spriebsch: does this method need to be public, is it only called from get()?
-     * @todo zoe:This method only works if we are running from a PHP source tree, do we need to
-     * cope with /usr/local/bin/php for example?
+     * If the path tp the php cli executable is either:
+     * 				something/cli/php 
+     * or, failing that, 
+     * 				something/php
+     * we can make a guess at the path to the cgi executable
      */
-    public function guessFromPhpCli($phpCli)
+    private function guessFromPhpCli($phpCli)
     {
-        if(substr(dirname($phpCli),-3) == 'cli') {
-            $pathLength = strlen(dirname($phpCli)) - 3;
-            $sapiDir = substr(dirname($phpCli), 0, $pathLength);
-            $this->phpCgiExecutable = $sapiDir."cgi/php-cgi";
-        }
+    	
+    	if(substr($phpCli, -7) === "cli/php") {
+    		$cgiGuess = substr($phpCli, 0, -7) . "cgi/php-cgi";    		
+    	}elseif( substr($phpCli, -3) === "php") {
+    		$cgiGuess = substr($phpCli, 0, -3) . "php-cgi";  		
+    	}else{
+    		$cgiGuess = null;
+    	}
+    	
+    	return $cgiGuess;
     }
 
     /**
@@ -68,9 +75,10 @@ class rtPhpCgiExecutableSetting extends rtSetting
 
             // We ask rtPhpExecutableSetting for the path to the PHP executable.
             $rtPhpExecutableSetting = new rtPhpExecutableSetting($this->configuration);
-            $this->guessFromPhpCli($rtPhpExecutableSetting->get());
+            $phpCli=$rtPhpExecutableSetting->get();
+            $this->phpCgiExecutable = $this->guessFromPhpCli($phpCli);
+           
         }
-
         return $this->phpCgiExecutable;
     }
 }

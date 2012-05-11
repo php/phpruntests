@@ -83,7 +83,7 @@ class rtGetExecutionTest extends PHPUnit_Framework_TestCase
         $setPhp = $config->getSetting('PhpExecutable');
 
 
-        if   (preg_match("/sapi/", $setPhp)) {
+        if   (substr($setPhp, -3) === "php") {
             // Make no assertion bacuse the CGI executable can be guesed
         } else {
             $this->assertEquals(0, strlen($output));

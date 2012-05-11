@@ -27,25 +27,32 @@ class rtPhpCgiExecutableSettingTest extends PHPUnit_Framework_TestCase
         
         $setPhp = $configuration->getSetting('TEST_PHP_EXECUTABLE');
         
-        if   (preg_match("/sapi/", $setPhp)) {
-            // Make no assertion bacuse the CGI executable can be guesed
+        if   (substr($setPhp, -3) === "php") {
+            // Make no assertion because the CGI executable can be guesed
         } else {
             $this->assertEquals(null, $setting->get());
         }
     }
 
     public function testSetFromCliExecutableName() {
-        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', '/a/sapi/cli/php', 'test.phpt'));
+        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', '/some/thing/php', 'test.phpt'));
         $configuration->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', null);
         $setting = new rtPhpCgiExecutableSetting($configuration);
 
-        $this->assertEquals('/a/sapi/cgi/php-cgi', $setting->get());
+        $this->assertEquals('/some/thing/php-cgi', $setting->get());
     }
     public function testSetFromCli2() {
-        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', '/a/sapi/cli/php', 'test.phpt'));
+        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', '/some/thing/sapi/cli/php', 'test.phpt'));
         $setting = new rtPhpCgiExecutableSetting($configuration);
 
-        $this->assertEquals('/a/sapi/cgi/php-cgi', $setting->get());
+        $this->assertEquals('/some/thing/sapi/cgi/php-cgi', $setting->get());
     }
+ 	public function testSetFromCli3() {
+        $configuration = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', '/some/thing/sapi/cli/phpblah', 'test.phpt'));
+        $setting = new rtPhpCgiExecutableSetting($configuration);
+
+        $this->assertEquals(null, $setting->get());
+    }
+    
 }
 ?>
