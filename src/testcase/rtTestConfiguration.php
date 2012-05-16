@@ -17,6 +17,7 @@ class rtTestConfiguration
 {
     protected $environmentVariables;
     protected $phpCommandLineArguments;
+    protected $phpNonFileSectionCommandLineArguments;
     protected $testCommandLineArguments;
     protected $phpExecutable;
     protected $inputFileString;
@@ -90,7 +91,10 @@ class rtTestConfiguration
 
     protected function setPhpCommandLineArguments(rtRuntestsConfiguration $runConfiguration, $sections, $fileSection)
     {
-        $this->phpCommandLineArguments = $runConfiguration->getSetting('PhpCommandLineArguments');
+        //Use different arguments for running SKIPIF and so on. The INI settings may be designed to 
+        //produce an error whaich will inetrfere with SKIPIF processing.
+    	$this->phpNonFileSectionCommandLineArguments = $runConfiguration->getSetting('PhpCommandLineArguments');
+    	$this->phpCommandLineArguments = $runConfiguration->getSetting('PhpCommandLineArguments');
         if (array_key_exists('INI', $sections)) {
             $sections['INI']->substitutePWD($fileSection->getFileName());
             $additionalArguments = $sections['INI']->getCommandLineArguments();
@@ -166,6 +170,11 @@ class rtTestConfiguration
     public function getPhpCommandLineArguments()
     {
         return $this->phpCommandLineArguments;
+    }
+    
+    public function getPhpNonFileSectionCommandLineArguments()
+    {
+        return $this->phpNonFileSectionCommandLineArguments;
     }
 
     public function getTestCommandLineArguments()

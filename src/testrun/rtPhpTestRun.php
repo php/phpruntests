@@ -61,7 +61,7 @@ class rtPhpTestRun
             foreach ($runConfiguration->getSetting('TestDirectories') as $testDirectory) {
             	$subDirectories = array_merge($subDirectories, rtUtil::parseDir($testDirectory));
             }
-            
+           
             // check for the cmd-line-option 'z' which defines parellel-execution
             $processCount = 0;
             if ($runConfiguration->hasCommandLineOption('z')) {
@@ -72,6 +72,7 @@ class rtPhpTestRun
             		$processCount = 2;
             	}
             }
+            
 
             // check for the cmd-line-option 'v' which defines the report-status
             $reportStatus = 0;

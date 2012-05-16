@@ -36,7 +36,7 @@ class rtSkipIfSection extends rtExecutableSection
         }
 
         $phpCommand = $phpExecutable;
-        $phpCommand .= ' '.$testCase->testConfiguration->getPhpCommandLineArguments();
+        $phpCommand .= ' '.$testCase->testConfiguration->getPhpNonFileSectionCommandLineArguments();
         $phpCommand .= ' -f '.$this->fileName;
         
         $this->phpCommand = $phpCommand;
