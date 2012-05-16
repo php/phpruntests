@@ -37,8 +37,8 @@ class rtHasNoEmptySections implements rtTestPreCondition
      */
     public function isMet(array $testContents, array $sectionHeaders)
     {
-         
-
+        //TODO: This won't catch a section full of blank lines.
+        //It prabably should :-(
         for ($i=0; $i<count($testContents) - 1; $i++) {
             $nextLine = $testContents[$i+1];
             $thisLine = $testContents[$i];
@@ -48,6 +48,14 @@ class rtHasNoEmptySections implements rtTestPreCondition
                 }
             }
         }
+        
+        //Catch an empty section at the end
+        if($this->isSectionHeading($thisLine)) {
+        	if($nextLine == ""){
+        		return false;
+        	}
+        }
+       
         return true;
     }
 }
