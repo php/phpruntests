@@ -47,7 +47,6 @@ class rtPhpTestRun
 
         // $preConditionList->check($this->commandLine, $this->environmentVariables);
         $preConditionList->check($runConfiguration);
-        exit();
         
         //Write PHP executable name to the array of env variables. Some 
         //test cases expect to be able to use it.
