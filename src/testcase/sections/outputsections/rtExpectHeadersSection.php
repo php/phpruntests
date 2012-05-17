@@ -36,8 +36,14 @@ class rtExpectHeadersSection extends rtOutputSection
                 list($headerKey, $headerValue) = explode(':', $line, 2);
                 $this->outputHeaders[trim($headerKey)] = trim($headerValue);
             }
-        }            
+        }  
 
+        //Check for an empty section. Having an empty EXPECT  setion at the end of a test is allowed
+        //but the test should fail.
+        if(implode($this->sectionContents) == "") {
+        	return false;
+        }
+        
         foreach($this->expectedPattern as $headerKey => $headerValue) {
             if (!isset($this->outputHeaders[$headerKey]) || $this->outputHeaders[$headerKey] != $headerValue) {
                 return false;

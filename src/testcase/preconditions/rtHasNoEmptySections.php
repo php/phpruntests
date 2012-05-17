@@ -49,17 +49,8 @@ class rtHasNoEmptySections implements rtTestPreCondition
             }
         }
         
-        //Catch an empty section, section header then blank line
-        if($this->isSectionHeading($thisLine)) {
-        	if($nextLine == ""){
-        		return false;
-        	}
-        }
-        
-        //catch an empty section, last line is a section header
-        if($this->isSectionHeading($nextLine)) {
-        	return false;
-        }
+        //This doesn't catch an empty EXPECT section at the end of the test
+        //This is deliberate. It's reasonable to have an empty EXPECT section while developing the test
        
         return true;
     }
