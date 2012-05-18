@@ -10,6 +10,9 @@ php=/usr/bin/php
 #The version of PHP that you intend to test
 php_to_test=/usr/local/php540/bin/php
 #
+#The version of PHP CGI that you intend to test
+php_cgi_to_test=/usr/local/php540/bin/php-cgi
+#
 #The location of a copy run-tests.php for running comparison results (qa target)
 php_source=/Users/zoe/Applications/PHP/php-5.4.0
 #
