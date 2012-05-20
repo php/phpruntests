@@ -68,8 +68,8 @@ class rtIsValidSectionName implements rtTestPreCondition
             if (!in_array($section, $this->validSectionNames)) {
                 return false;
             }
-            return true;
         }
+        return true;
     }
 }
 ?>
