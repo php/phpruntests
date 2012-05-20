@@ -20,15 +20,17 @@ class rtDeflatePostSection extends rtConfigurationSection
     protected function init()
     { 
         $postString = implode("\n", $this->sectionContents);
-        $compressedPostString = gzcompress($postString);
+        if(extension_loaded('zlib')) {
+        	$compressedPostString = gzcompress($postString);
         
-        $this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-        $this->postVariables['CONTENT_LENGTH'] = strlen($compressedPostString);
-        $this->postVariables['REQUEST_METHOD'] = 'POST';
+        	$this->postVariables['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+        	$this->postVariables['CONTENT_LENGTH'] = strlen($compressedPostString);
+       	 	$this->postVariables['REQUEST_METHOD'] = 'POST';
 
-        $this->postFileName = $this->testName . ".post";
+        	$this->postFileName = $this->testName . ".post";
         
-        file_put_contents($this->postFileName, $compressedPostString);
+        	file_put_contents($this->postFileName, $compressedPostString);
+        }
     }
 
     /**
