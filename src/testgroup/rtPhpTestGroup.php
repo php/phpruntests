@@ -17,6 +17,7 @@ class rtPhpTestGroup
     protected $testDirectory;
     protected $testCases;
     protected $results;
+    protected $redirectedTestCases = array();
 
     public function __construct(rtRuntestsConfiguration $runConfiguration, $directory)
     {
@@ -45,12 +46,13 @@ class rtPhpTestGroup
             //The test name is the full path to the test file name without the .phpt
 
             $testStatus = new rtTestStatus($testFile->getTestName());
-            
             if ($testFile->arePreconditionsMet() ) {
-                // Create a new test case
-               
+                // Create a new test case               
                 $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
-            } else {
+            } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
+            	//Redirect handler, save the test case for processing after the main groups have finished.
+            	$this->redirectedTestCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
+            }else {
                 $testStatus->setTrue('bork');
                 $testStatus->setMessage('bork', $testFile->getExitMessage());
                 $this->results[] = new rtTestResults(null, $testStatus);
@@ -83,6 +85,10 @@ class rtPhpTestGroup
     public function getResults()
     {
     	return $this->results;
+    }
+    
+    public function getRedirectedTestCases() {
+    	return $this->redirectedTestCases;
     }
 
 }

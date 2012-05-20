@@ -19,6 +19,7 @@ class rtTaskScheduler
 	protected $resultList = array(); // list of results
 	protected $processCount = 0;	 // the number of processes
 	protected $reportStatus = 0;	 // reprort-status
+	protected $redirectedTestCases = array(); 
 
 	
 	/**
@@ -132,9 +133,14 @@ class rtTaskScheduler
 			$results = $task->getResult();
 			rtTestOutputWriter::flushResult($results, $this->reportStatus);
 			$this->resultList[] = $results;
+			$this->redirectedTestCases[] = $task->getRedirectedTestCases();
 		}
 
 		return;
+	}
+	
+	public function getRedirectedTestCases() {
+		return $this->redirectedTestCases;
 	}
 
 }

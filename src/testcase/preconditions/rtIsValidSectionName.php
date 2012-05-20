@@ -42,7 +42,6 @@ class rtIsValidSectionName implements rtTestPreCondition
         'GET',
         'COOKIE',
         'REDIRECTTEST', 
-        'HEADERS',
         'EXPECTHEADERS', 
     );
 

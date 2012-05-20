@@ -38,6 +38,7 @@ abstract class rtSection
         'COOKIE'    => 'rtCookieSection',
         'FILE_EXTERNAL' =>  'rtFileExternalSection',
         'EXPECTHEADERS' => 'rtExpectHeadersSection',
+        'REDIRECTTEST' => 'rtRedirectSection',
     );
 
     protected $sectionName;
@@ -58,9 +59,9 @@ abstract class rtSection
     abstract protected function init();
 
     public static function getInstance($sectionName, $contents, $testName)
-    {
-        
+    {        
         if (!isset(self::$sectionMap[$sectionName])) {
+        	var_dump($testName);
             throw new rtException('Unknown section type ' . $sectionName);
         }
 

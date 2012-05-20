@@ -99,6 +99,16 @@ class rtPhpTestRun
 			
 			$resultList = $scheduler->getResultList();
 			
+			//Check to see if there are any redirected tests.
+			
+			$redirects = $scheduler->getRedirectedTestCases();
+		
+			for($i=0; $i<sizeof($subDirectories); $i++) {
+				foreach($redirects[$i] as $redirectedTestCase) {
+					echo "\nTest not executed, requires redirect. : ".$redirectedTestCase->getName();
+				}
+			}
+			
 			// create output
 			$type = null;
         	if ($runConfiguration->hasCommandLineOption('o')) {
@@ -151,6 +161,13 @@ class rtPhpTestRun
                         $results = new rtTestResults($testCase);
                         $results->processResults($testCase, $runConfiguration);
 
+                    } elseif (in_array("REDIRECTTEST", $testFile->getSectionHeadings())) {
+            			//Redirect handler
+            			$testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
+            			echo "Not executed, will need to redirect:  ".$testCase->getName()."\n";
+            			$testStatus->setTrue('bork');
+                        $testStatus->setMessage('bork', $testFile->getExitMessage());
+                        $results = new rtTestResults(null, $testStatus);
                     } else {
                         $testStatus->setTrue('bork');
                         $testStatus->setMessage('bork', $testFile->getExitMessage());

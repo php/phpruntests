@@ -80,6 +80,7 @@ $rtClassMap = array(
     'rtIniSection'                             => 'testcase/sections/configurationsections/rtIniSection.php',
     'rtPostRawSection'                         => 'testcase/sections/configurationsections/rtPostRawSection.php',
     'rtPostSection'                            => 'testcase/sections/configurationsections/rtPostSection.php',
+    'rtRedirectSection'                        => 'testcase/sections/configurationsections/rtRedirectSection.php',
     'rtStdinSection'                           => 'testcase/sections/configurationsections/rtStdinSection.php',
     'rtCleanSection'                           => 'testcase/sections/executablesections/rtCleanSection.php',
     'rtFileExternalSection'                    => 'testcase/sections/executablesections/rtFileExternalSection.php',
