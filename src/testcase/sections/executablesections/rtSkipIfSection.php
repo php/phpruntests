@@ -48,7 +48,7 @@ class rtSkipIfSection extends rtExecutableSection
 
         try {
             $this->output = $PhpRunner->runphp();
-
+       
             if (!strncasecmp('skip', ltrim($this->output), 4)) {
                  $testStatus->setTrue('skip');
                 if (preg_match('/^\s*skip\s*(.+)\s*/i', $this->output, $matches)) {         

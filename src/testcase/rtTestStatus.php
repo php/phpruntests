@@ -29,6 +29,7 @@ class rtTestStatus {
                                 'fail_headers',
                                 'pass_headers',
                                 'leak',
+    							'redirected',
     );
 
     public function __construct($testName)

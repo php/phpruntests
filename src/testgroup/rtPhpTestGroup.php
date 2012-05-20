@@ -52,6 +52,9 @@ class rtPhpTestGroup
             } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
             	//Redirect handler, save the test case for processing after the main groups have finished.
             	$this->redirectedTestCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
+            	$testStatus->setTrue('redirected');
+                $testStatus->setMessage('redirected', $testFile->getExitMessage());
+                $this->results[] = new rtTestResults(null, $testStatus);
             }else {
                 $testStatus->setTrue('bork');
                 $testStatus->setMessage('bork', $testFile->getExitMessage());
