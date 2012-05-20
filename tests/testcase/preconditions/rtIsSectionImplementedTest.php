@@ -15,7 +15,7 @@ class rtIsSectionImplementedTest extends PHPUnit_Framework_TestCase
     public function testIsNot()
     {
         $precondition = new rtIsSectionImplemented();
-        $test = array('UEXPECT', 'FILE');
+        $test = array('FILEEOF', 'FILE');
 
         $this->assertEquals("The test contains a section which is not implemented yet.", trim($precondition->getMessage()));
         $this->assertFalse($precondition->isMet(array(), $test));

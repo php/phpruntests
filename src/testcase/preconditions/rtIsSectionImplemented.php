@@ -15,29 +15,9 @@
  */
 class rtIsSectionImplemented implements rtTestPreCondition
 {
-    protected $sectionMap = array(
-        'TEST'        => 'rtTestHeaderSection',
-        'DESCRIPTION' => 'rtDescriptionSection',
-        'SKIPIF'      => 'rtSkipIfSection',
-        'FILE'        => 'rtFileSection',
-        'EXPECT'      => 'rtExpectSection',
-        'EXPECTF'     => 'rtExpectFSection',
-        'EXPECTREGEX' => 'rtExpectRegexSection',
-        'INI'         => 'rtIniSection',
-        'ARGS'        => 'rtArgsSection',
-        'ENV'         => 'rtEnvSection',
-        'STDIN'       => 'rtStdinSection',
-        'CREDITS'     => 'rtCreditsSection',
-        'CLEAN'       => 'rtCleanSection',
-        'XFAIL'       => 'rtXfailSection',
-        'GET'         => 'rtGetSection',
-        'POST'        => 'rtPostSection',
-        'GZIP_POST'       => 'rtGzipPostSection',
-        'DEFLATE_POST'       => 'rtDeflatePostSection',
-        'POST_RAW'    => 'rtPostRawSection',
-        'COOKIE'    => 'rtCookieSection',
-        'FILE_EXTERNAL' =>  'rtFileExternalSection',
-        'EXPECTHEADERS' => 'rtExpectHeadersSection',
+    protected $sectionsNotImplementedMap = array(
+        'PUT'        => 'rtPutSection',
+        'FILEEOF' => 'rtDescriptionSection',
     );    
 
     /** Return the message associated with an unimplemented test section
@@ -58,7 +38,7 @@ class rtIsSectionImplemented implements rtTestPreCondition
     public function isMet(array $testContents, array $sectionHeaders)
     {
         foreach ($sectionHeaders as $section) {
-            if (!array_key_exists($section, $this->sectionMap)) {
+            if (array_key_exists($section, $this->sectionsNotImplementedMap)) {
                 return false;
             }
         }

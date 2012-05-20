@@ -15,6 +15,7 @@
  */
 class rtIsValidSectionName implements rtTestPreCondition
 {
+	//NOTE: The sections REQUEST, CGI, HEADERS are implemented in server-tests.php only
     protected $validSectionNames = array(
         'TEST',
         'DESCRIPTION',
@@ -37,15 +38,16 @@ class rtIsValidSectionName implements rtTestPreCondition
         'GZIP_POST',
         'DEFLATE_POST',            
         'POST_RAW',
+        'PUT',
         'GET',
         'COOKIE',
         'REDIRECTTEST', 
         'HEADERS',
-        'EXPECTHEADERS',   
+        'EXPECTHEADERS', 
     );
 
     /**
-     * Return the message associated with a duplicate test section
+     * Return the message associated with an invalid test section
      *
      * @return text
      */

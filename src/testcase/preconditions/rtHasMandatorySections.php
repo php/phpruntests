@@ -35,10 +35,15 @@ class rtHasMandatorySections implements rtTestPreCondition
     {
 
         if (in_array('TEST', $sectionHeaders )) {
+        	
             if (in_array('FILE', $sectionHeaders ) || in_array('FILEOF', $sectionHeaders) || in_array('FILE_EXTERNAL', $sectionHeaders)) {
                 if (in_array('EXPECT', $sectionHeaders ) || in_array('EXPECTF', $sectionHeaders) || in_array('EXPECTREGEX', $sectionHeaders)) {
                     return true;
                 }
+            } else {
+            	if(in_array('REDIRECTTEST', $sectionHeaders)) {
+            		return true;
+            	}
             }
         }
 

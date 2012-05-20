@@ -29,6 +29,7 @@ class rtPhpTestFile
         'rtIsValidSectionName',
         'rtIsSectionImplemented',
         'rtHasNoEmptySections',
+        'rtIsNotRedirected',
         );
         
         protected function isSectionHeading($string) {
@@ -75,32 +76,6 @@ class rtPhpTestFile
             }
         }
         
-       /*
-         * Removes and discards any empty test sections
-         * Constructs a list of section headingg, stripped of their -- identifiers.
-         */
-       /* public function removeEmptySections() {
-            $tempArray = array();
-            
-            for ($i=0; $i<count($this->testContents) - 1; $i++) {
-                $nextLine = $this->testContents[$i+1];
-                $thisLine = $this->testContents[$i];
-                if ($this->isSectionHeading($thisLine)) {
-                     if (!$this->isSectionHeading($nextLine)) {
-                        $tempArray[] = $this->getUntrimmedSectionHeading($thisLine);
-                        $this->sectionHeadings[] = $this->getSectionHeading($thisLine);
-                    }
-                } else {
-                    $tempArray[] = $thisLine;
-                }
-            }
-            
-            if($this->isSectionHeading(end($this->testContents))) {
-                $this->sectionHeadings[] = $this->getSectionHeading(end($this->testContents));
-            }
-            $tempArray[] = end($this->testContents);
-            $this->testContents = $tempArray;
-        }*/
 
         public function arePreConditionsMet()
         {
