@@ -23,7 +23,8 @@ class rtPostExecutionTest extends PHPUnit_Framework_TestCase
     { 
         //Create a new test configuration
         $config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $this->sample_test));
-        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', RT_PHP_CGI_PATH);
+         //Need to get rid of xdebug in these tests, reformats the output so they fail.
+        $config->setEnvironmentVariable('TEST_PHP_CGI_EXECUTABLE', RT_PHP_CGI_PATH." -d xdebug.default_enable=0");
         $config->configure();
 
         //Retrieve the array of test file names

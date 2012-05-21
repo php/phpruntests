@@ -9,8 +9,14 @@ class rtGzipPostExecutionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
-        $this->sample_test = $this->path_to_tests . '/sample_gzippost.phpt';
+        if(ZLIB == 0) {
+        	$this->markTestSkipped(
+              'The zlib extension is not available.'
+            );
+        } else {
+        	$this->path_to_tests = realpath(dirname(__FILE__) . '/../../phpt-tests');
+        	$this->sample_test = $this->path_to_tests . '/sample_gzippost.phpt';
+        }
     }
 
     public function tearDown()

@@ -14,23 +14,11 @@ if(file_exists(__DIR__ . '/../phpdefinitions.txt')) {
 		if(preg_match('/^php_cgi_to_test=(.*)/', $line, $matches)) {		
     		define('RT_PHP_CGI_PATH', trim($matches[1]));
 		}
+		if(preg_match('/^zlib=(.*)/', $line, $matches)) {		
+    		define('ZLIB', trim($matches[1]));
+		}
 	}
+} else {
+	echo "You must provide PHP versions in phpdefinitions.txt\n";
 }
-
-
-/**
- * Fall back definition of Path to the PHPexecutable
- */
-
-if (!defined('RT_PHP_PATH')) {
-  define('RT_PHP_PATH', trim(shell_exec("which php")));
-}
-
-/**
- * Fall back definition of Path to the PHP CGI executable
- */
-if (!defined('RT_PHP_CGI_PATH')) {
-  define('RT_PHP_CGI_PATH', trim(shell_exec("which php-cgi")));
-}
-
 ?>

@@ -168,5 +168,6 @@ abstract class rtRuntestsConfiguration
         return $this->memoryTool->getCommand();
     }
     
+    
 }
 ?>

@@ -82,9 +82,7 @@
 
     <exec command="${php} -n QA/compareNewOld.php ${project.basedir}/_compare/new.out ${project.basedir}/_compare/old.out phpruntests > ${project.basedir}/_compare/compare_new_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
     
-    <echo msg="Comparing the results from new runs with baseline Linux results" />
 
-    <exec command="${php} -n QA/compareNewNew.php ${project.basedir}/QA/BaselineLinuxResults ${project.basedir}/_compare/new.out phpruntests > ${project.basedir}/_compare/compare_baseline_old.out" dir="${project.basedir}" passthru="true" checkReturn="true"/>
   </target>
 
   <target name="sniff" description="Run all PHP_CodeSniffer sniffs.">

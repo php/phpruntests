@@ -103,9 +103,11 @@ class rtPhpTestRun
 			
 			$redirects = $scheduler->getRedirectedTestCases();
 		
-			for($i=0; $i<sizeof($subDirectories); $i++) {
-				foreach($redirects[$i] as $redirectedTestCase) {
-					echo "\nTest not executed, requires redirect. : ".$redirectedTestCase->getName();
+			if($redirects != null) {
+				for($i=0; $i<sizeof($subDirectories); $i++) {
+					foreach($redirects[$i] as $redirectedTestCase) {
+						echo "\nTest not executed, requires redirect. : ".$redirectedTestCase->getName();
+					}
 				}
 			}
 			

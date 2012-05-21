@@ -4,17 +4,21 @@
 #These are example settings, you will change them to the right paths on your system
 #then copy this to phpdefinitions.txt
 #
-#Your system defualt PHP
-php=/usr/bin/php
+#The version of PHP that you are using to run unit tests 
+php=/usr/local/php540naked/bin/php
 #
 #The version of PHP that you intend to test
-php_to_test=/usr/local/php540/bin/php
+php_to_test=/usr/local/php5xx/bin/php
 #
 #The version of PHP CGI that you intend to test
-php_cgi_to_test=/usr/local/php540/bin/php-cgi
+php_cgi_to_test=/usr/local/php5xx/bin/php-cgi
+#
+#If  the versions of PHP that you intent to test have NOT been 
+#built --with-zlib, put zlib=0 on the next line. 
+zlib=1
 #
 #The location of a copy run-tests.php for running comparison results (qa target)
-php_source=/Users/zoe/Applications/PHP/php-5.4.0
+php_source=/Users/zoe/Workspaces/php-src
 #
 #Temporary (writable) directory - also used buy qa target
 temp_directory=/tmp
