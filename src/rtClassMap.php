@@ -99,6 +99,7 @@ $rtClassMap = array(
     'rtInformationSection'                     => 'testcase/sections/rtInformationSection.php',
     'rtOutputSection'                          => 'testcase/sections/rtOutputSection.php',
     'rtSection'                                => 'testcase/sections/rtSection.php',
+    'rtGroupConfiguration'                     => 'testgroup/rtGroupConfiguration.php',
     'rtPhpTestGroup'                           => 'testgroup/rtPhpTestGroup.php',
     'rtPhpTestRun'                             => 'testrun/rtPhpTestRun.php',
 );

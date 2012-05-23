@@ -133,7 +133,11 @@ class rtTaskScheduler
 			$results = $task->getResult();
 			rtTestOutputWriter::flushResult($results, $this->reportStatus);
 			$this->resultList[] = $results;
-			$this->redirectedTestCases[] = $task->getRedirectedTestCases();
+			if($task->getRedirectedTestCases() != null) {
+				foreach($task->getRedirectedTestCases() as $testCase) {
+					$this->redirectedTestCases[] = $testCase;
+				}
+			}
 		}
 
 		return;
