@@ -24,6 +24,7 @@ class rtTestResults
     protected $savedFileNames = array();
     protected $title = '';
     protected $time = 0;
+    protected $redirectedTest;
 
     public function __construct(rtPhpTest $testCase = null, rtTestStatus $testStatus = null) 
     {
@@ -36,6 +37,9 @@ class rtTestResults
             $this->title = implode('',$testCase->getSection('TEST')->getContents());
             $this->testStatus = $testCase->getStatus();
             $this->testName = $testCase->getName();
+            if($testStatus == 'redirected') {
+            	$this->redirectedTest = $testCase;
+            }
         } else {
             $this->testStatus = $testStatus;
             $this->testName = $testStatus->getTestName();
@@ -204,6 +208,9 @@ class rtTestResults
     public function setTime($time)
     {
     	$this->time = $time;
+    }
+    public function getRedirectedTestCase() {
+    	return $this->redirectedTest;
     }
 }
 ?>

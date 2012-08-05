@@ -17,7 +17,7 @@ class rtPhpTestRun
 {
 	protected $commandLineArguments;
 	protected $runConfiguration;
-	protected $redirectedTestCases;
+	protected $redirectedTestCases = array();
 
 	public function __construct($argv)
 	{
@@ -71,7 +71,10 @@ class rtPhpTestRun
 			}
 		}
 
-	    if($this->redirectedTestCases != null) {
+	    if(count($this->redirectedTestCases) > 0) {
+	    	foreach($this->redirectedTestCases as $testCase){
+	    		echo $testCase->getName() . "\n";
+	    	}
             //For each test case - construct a new group
             //Call run_group() again with an array of groups
             //
@@ -132,10 +135,17 @@ class rtPhpTestRun
 		$scheduler->run();
 			
 		$resultList = $scheduler->getResultList();
-			
-		//Check to see if there are any redirected tests.
-			
-		$this->redirectedTestCases = $scheduler->getRedirectedTestCases();
+		
+		//locate any redirected tests in teh group results files.
+	    foreach ($resultList as $testGroupResults) {
+        	
+        	foreach ($testGroupResults as $testResult) {
+    	 	 
+        		if($testResult->getStatus() == 'redirected') {
+        			$this->redirectedTestCases[] = $testResult->getRedirectedTestCase();
+        		}				
+	    	}
+    	}
 			
 		// create output
 		$type = null;

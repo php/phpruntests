@@ -34,12 +34,7 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory);
 		$testGroup->runGroup($this->runConfiguration);
         $this->result = $testGroup->getResults();
-        $this->redirectedTestCases = $testGroup->getRedirectedTestCases();
 		return true;
-	}
-	
-	public function getRedirectedTestCases() {
-		return $this->redirectedTestCases;
 	}
 
 }
