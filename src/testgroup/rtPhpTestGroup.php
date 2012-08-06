@@ -1,6 +1,6 @@
 <?php
 /**
- * rtTestGroup
+ * rtPhpTestGroup
  *
  * Runs a 'group of tests'. A 'group' is all or the tests in a single directory.
  *
@@ -50,10 +50,20 @@ class rtPhpTestGroup
                 $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
             } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
             	//Redirect handler, save the test case for processing after the main groups have finished.
+            	//Check to make sure that it shouldn't be skipped, if skipped don't save it
             	$redirectedTest= new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
-            	$testStatus->setTrue('redirected');
-                $testStatus->setMessage('redirected', $testFile->getExitMessage());
-                $this->results[] = new rtTestResults($redirectedTest, $testStatus);
+            	if($redirectedTest->hasSection('SKIPIF')) {
+            		$redirectedTest->runSkipif($runConfiguration);
+            		if($redirectedTest->getStatus()->getValue('skip')) {
+            			$testStatus->setTrue('skip');
+                		$testStatus->setMessage('skip', $testFile->getExitMessage());
+            		} else {
+            			$testStatus->setTrue('redirected');
+                		$testStatus->setMessage('redirected', $testFile->getExitMessage());
+            		}
+            		$this->results[] = new rtTestResults($redirectedTest, $testStatus);
+            	}
+            	
             }else {
                 $testStatus->setTrue('bork');
                 $testStatus->setMessage('bork', $testFile->getExitMessage());

@@ -128,6 +128,16 @@ class rtPhpTest
             }
         }
     }
+    /**
+     * 
+     * Just runs teh SKIPIF section - required for redirect test implementation
+     * @param $runConfiguration
+     */
+    
+    public function runSkipif(rtRuntestsConfiguration $runConfiguration) {    
+            $this->testStatus = $this->sections['SKIPIF']->run($this, $runConfiguration);
+            $this->testStatus->setExecutedPhpCommand($this->sections['SKIPIF']->getPhpCommand());
+     }
 
     /**
      * Test the output against the expect section
