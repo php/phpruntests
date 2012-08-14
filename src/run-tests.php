@@ -3,6 +3,7 @@
  * Main php file for run-tests.php
  */
 
+
 error_reporting(E_ALL);
 
 /**

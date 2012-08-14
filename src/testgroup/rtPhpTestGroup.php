@@ -12,19 +12,21 @@
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  *
  */
-class rtPhpTestGroup
+class rtPhpTestGroup extends rtTask implements rtTaskInterface
 {
     protected $testDirectory;
     protected $testCases;
-    protected $results;
+    protected $result = null;
+    protected $runConfiguration;
 
     public function __construct(rtRuntestsConfiguration $runConfiguration, $directory)
     {
+    	$this->runConfiguration = $runConfiguration;
         $this->testDirectory = $directory;
-        $this->init($runConfiguration);
+        $this->init();
     }
 
-    public function init(rtRuntestsConfiguration $runConfiguration)
+    public function init()
     {      
         $this->testFiles = rtUtil::getTestList($this->testDirectory);
 
@@ -47,13 +49,13 @@ class rtPhpTestGroup
             $testStatus = new rtTestStatus($testFile->getTestName());
             if ($testFile->arePreconditionsMet() ) {
                 // Create a new test case               
-                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
+                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
             } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
             	//Redirect handler, save the test case for processing after the main groups have finished.
             	//Check to make sure that it shouldn't be skipped, if skipped don't save it
-            	$redirectedTest= new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $runConfiguration, $testStatus);
+            	$redirectedTest= new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
             	if($redirectedTest->hasSection('SKIPIF')) {
-            		$redirectedTest->runSkipif($runConfiguration);
+            		$redirectedTest->runSkipif($this->runConfiguration);
             		if($redirectedTest->getStatus()->getValue('skip')) {
             			$testStatus->setTrue('skip');
                 		$testStatus->setMessage('skip', $testFile->getExitMessage());
@@ -61,46 +63,47 @@ class rtPhpTestGroup
             			$testStatus->setTrue('redirected');
                 		$testStatus->setMessage('redirected', $testFile->getExitMessage());
             		}
-            		$this->results[] = new rtTestResults($redirectedTest, $testStatus);
+            		$this->result[] = new rtTestResults($redirectedTest, $testStatus);
             	}
             	
             }else {
                 $testStatus->setTrue('bork');
                 $testStatus->setMessage('bork', $testFile->getExitMessage());
-                $this->results[] = new rtTestResults(null, $testStatus);
+                $this->result[] = new rtTestResults(null, $testStatus);
             }
         }
     }
 
-    public function runGroup(rtRuntestsConfiguration $runConfiguration)
+    public function run()
     {
+    	
         if (count($this->testCases) == 0) {
             return;
         }
+       
         foreach ($this->testCases as $testCase) {
 
-            $testCase->executeTest($runConfiguration);
+            $testCase->executeTest($this->runConfiguration);
              
             $testResult = new rtTestResults($testCase);
-            $testResult->processResults($testCase, $runConfiguration);
-            $this->results[] = $testResult;
+            $testResult->processResults($testCase, $this->runConfiguration);
+            $this->result[] = $testResult;
         }
     }
 
     public function writeGroup($outType, $cid=null)
     {
-        $testOutputWriter = rtTestOutputWriter::getInstance($this->results, $outType);
+        $testOutputWriter = rtTestOutputWriter::getInstance($this->result, $outType);
         $testOutputWriter->write($this->testDirectory, $cid);
     }
     
     
-    public function getResults()
-    {
-    	return $this->results;
-    }
-    
     public function getTestCases() {
     	return $this->testCases;
+    }
+    
+    public function getResults() {
+    	return $this->result;
     }
 
 }

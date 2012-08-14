@@ -32,7 +32,7 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	public function run()
 	{
 		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory);
-		$testGroup->runGroup($this->runConfiguration);
+		$testGroup->run();
         $this->result = $testGroup->getResults();
 		return true;
 	}

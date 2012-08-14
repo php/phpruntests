@@ -106,7 +106,7 @@ class rtPhpTest
             $this->testStatus = $this->sections['SKIPIF']->run($this, $runConfiguration);
             $this->testStatus->setExecutedPhpCommand($this->sections['SKIPIF']->getPhpCommand());
         }
-
+        //TODO: D'oh - what is this meant to be?
         if (!$this->testStatus->getValue('skip') && !$this->testStatus->getValue('skip')) {
             $this->testStatus = $this->fileSection->run($this, $runConfiguration);
             $this->testStatus->setExecutedPhpCommand($this->fileSection->getPhpCommand());

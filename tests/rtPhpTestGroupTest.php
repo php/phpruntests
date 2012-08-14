@@ -16,11 +16,11 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
         $config->configure();    	
     	
     	$phpTestGroup = new rtPhpTestGroup($config, $directory);
-    	
+    
     	
     	$validTestCaseCount = count($phpTestGroup->getTestCases());
     	$phptFileCount = count(glob($directory . "/*.phpt"));
-    	$inValidTestCaseCount = count($phpTestGroup->getResults());
+    	$inValidTestCaseCount = count($phpTestGroup->getResult());
        
         //PhpTestGroup should divide the test cases into valid tests (TestCases),
         //or invalid ones. An invalid test is either one which 'borks' (that is, the
@@ -39,10 +39,11 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
         $config->configure();    	
     	
     	$phpTestGroup = new rtPhpTestGroup($config, $directory);
+    
     	
     	
     	
-    	$inValidTests = $phpTestGroup->getResults();
+    	$inValidTests = $phpTestGroup->getResult();
        
         foreach($inValidTests as $testResult) {
         	if($testResult->getStatus() == 'redirected') {

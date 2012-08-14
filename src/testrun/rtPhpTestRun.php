@@ -56,12 +56,16 @@ class rtPhpTestRun
 		$php = $this->runConfiguration->getSetting('PhpExecutable');
 		$this->runConfiguration->setEnvironmentVariable('TEST_PHP_EXECUTABLE', $php);
 
-
+        // Main decision point. Either we start this with a directory (or set of directories, in which case tests are 
+        // run as a group (and in parallel if required) or......
+        //
 		if ($this->runConfiguration->getSetting('TestDirectories') != null) {
 
 			$this->run_group($this->runConfiguration->getSetting('TestDirectories'));
 
 		} else {
+	    //.. the input is a test file, or list of files and are just run as single tests
+	    // and not in parallel
 
 			if ($this->runConfiguration->getSetting('TestFiles') == null) {
 				echo rtText::get('invalidTestFileName');
@@ -74,11 +78,13 @@ class rtPhpTestRun
 	    if(count($this->redirectedTestCases) > 0) {
 	    	foreach($this->redirectedTestCases as $testCase){
 	    		echo $testCase->getName() . "\n";
+	    		
+	    		
 	    	}
+	    	
             //For each test case - construct a new group
             //Call run_group() again with an array of groups
             //
-            // Need to run the skipif section first (Could this be done earlier?)
             // The redirect section has PHP code in it but no tags.
             // It is code the needs to be run as part of run-tests, not as a 'runnable' section -
             // eek it's eval(). Is there any better way to do this? It's setting a 'group 
@@ -123,9 +129,12 @@ class rtPhpTestRun
 		 
 		// create the task-list
 		$taskList = array();
+		
+		
 		foreach ($subDirectories as $subDirectory) {
 			$taskList[] = new rtTaskTestGroup($this->runConfiguration, $subDirectory);
 		}
+		
 
 		// run the task-scheduler
 		$scheduler = rtTaskScheduler::getInstance();
@@ -146,6 +155,7 @@ class rtPhpTestRun
         		}				
 	    	}
     	}
+    	
 			
 		// create output
 		$type = null;
@@ -183,10 +193,7 @@ class rtPhpTestRun
 			$testFile = new rtPhpTestFile();
 			$testFile->doRead($testName);
 			$testFile->normaliseLineEndings();
-
-			// var_dump($testFile->getSectionHeadings());
-			// var_dump($testFile->getContents());
-
+			
 			$testStatus = new rtTestStatus($testFile->getTestName());
 			 
 
@@ -204,6 +211,7 @@ class rtPhpTestRun
 				//Redirect handler
 				//Build a list of redirected test cases
 				 
+				//TODO: need to run the skipif section here..
 				$this->redirectedTestCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
 				 
 				$testStatus->setTrue('redirected');

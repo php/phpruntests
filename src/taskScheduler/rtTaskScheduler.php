@@ -131,6 +131,7 @@ class rtTaskScheduler
 			$task = $this->taskList[$i];
 			$task->run();
 			$results = $task->getResult();
+
 			rtTestOutputWriter::flushResult($results, $this->reportStatus);
 			$this->resultList[] = $results;
 		}
