@@ -98,21 +98,27 @@ abstract class rtTestOutputWriter
      * @param  integer $processCount
      * @return string
      */
-    public function getOverview($groups=NULL, $processCount=NULL)
+    public function getOverview($parallelGroups = 0, $serialGroups= 0, $processCount= 1)
     {
     	// if the overview was already created retun it
     	if (!is_null($this->overview)) {
     		return $this->overview;
     	}
     	
+    	/*
+    	 * Most of the code uses processCount = 0 to indicate serial runs. Clearly there must always be one process, 
+    	 * so it is set to 1 here to make the output make sense.
+    	 */
+    	if($processCount == 0) {
+    		$processCount ++;
+    	}
+    	
     	// collect data    	
     	$state = array();
     	$count = 0;
     	
-    	foreach ($this->resultList as $testGroupResults) {
-        	
-        	foreach ($testGroupResults as $testResult) {
-    	 	
+    	foreach ($this->resultList as $groupResult) { 
+    		foreach($groupResult as $testResult) {   	 	
 				$s = $testResult->getStatus()->__toString();
 				
 				if (!isset($state[$s])) {
@@ -121,40 +127,48 @@ abstract class rtTestOutputWriter
 				
 				$state[$s]++;
 				$count++;
-	    	}
+    		}
     	}
     	
     	// create the output-string
+    	$secondColPosition = 30;
     	$str = '';
     	
     	$str .= "\n\n----------------------------------------\n";
-    	$str .= "Tests:\t\t$count\n";
+    	$str .= "Tests:";
+    	$blanks = 30 - strlen("Tests:") - strlen($count);    	
+    	$str = $this->writeBlanks($str, $blanks);
+    	$str .= "$count\n";
     	
-    	if (is_numeric($groups)) {
+    	if (is_numeric($parallelGroups)) {
     	    
-    		$str .= "Groups:\t\t";
-    		$blanks = strlen($count)-strlen($groups);
-    		for ($b=0; $b<$blanks; $b++) {
-    			$str .= ' ';
-    		}
-    		$str .= $groups."\n";
+    		$str .= "Parallel Groups:";
+    		$blanks = 30 - strlen("Parallel Groups:") - strlen($parallelGroups);
+    		$str = $this->writeBlanks($str, $blanks);
+    		$str .= $parallelGroups."\n";
+    	}
+    	
+    	if (is_numeric($serialGroups)) {
+    	    
+    		$str .= "Serial Groups:";
+    		$blanks = 30 - strlen("Serial Groups:") - strlen($serialGroups);
+    		$str = $this->writeBlanks($str, $blanks);
+    		$str .= $serialGroups."\n";
     	}
     	
     	if (is_numeric($processCount)) {
 			
-    		$str .= "Processes:\t";
-    	    $blanks = strlen($count)-strlen($processCount);
-    		for ($b=0; $b<$blanks; $b++) {
-    			$str .= ' ';
-    		}
+    		$str .= "Processes:";
+    	    $blanks = 30 -strlen("Processes:") - strlen($processCount);
+    		$str = $this->writeBlanks($str, $blanks);
     		$str .= $processCount."\n";
     	}
     	
 		$str .= "----------------------------------------\n";
-
+		
     	foreach ($state as $k => $v) {
 
-    		$str .= strtoupper($k).":\t";
+    		$str .= substr(strtoupper($k), 0, 5).":\t";
     		
     	   	$blanks = strlen($count)-strlen($v);
     		for ($b=0; $b<$blanks; $b++) {
@@ -289,6 +303,12 @@ abstract class rtTestOutputWriter
 		flush();
     }
     
+    public function writeBlanks($str, $n) {
+    for ($b=0; $b<$n; $b++) {
+    			$str .= ' ';
+    		}
+    return $str;
+    }
     
 }
 ?>

@@ -60,8 +60,8 @@ class rtUtil
 	{
 		$list = array();
 		$found = false;
-
 		foreach (scandir($path) as $file) { 
+		
 	
 			if (substr($file, 0, 1) != '.' && $file != 'CVS') {
 	

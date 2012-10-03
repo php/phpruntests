@@ -16,12 +16,14 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	protected $runConfiguration;
 	protected $subDirectory;
 	protected $redirectedTestCases = array();
+	protected $groupConfig;
 
 	
-	public function __construct($runConfiguration, $subDirectory)
+	public function __construct($runConfiguration, $subDirectory, $groupConfig)
 	{
 		$this->runConfiguration = $runConfiguration;
 		$this->subDirectory = $subDirectory;
+		$this->groupConfig = $groupConfig;
 	}
 	
 	
@@ -31,7 +33,7 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	 */
 	public function run()
 	{
-		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory);
+		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory, $this->groupConfig);
 		$testGroup->run();
         $this->result = $testGroup->getResults();
 		return true;

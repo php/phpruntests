@@ -18,6 +18,12 @@ class rtPhpTestRun
 	protected $commandLineArguments;
 	protected $runConfiguration;
 	protected $redirectedTestCases = array();
+	protected $resultList = array(); //An array of arrays of Group Results
+	protected $serialTasks = array();
+	protected $parallelTasks = array();
+	protected $reportStatus = 0;
+	protected $numberOfSerialGroups = 0;
+	protected $numberOfParallelGroups = 0;
 
 	public function __construct($argv)
 	{
@@ -55,18 +61,24 @@ class rtPhpTestRun
 		//test cases expect to be able to use it.
 		$php = $this->runConfiguration->getSetting('PhpExecutable');
 		$this->runConfiguration->setEnvironmentVariable('TEST_PHP_EXECUTABLE', $php);
+		
+		//Set reporting option
+		$this->setReportStatus();
 
-        // Main decision point. Either we start this with a directory (or set of directories, in which case tests are 
-        // run as a group (and in parallel if required) or......
-        //
+        /*
+         * Main decision point. Either we start this with a directory (or set of directories, in which case tests are 
+         * run as a group (and in parallel if required) or......
+         */ 
 		if ($this->runConfiguration->getSetting('TestDirectories') != null) {
-
-			$this->run_group($this->runConfiguration->getSetting('TestDirectories'));
-
+			
+			$this->doGroupRuns();
+			
 		} else {
-	    //.. the input is a test file, or list of files and are just run as single tests
-	    // and not in parallel
-
+			
+	    /* 
+	     *... the input is a test file, or list of files and are just run as single tests
+	     * and not in parallel
+	     */
 			if ($this->runConfiguration->getSetting('TestFiles') == null) {
 				echo rtText::get('invalidTestFileName');
 				exit();
@@ -74,110 +86,109 @@ class rtPhpTestRun
 				$this->run_tests($this->runConfiguration->getSetting('TestFiles'));
 			}
 		}
-
+		
+		/*
+		 * At this stage we have run all groups or tests in the initial input. Now we check if any of those have 
+		 * redirected test cases and if so, run those one group at a time.
+		 * It might be possible to run these in parallel too?
+		 */
+		$this->buildRedirectsList($this->resultList);
 	    if(count($this->redirectedTestCases) > 0) {
-	    	foreach($this->redirectedTestCases as $testCase){
-	    		echo $testCase->getName() . "\n";
-	    		
-	    		
-	    	}
-	    	
-            //For each test case - construct a new group
-            //Call run_group() again with an array of groups
-            //
-            // The redirect section has PHP code in it but no tags.
-            // It is code the needs to be run as part of run-tests, not as a 'runnable' section -
-            // eek it's eval(). Is there any better way to do this? It's setting a 'group 
-            // configuration' which we don't have at the moment - so maybe we need one?
-            // re-implementing a differnt way would be nice. Just reading the config and not eval()ing it
-            //which seems unnecessary.
-            //
-            // for now, rtRedirectedSecion is part of 'config', not part of 'executable';
+	    	$this->doRedirectedRuns();	    	
 	    }
+	    
+	    if(($this->numberOfSerialGroups != 0) || ($this->numberOfParallelGroups != 0))	{
+	    	$this->createRunOutput();
+	    }
+	}
+	
+	public function doGroupRuns() {
+		
+		$subDirectories = $this->buildSubDirectoryList($this->runConfiguration->getSetting('TestDirectories'));
+		$groupConfigurations = $this->buildGroupConfigurations($subDirectories);
 
+			//If there is only one subdirectory, run seqential
+
+			if(count($subDirectories) === 1) {
+				$this->run_serial_groups($subDirectories, $groupConfigurations);
+				$this->numberOfSerialGroups = 1;
+				
+			} else {
+				
+				//check to see if this is set to be a parallel run, if not, run the subdirectory groups in sequence.
+				if($this->requestedProcessorCount() <= 1) {
+					$this->run_serial_groups($subDirectories, $groupConfigurations);
+					$this->numberOfSerialGroups = count($subDirectories);
+				} else {
+					//At least part of this run can be in parallel, check group configurations to make sure that none are set to be serial.					
+					//This builds parallel and serial task lists.
+					foreach($groupConfigurations as $key=>$gc) {
+						if($gc->isSerial()) {
+							$serialGroups[] = $key;				
+						} else {
+							$parallelGroups[] = $key;
+						}
+					}
+					
+					if(isset($serialGroups)) {$this->numberOfSerialGroups = count($serialGroups);}
+					
+					$this->numberOfParallelGroups = count($parallelGroups);
+					
+					$this->run_parallel_groups($parallelGroups, $groupConfigurations, $this->requestedProcessorCount());
+					if($this->numberOfSerialGroups > 0)	{			
+						$this->run_serial_groups($serialGroups, $groupConfigurations);	
+					}				
+				}						
+			}			
+		
+	}
+	
+	public function doRedirectedRuns() {
+	 		foreach($this->redirectedTestCases as $testCase){
+	    		
+	    		$groupConfig = new rtGroupConfiguration(null);
+	    		$groupConfig->parseRedirect($testCase);
+	    		
+	    		$group = $groupConfig->getTestDirectory();
+	    		
+	    		$this->run_serial_groups(array($group), array($group=>$groupConfig));
+	    		
+	    		$this->numberOfSerialGroups++;
+	    				
+	    	}
 	}
 
-	public function run_group($testDirectories) {
-		// make a list of subdirectories which contain tests, includes the top level directory
-		 
-		$subDirectories = array();
-		foreach ($testDirectories as $testDirectory) {
-			$subDirectories = array_merge($subDirectories, rtUtil::parseDir($testDirectory));
-		}
-		 
-		// check for the cmd-line-option 'z' which defines parellel-execution
-		$processCount = 0;
-		if ($this->runConfiguration->hasCommandLineOption('z')) {
-			 
-			$processCount = $this->runConfiguration->getCommandLineOption('z');
-			 
-			if (!is_numeric($processCount) || $processCount < 0) {
-				$processCount = 2;
-			}
-		}
-
-
-		// check for the cmd-line-option 'v' which defines the report-status
-		$reportStatus = 0;
-		if ($this->runConfiguration->hasCommandLineOption('v')) {
-			$reportStatus = 1;
-		} else if ($this->runConfiguration->hasCommandLineOption('vv')) {
-			$reportStatus = 2;
-		} else if ($this->runConfiguration->hasCommandLineOption('vvv')) {
-			$reportStatus = 3;
-		}
+	public function run_parallel_groups($testDirectories, $groupConfigurations, $processCount) {		
 		 
 		// create the task-list
 		$taskList = array();
-		
-		
-		foreach ($subDirectories as $subDirectory) {
-			$taskList[] = new rtTaskTestGroup($this->runConfiguration, $subDirectory);
+		foreach($testDirectories as $testGroup) {
+			$taskList[] = new rtTaskTestGroup($this->runConfiguration, $testGroup, $groupConfigurations[$testGroup]);	
 		}
-		
 
 		// run the task-scheduler
 		$scheduler = rtTaskScheduler::getInstance();
 		$scheduler->setTaskList($taskList);
 		$scheduler->setProcessCount($processCount);
-		$scheduler->setReportStatus($reportStatus);
+		$scheduler->setReportStatus($this->reportStatus);
 		$scheduler->run();
-			
-		$resultList = $scheduler->getResultList();
-		
-		//locate any redirected tests in teh group results files.
-	    foreach ($resultList as $testGroupResults) {
-        	
-        	foreach ($testGroupResults as $testResult) {
-    	 	 
-        		if($testResult->getStatus() == 'redirected') {
-        			$this->redirectedTestCases[] = $testResult->getRedirectedTestCase();
-        		}				
-	    	}
-    	}
-    	
-			
-		// create output
-		$type = null;
-		if ($this->runConfiguration->hasCommandLineOption('o')) {
-			$type = $this->runConfiguration->getCommandLineOption('o');
-		}
-			
-		$outputWriter = rtTestOutputWriter::getInstance($type);
-		$outputWriter->setResultList($resultList);
-		$outputWriter->printOverview(sizeof($taskList), $scheduler->getProcessCount());
 
-		$filename = null;
-		if ($this->runConfiguration->hasCommandLineOption('s')) {
-			$filename = $this->runConfiguration->getCommandLineOption('s');
-		}
-			
-		if ($type || $filename) {
-			$outputWriter->write($filename);
-		}
-		 
-		 
+		foreach($scheduler->getResultList() as $groupResult) {
+			$this->resultList[] = $groupResult;	
+		}	 		 
 	}
+	
+	public function run_serial_groups($testDirectories, $groupConfigurations) {
+		
+		foreach($testDirectories as $subDirectory) {	
+			$testGroup = new rtPhpTestGroup($this->runConfiguration, $subDirectory, $groupConfigurations[$subDirectory]);
+			$testGroup->run();
+			rtTestOutputWriter::flushResult($testGroup->getResults(), $this->reportStatus);			
+        	$this->resultList[] = $testGroup->getResults();
+        					
+		}		
+	}
+	
 	public function run_tests($testNames) {
 
 		//This section deals with running single test cases, or lists of test cases.
@@ -188,7 +199,9 @@ class rtPhpTestRun
 				echo rtText::get('invalidTestFileName', array($testName));
 				exit();
 			}
-
+			
+			$allResults = array();
+			
 			//Read the test file
 			$testFile = new rtPhpTestFile();
 			$testFile->doRead($testName);
@@ -211,7 +224,6 @@ class rtPhpTestRun
 				//Redirect handler
 				//Build a list of redirected test cases
 				 
-				//TODO: need to run the skipif section here..
 				$this->redirectedTestCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
 				 
 				$testStatus->setTrue('redirected');
@@ -222,10 +234,84 @@ class rtPhpTestRun
 				$testStatus->setMessage('bork', $testFile->getExitMessage());
 				$results = new rtTestResults(null, $testStatus);
 			}
-
 			rtTestOutputWriter::flushResult(array($results), 3);
-		}
-		 		 
+			
+		}		 		 
 	}
+	
+	public function buildSubDirectoryList($testDirectories){
+	$subDirectories = array();
+		foreach ($testDirectories as $testDirectory) {
+			$subDirectories = array_merge($subDirectories, rtUtil::parseDir($testDirectory));
+		}
+		return $subDirectories;
+	}
+	
+	public function requestedProcessorCount() {
+		// check for the cmd-line-option 'z' which defines parellel-execution
+		$processCount = 0;
+		if ($this->runConfiguration->hasCommandLineOption('z')) {
+			 
+			$processCount = $this->runConfiguration->getCommandLineOption('z');
+			 
+			if (!is_numeric($processCount) || $processCount < 0) {
+				$processCount = 2;
+			}
+		}
+		return $processCount;	
+	}
+	
+	public function buildGroupConfigurations($subDirectories) {
+		$groupConfigurations = array();
+		foreach($subDirectories as $subDir) {			
+			$groupConfig = new rtGroupConfiguration($subDir);
+			$groupConfig->parse();
+			$groupConfigurations[$subDir] = $groupConfig;
+		}
+		return $groupConfigurations;
+	}
+
+	public function buildRedirectsList($results) {	    	
+        foreach ($results as $groupResult) { 
+        	 foreach($groupResult as $testResult) {	 	 
+        		if($testResult->getStatus() == 'redirected') {
+        			$this->redirectedTestCases[] = $testResult->getRedirectedTestCase();
+        		}
+        	 }				
+    	}
+	}
+	
+	public function createRunOutput() {
+		$type = null;
+		if ($this->runConfiguration->hasCommandLineOption('o')) {
+			$type = $this->runConfiguration->getCommandLineOption('o');
+		}
+	   
+		$outputWriter = rtTestOutputWriter::getInstance($type);
+		$outputWriter->setResultList($this->resultList);
+		
+		$outputWriter->printOverview($this->numberOfParallelGroups, $this->numberOfSerialGroups, $this->requestedProcessorCount());
+
+		$filename = null;
+		if ($this->runConfiguration->hasCommandLineOption('s')) {
+			$filename = $this->runConfiguration->getCommandLineOption('s');
+		}
+		
+		if ($type || $filename) {
+			$outputWriter->write($filename);
+		}
+	}
+	
+	public function setReportStatus() {
+	// check for the cmd-line-option 'v' which defines the report-status
+		if ($this->runConfiguration->hasCommandLineOption('v')) {
+			$this->reportStatus = 1;
+		} else if ($this->runConfiguration->hasCommandLineOption('vv')) {
+			$this->reportStatus = 2;
+		} else if ($this->runConfiguration->hasCommandLineOption('vvv')) {
+			$this->reportStatus = 3;
+		}
+	}
+	
 }
 ?>

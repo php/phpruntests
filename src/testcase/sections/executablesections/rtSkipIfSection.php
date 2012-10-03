@@ -40,7 +40,7 @@ class rtSkipIfSection extends rtExecutableSection
         $phpCommand .= ' -f '.$this->fileName;
         
         $this->phpCommand = $phpCommand;
-        
+                
         $PhpRunner = new rtPhpRunner($phpCommand,
             $runConfiguration->getEnvironmentVariables(), 
             $runConfiguration->getSetting('WorkingDirectory')

@@ -8,6 +8,6 @@ return array(
     'ENV' => array(
             'PDOTEST_DSN' => 'sqlite::memory:'
         ),
-    'TESTS' => 'ext/pdo/tests'
+    'TESTS' => 'phpt-tests/redirected/tests'
     );
 

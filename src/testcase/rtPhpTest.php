@@ -24,11 +24,13 @@ class rtPhpTest
     protected $fileSection;
     protected $expectSection;
     protected $sectionHeadings;
+    protected $redirectFromID = null;
 
-    public function __construct(array $contents, $testName, $sectionHeadings, $runConfiguration, $testStatus)
+    public function __construct(array $contents, $testName, $sectionHeadings, $runConfiguration, $testStatus, $redirectFromID=null)
     {
         $this->contents = $contents;
         $this->testName = $testName;
+        $this->redirectFromID = $redirectFromID;
         $this->sectionHeadings = $sectionHeadings;
         $this->testStatus = $testStatus;
         $this->parse();
@@ -79,11 +81,16 @@ class rtPhpTest
         //Identify the file and expect section types
         $this->fileSection = $this->setFileSection();
         $this->expectSection = $this->setExpectSection();
+        
+        //If the test is being run as a result of being redirected from somewhere else, update the TEST section with an identifier
+        if($this->redirectFromID != null) {
+        	$this->sections['TEST']->addString(' Redirected ' . $this->redirectFromID . ' test');
+        }
     }
 
 
     /**
-     * Initialises the configuration for this test. Uses the configuration sections from teh test case
+     * Initialises the configuration for this test. Uses the configuration sections from the test case
      *
      * @param rtRunTEstsConfiuration $runConfiguration
      *
@@ -106,12 +113,12 @@ class rtPhpTest
             $this->testStatus = $this->sections['SKIPIF']->run($this, $runConfiguration);
             $this->testStatus->setExecutedPhpCommand($this->sections['SKIPIF']->getPhpCommand());
         }
-        //TODO: D'oh - what is this meant to be?
-        if (!$this->testStatus->getValue('skip') && !$this->testStatus->getValue('skip')) {
+        
+        if (!$this->testStatus->getValue('skip')) {
             $this->testStatus = $this->fileSection->run($this, $runConfiguration);
             $this->testStatus->setExecutedPhpCommand($this->fileSection->getPhpCommand());
             
-            //The test can be skipped by file sections if the CGI executable is not available
+            //The test status can also be set to 'skip' if the PHP CGI is missing, so we need to check it again here.
             if(!$this->testStatus->getValue('skip')) {
                 $this->output = $this->fileSection->getOutput();
                 $this->compareOutput();

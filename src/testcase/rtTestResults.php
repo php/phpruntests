@@ -34,7 +34,7 @@ class rtTestResults
     public function init(rtPhpTest $testCase = null, rtTestStatus $testStatus = null)
     {
         if ($testCase != null) {
-            $this->title = implode('',$testCase->getSection('TEST')->getContents());
+            $this->title = $testCase->getSection('TEST')->getHeader();
             $this->testStatus = $testCase->getStatus();
             $this->testName = $testCase->getName();
             if($testStatus == 'redirected') {
@@ -109,7 +109,7 @@ class rtTestResults
             if (!$runConfiguration->hasCommandLineOption('keep-all') && !$runConfiguration->hasCommandLineOption('keep-clean')) {
                 $testCase->getSection('CLEAN')->deleteFile();
             } else {
-                $this->savedFileNames['clean'] = $this->testName. ".clean";
+                $this->savedFileNames['clean'] = $this->testName. ".clean.php";
             }
         }
 
@@ -148,11 +148,11 @@ class rtTestResults
 
         //Note: if there are clean and skipif files they will not be deleted if the test fails
         if ($testCase->hasSection('CLEAN')) {
-            $this->savedFileNames['clean'] = $this->testName. 'clean.php';
+            $this->savedFileNames['clean'] = $this->testName. '.clean.php';
         }
 
         if ($testCase->hasSection('SKIPIF')) {
-            $this->savedFileNames['skipif'] = $this->testName. 'skipif.php';
+            $this->savedFileNames['skipif'] = $this->testName. '.skipif.php';
         }
         
         if($testCase->getStatus()->getValue('leak') == true) {
@@ -163,18 +163,9 @@ class rtTestResults
     protected function onSkip(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-skip')) {
-            $this->savedFileNames['skipif'] = $this->testName. 'skipif.php';
+            $this->savedFileNames['skipif'] = $this->testName. '.skipif.php';
         } else if($testCase->hasSection('SKIPIF')) {
             $testCase->getSection('SKIPIF')->deleteFile();
-        }
-        
-        //TODO I think this can go? Have since updated code to BORK on finding blank sections
-        //It may seem odd to check for an XFAIL if we are skipping the test, on the other hand I found
-        //a few windows tests with blank XFAIL sections and wanted to know about those.
-        
-        if ($testCase->hasSection('XFAIL')) {
-            $this->testStatus->setTrue('xfail');
-            $this->testStatus->setMessage('xfail',$testCase->getSection('XFAIL')->getReason());
         }
     }
 

@@ -16,20 +16,32 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
 {
     protected $testDirectory;
     protected $testCases;
-    protected $result = null;
+    protected $result = array();
     protected $runConfiguration;
+    protected $groupConfiguration;
 
-    public function __construct(rtRuntestsConfiguration $runConfiguration, $directory)
+    public function __construct(rtRuntestsConfiguration $runConfiguration, $directory, $groupConfiguration)
     {
     	$this->runConfiguration = $runConfiguration;
         $this->testDirectory = $directory;
+        $this->groupConfiguration = $groupConfiguration;
         $this->init();
     }
 
     public function init()
-    {      
+    {     
+    	if($this->groupConfiguration->isRedirect()) {
+	    	//merge in environmental variables (this is for REDEIRRECT).
+	    	foreach($this->groupConfiguration->getEnvironmentVariables() as $key=>$value) {
+	    		$this->runConfiguration->setEnvironmentVariable($key, $value);
+	    	}
+    	}
+    	
+    	
         $this->testFiles = rtUtil::getTestList($this->testDirectory);
-
+        
+        $redirectFromID = $this->groupConfiguration->getRedirectFromID();
+        
         foreach ($this->testFiles as $testFileName) {
        
             //testFiles is a list of file names relative to the current working directory
@@ -49,7 +61,7 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             $testStatus = new rtTestStatus($testFile->getTestName());
             if ($testFile->arePreconditionsMet() ) {
                 // Create a new test case               
-                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
+                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus, $redirectFromID);
             } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
             	//Redirect handler, save the test case for processing after the main groups have finished.
             	//Check to make sure that it shouldn't be skipped, if skipped don't save it
@@ -58,7 +70,7 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             		$redirectedTest->runSkipif($this->runConfiguration);
             		if($redirectedTest->getStatus()->getValue('skip')) {
             			$testStatus->setTrue('skip');
-                		$testStatus->setMessage('skip', $testFile->getExitMessage());
+                		$testStatus->setMessage('skip', $testFile->getExitMessage(). ' and the skip condition has failed');
             		} else {
             			$testStatus->setTrue('redirected');
                 		$testStatus->setMessage('redirected', $testFile->getExitMessage());

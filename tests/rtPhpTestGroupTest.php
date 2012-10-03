@@ -13,9 +13,11 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
     	$directory = realpath(dirname(__FILE__) . '/../phpt-tests');
     	$config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $directory));
     	
-        $config->configure();    	
+        $config->configure(); 
+
+        $gConf = new rtGroupConfiguration('wibble');
     	
-    	$phpTestGroup = new rtPhpTestGroup($config, $directory);
+    	$phpTestGroup = new rtPhpTestGroup($config, $directory, $gConf);
     
     	
     	$validTestCaseCount = count($phpTestGroup->getTestCases());
@@ -36,9 +38,10 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
     	$directory = realpath(dirname(__FILE__) . '/../phpt-tests');
     	$config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $directory));
     	
-        $config->configure();    	
+        $config->configure(); 
+        $gConf = new rtGroupConfiguration('wibble');   	
     	
-    	$phpTestGroup = new rtPhpTestGroup($config, $directory);
+    	$phpTestGroup = new rtPhpTestGroup($config, $directory, $gConf);
     
     	
     	

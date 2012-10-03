@@ -26,5 +26,9 @@ class rtTestHeaderSection extends rtInformationSection
     {
         return $this->testHeader;
     }
+    
+    public function addString($string) {
+    	$this->testHeader .= $string;
+    }
 }
 ?>
