@@ -314,6 +314,11 @@ class rtPhpTestRun
 		} else if ($this->runConfiguration->hasCommandLineOption('vvv')) {
 			$this->reportStatus = 3;
 		}
+		
+		//Set the default for runs from 'make test'
+		if ( file_exists(getcwd() . "/sapi/cli/php")) {
+			$this->reportStatus = 1;
+		}
 	}
 	
 }

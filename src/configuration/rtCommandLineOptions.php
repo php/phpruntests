@@ -158,6 +158,13 @@ class rtCommandLineOptions
             $i++;
             $this->options[$option] = $argv[$i];
         }
+        
+        if(empty($this->testFilename)) {
+        	//set default options if being run from PHP top level directory (as in make test)
+        	if(file_exists(getcwd() . "/" . "sapi/cli/php")) {
+        		$this->testFilename = array('tests', 'ext', 'Zend', 'ZendEngine2', 'sapi/cli', 'sapi/cgi');
+        	}
+        }
     }
 
     /**

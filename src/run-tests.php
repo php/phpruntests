@@ -33,6 +33,7 @@ if (version_compare(PHP_VERSION, '5.3.0RC1', '<')) {
 require_once dirname(__FILE__) . '/rtAutoload.php';
 
 $s = microtime(true);
+var_dump($argv);
 
 $phpTestRun = new rtPhpTestRun($argv);
 $phpTestRun->run();
