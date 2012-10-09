@@ -13,6 +13,9 @@ php_to_test=/usr/local/php5xx/bin/php
 #The version of PHP CGI that you intend to test
 php_cgi_to_test=/usr/local/php5xx/bin/php-cgi
 #
+#The version of PHP that you are using to build the phar file. NB php.ini must have phar.readonly = 0;
+phpphar=/usr/bin/php
+#
 #If  the versions of PHP that you intent to test have NOT been 
 #built --with-zlib, put zlib=0 on the next line. 
 zlib=1

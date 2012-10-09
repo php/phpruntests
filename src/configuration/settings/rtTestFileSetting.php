@@ -29,6 +29,18 @@ class rtTestFileSetting extends rtSetting
     public function init(rtRuntestsConfiguration $configuration)
     {
         $fileArray = $configuration->getTestFilename();
+        
+        //phar does not understand relative paths, so if we have just given a relative path from the
+        //currrent working directory phar will not find the file. Here, if the file does not exist 
+        //but a file with cwd prepended does, we reset the name with the cwd prepend.
+        //TODO: If this only applies to phar is there a better way? 
+        
+    	for ($i=0; $i<count($fileArray); $i++) {
+        	if(!file_exists($fileArray[$i])) {
+        		if(file_exists($configuration->getSetting('CurrentDirectory') . '/' . $fileArray[$i]))
+        		$fileArray[$i] = $configuration->getSetting('CurrentDirectory') . '/' . $fileArray[$i];
+        	}
+        }
 
         foreach ($fileArray as $fn) {
             if (!is_dir($fn) && substr($fn, -5) == ".phpt") {

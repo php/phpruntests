@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
-<project name="runtests" default="qa" basedir=".">
-<property file="phpdefinitions.txt" />
+<project name="runtests" default="qa" basedir="..">
+<property file="build/phpdefinitions.txt" />
 
   <target name="clean">
     <delete dir="_compare" />
@@ -90,6 +90,10 @@
     <mkdir dir="_sniff" />
     
     <exec command="phpcs -n --extensions=php --report=full src > ${project.basedir}/_sniff/sniff.out" passthru="true"/>
+  </target>
+
+  <target name="phar" description="Build run-tests.phar file">
+     <exec command="${phpphar} ${project.basedir}/build/buildPhar.php ${project.basedir}/src ${project.basedir}/build_output" passthru="true" />
   </target>
 
 </project>

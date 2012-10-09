@@ -64,6 +64,7 @@ class rtPhpTestRun
 		
 		//Set reporting option
 		$this->setReportStatus();
+		
 
         /*
          * Main decision point. Either we start this with a directory (or set of directories, in which case tests are 
@@ -194,8 +195,8 @@ class rtPhpTestRun
 		//This section deals with running single test cases, or lists of test cases.
 
 		foreach ($testNames as $testName) {
-
-			if (!file_exists($testName)) {
+            
+			if (!file_exists($testName)) { 				
 				echo rtText::get('invalidTestFileName', array($testName));
 				exit();
 			}
@@ -240,6 +241,8 @@ class rtPhpTestRun
 	}
 	
 	public function buildSubDirectoryList($testDirectories){
+		
+	     
 	$subDirectories = array();
 		foreach ($testDirectories as $testDirectory) {
 			$subDirectories = array_merge($subDirectories, rtUtil::parseDir($testDirectory));

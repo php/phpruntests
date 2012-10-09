@@ -5,8 +5,8 @@ require_once __DIR__ . '/../src/rtAutoload.php';
 /**
  * Check to see if the PHP and CGI executables are in a config file
  */
-if(file_exists(__DIR__ . '/../phpdefinitions.txt')) {
-	$phpdefs=file(__DIR__ . '/../phpdefinitions.txt');
+if(file_exists(__DIR__ . '/../build/phpdefinitions.txt')) {
+	$phpdefs=file(__DIR__ . '/../build/phpdefinitions.txt');
 	foreach($phpdefs as $line) {
 		if(preg_match('/^php_to_test=(.*)/', $line, $matches)) {
          define('RT_PHP_PATH', trim($matches[1]));
@@ -19,6 +19,6 @@ if(file_exists(__DIR__ . '/../phpdefinitions.txt')) {
 		}
 	}
 } else {
-	echo "You must provide PHP versions in phpdefinitions.txt\n";
+	echo "You must provide PHP versions in build/phpdefinitions.txt\n";
 }
 ?>
