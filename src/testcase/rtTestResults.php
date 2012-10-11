@@ -21,7 +21,6 @@ class rtTestResults
 {
     protected $testStatus;
     protected $testName = '';
-    protected $savedFileNames = array();
     protected $title = '';
     protected $time = 0;
     protected $redirectedTest;
@@ -35,11 +34,8 @@ class rtTestResults
     {
         if ($testCase != null) {
             $this->title = $testCase->getSection('TEST')->getHeader();
-            $this->testStatus = $testCase->getStatus();
+            $this->testStatus = $testCase->getStatus(); //is an object
             $this->testName = $testCase->getName();
-            if($testStatus == 'redirected') {
-            	$this->redirectedTest = $testCase;
-            }
         } else {
             $this->testStatus = $testStatus;
             $this->testName = $testStatus->getTestName();
@@ -63,7 +59,7 @@ class rtTestResults
         
         if(file_exists($this->testName . '.mem')) {
             if(filesize($this->testName . '.mem') > 0) {
-                $this->savedFileNames['mem'] = $this->testName. ".mem";
+                $this->testStatus->setSavedFileName('mem', $this->testName. ".mem");
             } else {
                 @unlink($this->testName . '.mem');
             }  
@@ -85,19 +81,19 @@ class rtTestResults
         if (!$runConfiguration->hasCommandLineOption('keep-all') && !$runConfiguration->hasCommandLineOption('keep-php')) {
             $testCase->getFileSection()->deleteFile();
         } else {
-            $this->savedFileNames['php'] = $this->testName. ".php";
+            $this->testStatus->setSavedFileName('php', $this->testName. ".php");
         }
 
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-out')) {
             $outputFileName = $this->testName.".out";
             file_put_contents($outputFileName, $testCase->getOutput());
-            $this->savedFileNames['out'] = $outputFileName;
+            $this->testStatus->setSavedFileName('out', $outputFileName);
         }
 
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-exp')) {
             $expectedFileName = $this->testName.".exp";
             file_put_contents($expectedFileName, implode(b"\n", $testCase->getExpectSection()->getContents()));
-            $this->savedFileNames['exp'] = $expectedFileName;
+            $this->testStatus->setSavedFileName('exp', $expectedFileName);
         }
 
         if ($testCase->hasSection('XFAIL')) {
@@ -109,7 +105,7 @@ class rtTestResults
             if (!$runConfiguration->hasCommandLineOption('keep-all') && !$runConfiguration->hasCommandLineOption('keep-clean')) {
                 $testCase->getSection('CLEAN')->deleteFile();
             } else {
-                $this->savedFileNames['clean'] = $this->testName. ".clean.php";
+            	$this->testStatus->setSavedFileName('claen', $this->testName. ".clean.php");
             }
         }
 
@@ -118,7 +114,7 @@ class rtTestResults
         }
         
         if($testCase->getStatus()->getValue('leak') == true) {
-            $this->savedFileNames['mem'] = $testCase->getSection('FILE')->getMemFileName();
+            $this->testStatus->setSavedFileName('mem', $testCase->getSection('FILE')->getMemFileName());
         }
         
     }
@@ -136,9 +132,9 @@ class rtTestResults
         file_put_contents($outputFileName, $testCase->getOutput());
         file_put_contents($expectedFileName, implode(b"\n", $testCase->getExpectSection()->getContents()));
 
-        $this->savedFileNames['out'] = $outputFileName;
-        $this->savedFileNames['exp'] = $expectedFileName;
-        $this->savedFileNames['diff'] = $differenceFileName;
+        $this->testStatus->setSavedFileName('out', $outputFileName);
+        $this->testStatus->setSavedFileName('exp', $expectedFileName);
+        $this->testStatus->setSavedFileName('diff', $differenceFileName);
          
         if ($testCase->hasSection('XFAIL')) {
             $this->testStatus->setTrue('xfail');
@@ -148,22 +144,22 @@ class rtTestResults
 
         //Note: if there are clean and skipif files they will not be deleted if the test fails
         if ($testCase->hasSection('CLEAN')) {
-            $this->savedFileNames['clean'] = $this->testName. '.clean.php';
+        	$this->testStatus->setSavedFileName('clean', $this->testName. '.clean.php' );
         }
 
         if ($testCase->hasSection('SKIPIF')) {
-            $this->savedFileNames['skipif'] = $this->testName. '.skipif.php';
+        	$this->testStatus->setSavedFileName('skipif', $this->testName. '.skipif.php' );
         }
         
         if($testCase->getStatus()->getValue('leak') == true) {
-            $this->savedFileNames['mem'] = $testCase->getSection('FILE')->getMemFileName();
+        	$this->testStatus->setSavedFileName('mem', $testCase->getSection('FILE')->getMemFileName());
         }
     }
 
     protected function onSkip(rtPhpTest $testCase, rtRuntestsConfiguration $runConfiguration)
     {
         if ($runConfiguration->hasCommandLineOption('keep-all') || $runConfiguration->hasCommandLineOption('keep-skip')) {
-            $this->savedFileNames['skipif'] = $this->testName. '.skipif.php';
+        	$this->testStatus->setSavedFileName('skipif', $this->testName. '.skipif.php' );
         } else if($testCase->hasSection('SKIPIF')) {
             $testCase->getSection('SKIPIF')->deleteFile();
         }
@@ -176,10 +172,6 @@ class rtTestResults
         return $this->testStatus;
     }
 
-    public function getSavedFileNames()
-    {
-        return $this->savedFileNames;
-    }
 
     public function getName()
     {

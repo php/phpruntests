@@ -27,14 +27,14 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
     {
     	foreach ($this->resultList as $testGroupResults) {
         	
-        	foreach ($testGroupResults as $testResult) {
+        	foreach ($testGroupResults as $testName=>$status) {
 	            
-        		$outputString = $testResult->getName();
-	            $testStatus = $testResult->getStatus();
+        		$outputString = $testName;
 	            
-	            foreach($testStatus->getTestStateNames() as $name) {
+	            
+	            foreach($status->getTestStateNames() as $name) {
 	                
-	            	if($testStatus->getValue($name)) {
+	            	if($status->getValue($name)) {
 	                    $outputString .= " , ". strtoupper($name);
 	                }
 	            }

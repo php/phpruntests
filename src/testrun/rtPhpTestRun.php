@@ -32,6 +32,7 @@ class rtPhpTestRun
 
 	public function run()
 	{
+
 		//Set SSH variables
 
 		// check the operation-system (win/unix)
@@ -87,13 +88,7 @@ class rtPhpTestRun
 				$this->run_tests($this->runConfiguration->getSetting('TestFiles'));
 			}
 		}
-		
-		/*
-		 * At this stage we have run all groups or tests in the initial input. Now we check if any of those have 
-		 * redirected test cases and if so, run those one group at a time.
-		 * It might be possible to run these in parallel too?
-		 */
-		$this->buildRedirectsList($this->resultList);
+
 	    if(count($this->redirectedTestCases) > 0) {
 	    	$this->doRedirectedRuns();	    	
 	    }
@@ -101,6 +96,7 @@ class rtPhpTestRun
 	    if(($this->numberOfSerialGroups != 0) || ($this->numberOfParallelGroups != 0))	{
 	    	$this->createRunOutput();
 	    }
+	    
 	}
 	
 	public function doGroupRuns() {
@@ -117,7 +113,7 @@ class rtPhpTestRun
 			} else {
 				
 				//check to see if this is set to be a parallel run, if not, run the subdirectory groups in sequence.
-				if($this->requestedProcessorCount() <= 1) {
+				if($this->requestedProcessorCount() < 1) {
 					$this->run_serial_groups($subDirectories, $groupConfigurations);
 					$this->numberOfSerialGroups = count($subDirectories);
 				} else {
@@ -181,11 +177,42 @@ class rtPhpTestRun
 	
 	public function run_serial_groups($testDirectories, $groupConfigurations) {
 		
-		foreach($testDirectories as $subDirectory) {	
+		$count = 0;
+	
+		
+		foreach($testDirectories as $subDirectory) {
+			
+		  
+		    // Memory usage debugging
+		    //$startm = memory_get_usage();
+		     
+		    
 			$testGroup = new rtPhpTestGroup($this->runConfiguration, $subDirectory, $groupConfigurations[$subDirectory]);
 			$testGroup->run();
+			
+			// Memory usage debugging			
+			//$midm = memory_get_usage();
+
+			
 			rtTestOutputWriter::flushResult($testGroup->getResults(), $this->reportStatus);			
         	$this->resultList[] = $testGroup->getResults();
+        	
+        	// Memory usage debugging
+        	//$midm2 = memory_get_usage();
+        	
+        	$redirects = $testGroup->getRedirectedTestCases();
+        	foreach($redirects as $testCase) {
+        		$this->redirectedTestCases[] = $testCase;
+        	}
+        	
+        	// Memory usage debugging
+        	//$midm3 = memory_get_usage();
+        	
+        	$testGroup->__destruct();
+        	unset($testGroup);
+        	
+        	// Memory usage debugging
+        	//echo "\n" . $startm . ", " . $midm. ", " .$midm2. ", " .$midm3. ", " .memory_get_usage() . ", ". $subDirectory . "\n";
         					
 		}		
 	}
@@ -201,7 +228,6 @@ class rtPhpTestRun
 				exit();
 			}
 			
-			$allResults = array();
 			
 			//Read the test file
 			$testFile = new rtPhpTestFile();
@@ -219,6 +245,7 @@ class rtPhpTestRun
 
 				$results = new rtTestResults($testCase);
 				$results->processResults($testCase, $this->runConfiguration);
+				$summaryResults = array($testFile->getTestName() => $results->getStatus());
 
 			} elseif (in_array("REDIRECTTEST", $testFile->getSectionHeadings())) {
 				 
@@ -229,13 +256,15 @@ class rtPhpTestRun
 				 
 				$testStatus->setTrue('redirected');
 				$testStatus->setMessage('redirected', $testFile->getExitMessage());
-				$results = new rtTestResults(null, $testStatus);
+				$summaryResults = array($testFile->getTestName() => $testStatus);
+				
 			} else {
 				$testStatus->setTrue('bork');
 				$testStatus->setMessage('bork', $testFile->getExitMessage());
-				$results = new rtTestResults(null, $testStatus);
+				$summaryResults = array($testFile->getTestName() => $testStatus);
 			}
-			rtTestOutputWriter::flushResult(array($results), 3);
+           
+			rtTestOutputWriter::flushResult($summaryResults, 3);
 			
 		}		 		 
 	}
@@ -319,6 +348,17 @@ class rtPhpTestRun
 		if ( file_exists(getcwd() . "/sapi/cli/php")) {
 			$this->reportStatus = 1;
 		}
+	}
+	
+	public function extractResults($groupResult) {
+		$groupSummary = array();
+		foreach($groupResult as $testResult) {
+			$groupSummary[$testResult->getName()] = $testResult->getStatus();
+			if($testResult->getStatus() == 'redirected') {
+        			$this->redirectedTestCases[] = $testResult->getRedirectedTestCase();
+        	}		
+		}
+		return $groupSummary;
 	}
 	
 }

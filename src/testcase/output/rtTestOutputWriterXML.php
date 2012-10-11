@@ -49,33 +49,26 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
 
     		$state = array();
     		
-	        foreach ($testGroupResults as $testResult) {
+	        foreach ($testGroupResults as $testName => $testStatus) {
 	
 	        	// create test-node
 	        	$testNode = $this->dom->createElement('testcase');
 	        	$groupNode->appendChild($testNode);
 
 	        	// name
-	        	$n = explode($wdir, $testResult->getName());
+	        	$n = explode($wdir, $testName);
 	        	$n = explode('/', $n[1]);
     			$n = array_pop($n);
     			$testNode->setAttribute('name', $n);
 				
     			// status
-    			$status = $testResult->getStatus();
-    			$s = $status->__toString();
+    			
+    			$s = $testStatus->__toString();
 				$testNode->setAttribute('status', strtoupper($s));
-		
-	        	// title
-        	    $title = $testResult->getTitle();
-
-    			if (strlen($title) > 0) {
-    				$titleNode = $this->dom->createElement('title', utf8_encode(htmlentities($title)));
-    				$testNode->appendChild($titleNode);
-    			}
+	
 				
 				// message
-        	    $msg = $status->getMessage($s);
+        	    $msg = $testStatus->getMessage($s);
 
     			if (!is_null($msg)) {
     				$msgNode = $this->dom->createElement('message', utf8_encode(htmlentities($msg)));
@@ -83,7 +76,7 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
     			}
     			
     			// files
-    			$files = $testResult->getSavedFileNames();
+    			$files = $testStatus->getSavedFileNames();
 					
 				if (sizeof($files) > 0) {
 					
@@ -107,22 +100,6 @@ class rtTestOutputWriterXML extends rtTestOutputWriter
 	    	
 	    	$global_count += sizeof($testGroupResults);
 
-	    	// add group-node attributes
-
-    		$n = explode($wdir, $testGroupResults[0]->getName());
-    		$n = explode('/', $n[1]);
-    		array_pop($n);
-    		$n = implode('/', $n);
-    		
-    		$groupNode->setAttribute('name', $n);
-    		$groupNode->setAttribute('tests', sizeof($testGroupResults));
-    		
-    		$time = round($testGroupResults[0]->getTime(), 2);
-    		$groupNode->setAttribute('time', $time);
-	        
-    		foreach ($state as $k => $v) {
-	    		$groupNode->setAttribute($k, $v);
-	    	}
     	}
         
     	$this->dom->encoding = 'UTF-8';

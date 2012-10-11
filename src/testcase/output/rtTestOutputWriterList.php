@@ -26,10 +26,10 @@ class rtTestOutputWriterList extends rtTestOutputWriter
     {
         foreach ($this->resultList as $testGroupResults) {
         	
-        	foreach ($testGroupResults as $testResult) {
+        	foreach ($testGroupResults as $testName => $testStatus) {
 
 	            $outputString = "";
-	            $testStatus = $testResult->getStatus();
+	            
 	            
 	            foreach($testStatus->getTestStateNames() as $name) {
 
@@ -39,8 +39,8 @@ class rtTestOutputWriterList extends rtTestOutputWriter
 	                }
 	            }
 	            
-	            $outputString .= " " . $testResult->getTitle();
-	            $outputString .= " [" . $testResult->getName() . ".phpt]";
+	            
+	            $outputString .= " [" . $testName . ".phpt]";
 	            $this->output .= $outputString."\n";
         	}
         }

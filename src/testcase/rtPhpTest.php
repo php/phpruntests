@@ -20,7 +20,7 @@ class rtPhpTest
     protected $contents;
     protected $testStatus;
     protected $output;
-    protected $sections;
+    protected $sections = array();
     protected $fileSection;
     protected $expectSection;
     protected $sectionHeadings;
@@ -137,8 +137,8 @@ class rtPhpTest
     }
     /**
      * 
-     * Just runs teh SKIPIF section - required for redirect test implementation
-     * @param $runConfiguration
+     * Just runs the SKIPIF section - required for redirect test implementation
+     * @param $runConfiguration... hmm, should have a testconfiguration?
      */
     
     public function runSkipif(rtRuntestsConfiguration $runConfiguration) {    

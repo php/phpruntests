@@ -118,8 +118,8 @@ abstract class rtTestOutputWriter
     	$count = 0;
     	
     	foreach ($this->resultList as $groupResult) { 
-    		foreach($groupResult as $testResult) {   	 	
-				$s = $testResult->getStatus()->__toString();
+    		foreach($groupResult as $name=>$testStatus) {   	 	
+				$s = $testStatus->__toString();
 				
 				if (!isset($state[$s])) {
 					$state[$s] = 0;
@@ -211,6 +211,7 @@ abstract class rtTestOutputWriter
      */
     public static function flushResult(array $results, $state=0, $cid=NULL)
     {
+    
     	switch ($state) {
 
     		case -1:	// no ouput
@@ -227,27 +228,26 @@ abstract class rtTestOutputWriter
 
     		case 1: 	// every test-case incl. status
     			print "\n";
-				foreach ($results as $result) {
-					print strtoupper($result->getStatus())."\t".$result->getName()."\n";
+				foreach ($results as $name=>$status) {
+					print strtoupper($status->__toString())."\t".$name."\n";
 				}
     			break;
 
     		case 2: 	// details about not-passed tests
 
-				foreach ($results as $result) {
+				foreach ($results as $name=>$s) {
 					
-					$s = $result->getStatus();
-					$name = $s->__toString();
 					
-					if ($name !== 'pass') {
+					$status = $s->__toString();
+					
+					if ($status !== 'pass') {
 						print "\n";
 					}
 					
-					print strtoupper($name)."\t".$result->getName()."\n";
+					print strtoupper($s)."\t".$name."\n";
 
-	    			 if ($name !== 'pass') {
-	    			 	print "DESC:\t".$result->getTitle()."\n";
-	    			 	
+	    			 if ($s !== 'pass') {
+	    			 		    			 	
 		    			$msg = $s->getMessage($name);
 		    			if (!is_null($msg)) {
 		    				print "MSG:\t".$msg."\n";
@@ -260,17 +260,16 @@ abstract class rtTestOutputWriter
     			break;
 
     		case 3: 	// all available details
-
-				foreach ($results as $result) {
+    		   
+				foreach ($results as $name=>$s) {
 					
-					$s = $result->getStatus();
-					$name = $s->__toString();
-
+					$status = $s->__toString();
+					
 					print "\n";
-					print strtoupper($name)."\t".$result->getName()."\n";
-	    			print "DESC:\t".$result->getTitle()."\n";
-	   			 	
-	    			$msg = $s->getMessage($name);
+					
+					print strtoupper($status)."\t".$name."\n";
+	    			
+	    			$msg = $s->getMessage($status);
 
 	    			if (!is_null($msg)) {
 	    				print "MSG:\t".$msg."\n";
@@ -282,7 +281,7 @@ abstract class rtTestOutputWriter
 
 					print "MEM:\t".round(memory_get_usage()/1024, 2)." kB\n";
 					
-					$files = $result->getSavedFileNames();
+					$files = $s->getSavedFileNames();
 					
 					if (sizeof($files) > 0) {
 						

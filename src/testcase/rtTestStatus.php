@@ -31,6 +31,7 @@ class rtTestStatus {
                                 'leak',
     							'redirected',
     );
+    protected $savedFileNames = array();
 
     public function __construct($testName)
     {
@@ -74,6 +75,15 @@ class rtTestStatus {
     public function getTestName()
     {
         return $this->testName;
+    }
+    
+	public function getSavedFileNames()
+    {
+        return $this->savedFileNames;
+    }
+	public function setSavedFileName($type, $fileName)
+    {
+        $this->savedFileNames[$type] = $fileName;
     }
     
     public function setExecutedPhpCommand($cmd)

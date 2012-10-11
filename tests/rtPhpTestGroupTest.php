@@ -46,14 +46,10 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
     	
     	
     	
-    	$inValidTests = $phpTestGroup->getResult();
+    	$redirects = $phpTestGroup->getRedirectedTestCases();
        
-        foreach($inValidTests as $testResult) {
-        	if($testResult->getStatus() == 'redirected') {
-        		//If the status has been set to redirected it should have a valid REDIRECTTEST section
-        		$testCase = $testResult->getRedirectedTestCase();
-        		$this->assertTrue($testCase->hasSection('REDIRECTTEST'));
-        	}       	
+        foreach($redirects as $testCase) {   	
+        	$this->assertTrue($testCase->hasSection('REDIRECTTEST'));     	
         }   
     }
     

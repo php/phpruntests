@@ -73,19 +73,19 @@ class rtTestOutputWriterHTML extends rtTestOutputWriter
     		$tbody = $this->dom->createElement('tbody');
     		$table->appendChild($tbody);
         	
-        	foreach ($testGroupResults as $testResult) {
+        	foreach ($testGroupResults as $testName => $testStatus) {
 
         		$tr = $this->dom->createElement('tr');
     			$tbody->appendChild($tr);
 
     			// name
-    			$td = $this->dom->createElement('td', $testResult->getName());
+    			$td = $this->dom->createElement('td', $testName);
     			$td->setAttribute('class', 'mainCol');
     			$tr->appendChild($td);
 
     			// status
-    			$status = $testResult->getStatus();
-    			$s = $status->__toString();
+    			
+    			$s = $testStatus->__toString();
     			
     			$td = $this->dom->createElement('td', strtoupper($s));
     			$td->setAttribute('class', $s);
