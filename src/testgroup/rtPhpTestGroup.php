@@ -16,21 +16,22 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
 {
     protected $testDirectory;
     protected $testCases;
-    protected $result = array();
     protected $runConfiguration;
     protected $groupConfiguration;
-    protected $redirectedTestCases = array();
-
+    protected $groupResults;
+    
     public function __construct(rtRuntestsConfiguration $runConfiguration, $directory, $groupConfiguration)
     {
     	$this->runConfiguration = $runConfiguration;
         $this->testDirectory = $directory;
-        $this->groupConfiguration = $groupConfiguration;
+        $this->groupConfiguration = $groupConfiguration;       
+        $this->groupResults = new rtGroupResults($directory);
         $this->init();
     }
     
     public function __destruct() {
     	unset ($this->testCases);
+    	unset ($this->groupResults);
     	
     }
     
@@ -79,12 +80,12 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             		if($redirectedTest->getStatus()->getValue('skip')) {
             			$testStatus->setTrue('skip');
                 		$testStatus->setMessage('skip', $testFile->getExitMessage(). ' and the skip condition has failed');
-                		$this->result[$testFile->getTestName()] = $testStatus;
+                		$this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);              		
             		} else {
             			$testStatus->setTrue('redirected');
                 		$testStatus->setMessage('redirected', $testFile->getExitMessage());
-                		$this->result[$testFile->getTestName()] = $testStatus;
-                		$this->redirectedTestCases[] = $redirectedTest;
+                		$this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);
+                		$this->groupResults->setRedirectedTestCase($redirectedTest);
             		}
             		
             	}
@@ -92,7 +93,8 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             }else {
                 $testStatus->setTrue('bork');
                 $testStatus->setMessage('bork', $testFile->getExitMessage());
-                $this->result[$testFile->getTestName()] = $testStatus;
+                $this->groupResults->setTestStatus($testFile->getTestName(), $testStatus); 
+               
             }
             //echo "\n" .memory_get_usage() . ", setup complete". $testFileName . "\n";
         }
@@ -117,7 +119,8 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
              
             $testResult = new rtTestResults($testCase);
             $testResult->processResults($testCase, $this->runConfiguration);
-            $this->result[$testCase->getName()] = $testResult->getStatus();
+            $this->groupResults->setTestStatus($testCase->getName(), $testResult->getStatus()); 
+            
             //unset($testResult); Makes no diffetence
             //echo "\n" .memory_get_usage() . ", run end";
         }
@@ -129,7 +132,7 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
 
     public function writeGroup($outType, $cid=null)
     {
-        $testOutputWriter = rtTestOutputWriter::getInstance($this->result, $outType);
+        $testOutputWriter = rtTestOutputWriter::getInstance($this->groupResults->getTestStatusList(), $outType);
         $testOutputWriter->write($this->testDirectory, $cid);
     }
     
@@ -137,13 +140,13 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
     public function getTestCases() {
     	return $this->testCases;
     }
-    
-    public function getResults() {
-    	return $this->result;
+       
+    public function getGroupName() {
+    	return $this->testDirectory;
     }
     
-    public function getRedirectedTestCases() {
-    	return $this->redirectedTestCases;
+ 	public function getGroupResults() {
+    	return $this->groupResults;
     }
     
 }

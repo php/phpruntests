@@ -171,14 +171,24 @@ class rtPhpTestRun
 		$scheduler->run();
 
 		foreach($scheduler->getResultList() as $groupResult) {
-			$this->resultList[] = $groupResult;	
-		}	 		 
+			
+		$this->resultList[] = $groupResult->getTestStatusList();
+				
+		$redirects = $groupResult->getRedirectedTestCases();
+        	foreach($redirects as $testCase) {
+        		$this->redirectedTestCases[] = $testCase;
+        	}
+		}
+		
+		
+			 		 
 	}
 	
 	public function run_serial_groups($testDirectories, $groupConfigurations) {
 		
 		$count = 0;
 	
+		//xdebug_start_trace('/tmp/memorycheck');
 		
 		foreach($testDirectories as $subDirectory) {
 			
@@ -194,13 +204,13 @@ class rtPhpTestRun
 			//$midm = memory_get_usage();
 
 			
-			rtTestOutputWriter::flushResult($testGroup->getResults(), $this->reportStatus);			
-        	$this->resultList[] = $testGroup->getResults();
+			rtTestOutputWriter::flushResult($testGroup->getGroupResults()->getTestStatusList(), $this->reportStatus);			
+        	$this->resultList[] = $testGroup->getGroupResults()->getTestStatusList();
         	
         	// Memory usage debugging
         	//$midm2 = memory_get_usage();
         	
-        	$redirects = $testGroup->getRedirectedTestCases();
+        	$redirects = $testGroup->getGroupResults()->getRedirectedTestCases();
         	foreach($redirects as $testCase) {
         		$this->redirectedTestCases[] = $testCase;
         	}
@@ -213,8 +223,9 @@ class rtPhpTestRun
         	
         	// Memory usage debugging
         	//echo "\n" . $startm . ", " . $midm. ", " .$midm2. ", " .$midm3. ", " .memory_get_usage() . ", ". $subDirectory . "\n";
-        					
-		}		
+        				
+		}
+		//xdebug_stop_trace();			
 	}
 	
 	public function run_tests($testNames) {

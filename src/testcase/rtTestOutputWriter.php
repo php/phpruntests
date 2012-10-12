@@ -106,12 +106,12 @@ abstract class rtTestOutputWriter
     	}
     	
     	/*
-    	 * Most of the code uses processCount = 0 to indicate serial runs. Clearly there must always be one process, 
-    	 * so it is set to 1 here to make the output make sense.
+    	 * Add one to the process count (it should represesnt the number or processes, not the nubmer of
+    	 * proccess in addition to the one that you have to have anyway!
     	 */
-    	if($processCount == 0) {
-    		$processCount ++;
-    	}
+    	
+    	$processCount ++;
+    	
     	
     	// collect data    	
     	$state = array();

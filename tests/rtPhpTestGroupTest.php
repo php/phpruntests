@@ -22,12 +22,12 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
     	
     	$validTestCaseCount = count($phpTestGroup->getTestCases());
     	$phptFileCount = count(glob($directory . "/*.phpt"));
-    	$inValidTestCaseCount = count($phpTestGroup->getResult());
+    	$inValidTestCaseCount = count($phpTestGroup->getGroupResults()->getTestStatusList());
        
         //PhpTestGroup should divide the test cases into valid tests (TestCases),
         //or invalid ones. An invalid test is either one which 'borks' (that is, the
         //phpt fails to parse), or a redirected test case. Invalid test cases are not run
-        //but a TestResults object is created during initialisation of the TestGroup.
+        //but a TestStatus object is created and added to the group results.
     	
     	$this->assertEquals($phptFileCount, $validTestCaseCount + $inValidTestCaseCount);
     
@@ -46,7 +46,7 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
     	
     	
     	
-    	$redirects = $phpTestGroup->getRedirectedTestCases();
+    	$redirects = $phpTestGroup->getGroupResults()->getRedirectedTestCases();
        
         foreach($redirects as $testCase) {   	
         	$this->assertTrue($testCase->hasSection('REDIRECTTEST'));     	

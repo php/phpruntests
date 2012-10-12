@@ -19,7 +19,7 @@ class rtTaskScheduler
 	protected $resultList = array(); // list of results
 	protected $processCount = 0;	 // the number of processes
 	protected $reportStatus = 0;	 // the level of repoerting as tests atr run (0, 1, 2)
-	protected $redirectedTestCases = array(); 
+	
 
 	
 	/**

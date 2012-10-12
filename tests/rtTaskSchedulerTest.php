@@ -6,6 +6,7 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
 {
 	public function testResult()
     {
+    	/* Need to rewrite this to test the PHP group runner
     	$taskList = array();
     	$expected = array();
     	$results = array();
@@ -24,8 +25,10 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
 		$scheduler->setProcessCount(3);
 		$scheduler->setReportStatus(-1);
 		$scheduler->run();
+		
+		var_dump($scheduler->getResultList());
 
-		// $this->assertEquals($expected, $scheduler->getResultList());
+		$this->assertEquals($expected, $scheduler->getResultList());*/
     }
 }
 

@@ -178,16 +178,16 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$response = explode("[END]", $response);
 			array_pop($response);
 
-			foreach ($response as $testGroupResults) {
+			foreach ($response as $testGroupResult) {
 				
-				$testGroupResults = unserialize($testGroupResults);
+				$testGroupResult = unserialize($testGroupResult);
 				
-				if ($testGroupResults === false) {
+				if ($testGroupResult === false) {
 					print "ERROR unserialize - receiver $cid\n";
 					continue;
 				}
 
-				$this->resultList[] = $testGroupResults;
+				$this->resultList[] = $testGroupResult;
 			}
 
 			unlink(self::TMP_FILE.$cid);
@@ -225,16 +225,17 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$task->run();
 			
 			$e = microtime(true);
+		
 			
-			$results = $task->getResult();
+			$statusList = $task->getResult()->getTestStatusList();
 			
-			if (isset($results[0]) && is_object($results[0])) {
-				$results[0]->setTime($e-$s);
+			if (isset($statusList[0]) && is_object($statusList[0])) {
+				$statusList[0]->setTime($e-$s);
 			}
 
-			rtTestOutputWriter::flushResult($results, $this->reportStatus, $cid);
+			rtTestOutputWriter::flushResult($statusList, $this->reportStatus, $cid);
 			
-			$response = serialize($results)."[END]";
+			$response = serialize($task->getResult())."[END]";
 			file_put_contents(self::TMP_FILE.$cid, $response, FILE_APPEND);
 		}
 

@@ -100,6 +100,7 @@ $rtClassMap = array(
     'rtOutputSection'                          => 'testcase/sections/rtOutputSection.php',
     'rtSection'                                => 'testcase/sections/rtSection.php',
     'rtGroupConfiguration'                     => 'testgroup/rtGroupConfiguration.php',
+    'rtGroupResults'                           => 'testgroup/rtGroupResults.php',
     'rtPhpTestGroup'                           => 'testgroup/rtPhpTestGroup.php',
     'rtPhpTestRun'                             => 'testrun/rtPhpTestRun.php',
 );

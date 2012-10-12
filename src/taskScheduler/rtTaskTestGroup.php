@@ -15,7 +15,6 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 {
 	protected $runConfiguration;
 	protected $subDirectory;
-	protected $redirectedTestCases = array();
 	protected $groupConfig;
 
 	
@@ -35,13 +34,14 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 	{
 		$testGroup = new rtPhpTestGroup($this->runConfiguration, $this->subDirectory, $this->groupConfig);
 		$testGroup->run();
-        $this->result = $testGroup->getResults();
-        
+        $this->result = $testGroup->getGroupResults();
+              
         $testGroup->__destruct();
         unset($testGroup);
         	
 		return true;
 	}
+	
 
 }
 
