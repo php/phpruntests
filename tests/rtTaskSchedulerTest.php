@@ -6,15 +6,14 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
 {
 	public function testResult()
     {
-    	/* Need to rewrite this to test the PHP group runner
+    	// Need to rewrite this to test the PHP group runner
     	$taskList = array();
     	$expected = array();
     	$results = array();
     	
     	// create 10 tasks with random numbers
     	for ($i=0; $i<10; $i++) {
-    		$n = rand(0,9);
-    		$n = $i;
+    		$n = rand(0,9);	
     		$expected[$i] = $n+1;
     		$taskList[$i] = new rtTaskIncTest($n);
     	}
@@ -26,9 +25,20 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
 		$scheduler->setReportStatus(-1);
 		$scheduler->run();
 		
-		var_dump($scheduler->getResultList());
+		
+		$actual=array();
+		
+		foreach($scheduler->getResultList() as $result) {
+			$array = $result->getTestStatusList();
+			$actual[] = $array[0];
+		}
+		
+		sort($actual);
+		sort($expected);
+		
 
-		$this->assertEquals($expected, $scheduler->getResultList());*/
+		$this->assertEquals($expected, $actual);
+		
     }
 }
 
@@ -40,7 +50,8 @@ class rtTaskSchedulerTest extends PHPUnit_Framework_TestCase
  */
 class rtTaskIncTest extends rtTask implements rtTaskInterface
 {
-	private $num = null;
+	protected $num = null;
+	
 	
 	public function __construct($num)
 	{
@@ -49,8 +60,22 @@ class rtTaskIncTest extends rtTask implements rtTaskInterface
 	
 	public function run()
 	{
-		$this->result = array($this->num+1);
+		$this->result = new rtTaskResult($this->num + 1);
+		
 		return true;
+	}
+	
+}
+class rtTaskResult
+{
+	private $status = array();
+	
+	public function __construct($num) {
+		$this->status[] = $num;
+	}
+	
+	public function getTestStatusList() {
+		return $this->status;
 	}
 }
 
