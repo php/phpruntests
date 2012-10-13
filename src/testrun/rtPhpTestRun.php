@@ -24,6 +24,7 @@ class rtPhpTestRun
 	protected $reportStatus = 0;
 	protected $numberOfSerialGroups = 0;
 	protected $numberOfParallelGroups = 0;
+	protected $processorCount;
 
 	public function __construct($argv)
 	{
@@ -65,6 +66,8 @@ class rtPhpTestRun
 		
 		//Set reporting option
 		$this->setReportStatus();
+		
+		$this->processorCount = $this->requestedProcessorCount();
 		
 
         /*
@@ -113,7 +116,7 @@ class rtPhpTestRun
 			} else {
 				
 				//check to see if this is set to be a parallel run, if not, run the subdirectory groups in sequence.
-				if($this->requestedProcessorCount() < 1) {
+				if($this->processorCount <= 1) {
 					$this->run_serial_groups($subDirectories, $groupConfigurations);
 					$this->numberOfSerialGroups = count($subDirectories);
 				} else {
@@ -131,7 +134,7 @@ class rtPhpTestRun
 					
 					$this->numberOfParallelGroups = count($parallelGroups);
 					
-					$this->run_parallel_groups($parallelGroups, $groupConfigurations, $this->requestedProcessorCount());
+					$this->run_parallel_groups($parallelGroups, $groupConfigurations, $this->processorCount);
 					if($this->numberOfSerialGroups > 0)	{			
 						$this->run_serial_groups($serialGroups, $groupConfigurations);	
 					}				
@@ -295,7 +298,7 @@ class rtPhpTestRun
 		$processCount = 0;
 		if ($this->runConfiguration->hasCommandLineOption('z')) {
 			 
-			$processCount = $this->runConfiguration->getCommandLineOption('z');
+			$processCount = intval($this->runConfiguration->getCommandLineOption('z'));
 			 
 			if (!is_numeric($processCount) || $processCount < 0) {
 				$processCount = 2;
@@ -333,7 +336,7 @@ class rtPhpTestRun
 		$outputWriter = rtTestOutputWriter::getInstance($type);
 		$outputWriter->setResultList($this->resultList);
 		
-		$outputWriter->printOverview($this->numberOfParallelGroups, $this->numberOfSerialGroups, $this->requestedProcessorCount());
+				$outputWriter->printOverview($this->numberOfParallelGroups, $this->numberOfSerialGroups, $this->processorCount);
 
 		$filename = null;
 		if ($this->runConfiguration->hasCommandLineOption('s')) {

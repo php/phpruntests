@@ -58,10 +58,10 @@ function parseNew($output, $searchFor, $top_level) {
 		if (preg_match("/$top_level\/((ext|sapi|Zend|tests)\/\S+)\s{1},(.*)\s{1}$searchFor\s{1}/", $line, $matches)) {
        		         if($searchFor == 'FAIL') {
                                  if(!preg_match("/XFAIL/", $line)) {
-       		         		$result[] = $matches[1] . ".phpt";
+       		         		$result[] = $matches[1];
 				}
        		         } else {
-       		         	$result[] = $matches[1] . ".phpt";
+       		         	$result[] = $matches[1];
                          }
 		}
 

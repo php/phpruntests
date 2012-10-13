@@ -29,7 +29,7 @@ class rtTestOutputWriterCSV extends rtTestOutputWriter
         	
         	foreach ($testGroupResults as $testName=>$status) {
 	            
-        		$outputString = $testName;
+        		$outputString = $testName . ".phpt";
 	            
 	            
 	            foreach($status->getTestStateNames() as $name) {

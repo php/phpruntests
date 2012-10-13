@@ -98,20 +98,19 @@ abstract class rtTestOutputWriter
      * @param  integer $processCount
      * @return string
      */
-    public function getOverview($parallelGroups = 0, $serialGroups= 0, $processCount= 1)
+    public function getOverview($parallelGroups = 0, $serialGroups= 0, $processCount)
     {
     	// if the overview was already created retun it
     	if (!is_null($this->overview)) {
     		return $this->overview;
     	}
-    	
+    
     	/*
-    	 * Add one to the process count (it should represesnt the number or processes, not the nubmer of
-    	 * proccess in addition to the one that you have to have anyway!
+    	 * Add one to the process count if it's 0. There must always be one process - right?
     	 */
-    	
-    	$processCount ++;
-    	
+    	if($processCount == 0) {
+    		$processCount ++;
+    	}
     	
     	// collect data    	
     	$state = array();
@@ -195,9 +194,9 @@ abstract class rtTestOutputWriter
     }
     
     
-    public function printOverview($groups=NULL, $processCount=NULL) {
+    public function printOverview($parallelGroups=NULL, $serialGroups = NULL, $processCount=NULL) {
     	
-    	print $this->getOverview($groups, $processCount);
+    	print $this->getOverview($parallelGroups, $serialGroups, $processCount);
     	flush();
     }
     
@@ -229,7 +228,7 @@ abstract class rtTestOutputWriter
     		case 1: 	// every test-case incl. status
     			print "\n";
 				foreach ($results as $name=>$status) {
-					print strtoupper($status->__toString())."\t".$name."\n";
+					print strtoupper($status->__toString())."\t".$name.".phpt\n";
 				}
     			break;
 
@@ -244,7 +243,7 @@ abstract class rtTestOutputWriter
 						print "\n";
 					}
 					
-					print strtoupper($s)."\t".$name."\n";
+					print strtoupper($s)."\t".$name.".phpt\n";
 
 	    			 if ($s !== 'pass') {
 	    			 		    			 	
@@ -267,7 +266,7 @@ abstract class rtTestOutputWriter
 					
 					print "\n";
 					
-					print strtoupper($status)."\t".$name."\n";
+					print strtoupper($status)."\t".$name.".phpt\n";
 	    			
 	    			$msg = $s->getMessage($status);
 
