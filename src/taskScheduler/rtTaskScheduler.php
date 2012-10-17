@@ -20,6 +20,7 @@ class rtTaskScheduler
 	protected $processCount = 0;	 // the number of processes
 	protected $reportStatus = 0;	 // the level of repoerting as tests atr run (0, 1, 2)
 	
+	
 
 	
 	/**
@@ -35,6 +36,8 @@ class rtTaskScheduler
 		}
 		
 		$this->setProcessCount($processCount);
+		
+		
     }
     
     

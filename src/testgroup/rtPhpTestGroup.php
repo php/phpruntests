@@ -102,13 +102,12 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
 
     public function run()
     {
+    	$s=microtime(true);
     	
         if (count($this->testCases) == 0) {
             return;
         }
-        //$s1 = memory_get_usage();
         
-        //foreach ($this->testCases as $testCase) {
         for($i=0; $i<count($this->testCases); $i++) {
         
         	$testCase = $this->testCases[$i];
@@ -121,13 +120,13 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             $testResult->processResults($testCase, $this->runConfiguration);
             $this->groupResults->setTestStatus($testCase->getName(), $testResult->getStatus()); 
             
-            //unset($testResult); Makes no diffetence
-            //echo "\n" .memory_get_usage() . ", run end";
+           
         }
         
-        //$s2 = memory_get_usage();
-        //unset($this->testCases);
-        //echo "\n" .$s1. ", " .$s2. ", " .memory_get_usage() . ", after freeing test array\n"; //Shows memory creeping up
+        $e=microtime(true);
+              
+        $this->groupResults->setTime($e-$s);
+        $this->groupResults->setAbsTime($e);
     }
 
     public function writeGroup($outType, $cid=null)

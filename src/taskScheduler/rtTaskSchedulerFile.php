@@ -18,7 +18,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	const TMP_FILE = 'taskFile';
 	
 	protected $pidStore = array(); 	// stores the pids of all child-processes
-	protected $groupTasks = false;	// are the tasks stored in groups?
+	protected $groupTasks = false;	// are the tasks already grouped by target processor
 
     
 	/**
@@ -44,7 +44,9 @@ class rtTaskSchedulerFile extends rtTaskScheduler
      * @Overrides
      */
 	public function setTaskList(array $taskList)
-	{
+	{ 
+		//Pre-allocate tasks to processors
+		
 		if (isset($taskList[0]) && is_array($taskList[0])) {
 			$this->groupTasks = true;
 			$this->processCount = sizeof($taskList);
@@ -84,7 +86,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 		$startTime = microtime(true);
 
-		// trim the processCount if nesecarry
+		// trim the processCount if necessary
 		if ($this->processCount > sizeof($this->taskList)) {
 			$this->processCount = sizeof($this->taskList);
 		}
@@ -209,7 +211,7 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		array_pop($taskList);
 
 		file_put_contents(self::TMP_FILE.$cid, '');
-
+        $count = 0;
 		foreach ($taskList as $task) {
 
 			$s = microtime(true);
@@ -225,18 +227,26 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 			$task->run();
 			
 			$e = microtime(true);
+			
+			$taskResult = $task->getResult();
 		
+			//StatusList is an array 'testname=>statusObject'
+			$statusList = $taskResult->getTestStatusList();
+			$taskResult->setProc($cid);
+			$taskResult->setCount($count);
 			
-			$statusList = $task->getResult()->getTestStatusList();
-			
+			/*
 			if (isset($statusList[0]) && is_object($statusList[0])) {
 				$statusList[0]->setTime($e-$s);
 			}
-
+            */
+			
 			rtTestOutputWriter::flushResult($statusList, $this->reportStatus, $cid);
 			
-			$response = serialize($task->getResult())."[END]";
+			$response = serialize($taskResult)."[END]";
 			file_put_contents(self::TMP_FILE.$cid, $response, FILE_APPEND);
+			
+			$count++;
 		}
 
 		exit(0);

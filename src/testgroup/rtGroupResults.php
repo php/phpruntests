@@ -18,6 +18,10 @@ class rtGroupResults
     protected $testStatusList = array();
     protected $redirectedTestCases = array();
     protected $groupName;
+    protected $timeToRun;
+    protected $runOrder;
+    protected $runByProcessor = 0;
+    protected $absTime;
 
     public function __construct($gn) {
     	$this->groupName = $gn;
@@ -48,5 +52,36 @@ class rtGroupResults
     public function getRedirectedTestCases() {
     	return $this->redirectedTestCases;
     }
+    public function setTime($t) {
+    	$this->timeToRun = $t;
+    }
+    
+	public function setAbsTime($t) {
+    	$this->absTime = $t;
+    }
+    
+    public function setCount($c) {
+    	
+    	$this->runOrder = $c;
+    }
+    
+    public function setProc($p) {
+    	$this->runByProcessor = $p;
+    }
+    public function getTime() {
+    	return $this->timeToRun;
+    }
+    
+    public function getRunOrder() {
+    	return $this->runOrder;
+    }
+    
+    public function getProcessorId() {
+    	return $this->runByProcessor;
+    }
+	public function getAbsTime() {
+    	return $this->absTime;
+    }
+    
     
 }

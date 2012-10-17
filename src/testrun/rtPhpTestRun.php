@@ -25,6 +25,7 @@ class rtPhpTestRun
 	protected $numberOfSerialGroups = 0;
 	protected $numberOfParallelGroups = 0;
 	protected $processorCount;
+	protected $runStartTime;
 
 	public function __construct($argv)
 	{
@@ -33,7 +34,7 @@ class rtPhpTestRun
 
 	public function run()
 	{
-
+        $this->runStartTime = microtime(true);
 		//Set SSH variables
 
 		// check the operation-system (win/unix)
@@ -176,7 +177,21 @@ class rtPhpTestRun
 		foreach($scheduler->getResultList() as $groupResult) {
 			
 		$this->resultList[] = $groupResult->getTestStatusList();
-				
+		
+		// Debug - get which group was run by which processor and how long each took
+		//
+		
+		if($this->runConfiguration->hasCommandLineOption('debug')) {
+		$time = round($groupResult->getTime(), 2);
+		
+		$absTime = $groupResult->getAbsTime() - $this->runStartTime;
+		
+		$absTime = round($absTime, 2);
+		
+		echo "\nPARDBG," . $absTime. "," . $time . "," . $groupResult->getProcessorId() . "," . $groupResult->getRunOrder() . "," . $groupResult->getGroupName();
+
+		}
+		
 		$redirects = $groupResult->getRedirectedTestCases();
         	foreach($redirects as $testCase) {
         		$this->redirectedTestCases[] = $testCase;
@@ -190,10 +205,13 @@ class rtPhpTestRun
 	public function run_serial_groups($testDirectories, $groupConfigurations) {
 		
 		$count = 0;
+		
 	
 		//xdebug_start_trace('/tmp/memorycheck');
 		
 		foreach($testDirectories as $subDirectory) {
+			
+		
 			
 		  
 		    // Memory usage debugging
@@ -210,6 +228,18 @@ class rtPhpTestRun
 			rtTestOutputWriter::flushResult($testGroup->getGroupResults()->getTestStatusList(), $this->reportStatus);			
         	$this->resultList[] = $testGroup->getGroupResults()->getTestStatusList();
         	
+		    if($this->runConfiguration->hasCommandLineOption('debug')) {
+		    	
+				$time = round($testGroup->getGroupResults()->getTime(), 2);
+								
+				$absTime = ($testGroup->getGroupResults()->getAbsTime()) - $this->runStartTime;				
+				$absTime = round($absTime, 2);
+				
+		
+				echo "\nSERDBG," . $absTime . "," . $time . "," . $testGroup->getGroupResults()->getProcessorId() . "," . $count . "," . $testGroup->getGroupResults()->getGroupName();
+
+			}
+        	
         	// Memory usage debugging
         	//$midm2 = memory_get_usage();
         	
@@ -221,13 +251,15 @@ class rtPhpTestRun
         	// Memory usage debugging
         	//$midm3 = memory_get_usage();
         	
+			
         	$testGroup->__destruct();
         	unset($testGroup);
         	
         	// Memory usage debugging
         	//echo "\n" . $startm . ", " . $midm. ", " .$midm2. ", " .$midm3. ", " .memory_get_usage() . ", ". $subDirectory . "\n";
-        				
+        $count++;				
 		}
+		
 		//xdebug_stop_trace();			
 	}
 	

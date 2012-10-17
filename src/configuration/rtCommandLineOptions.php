@@ -54,6 +54,7 @@ class rtCommandLineOptions
         'keep-out',   // keep only out files
         'keep-exp',   // keep only exp files
         'no-clean',   // do not execute clean section
+        'debug',   // do not execute clean section 
     );
 
     /**
