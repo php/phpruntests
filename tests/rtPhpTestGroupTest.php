@@ -53,6 +53,20 @@ class rtPHpTestGroupTest extends PHPUnit_Framework_TestCase
         }   
     }
     
+    public function testSkipGroup() {
+        $directory = realpath(dirname(__FILE__) . '/../phpt-tests/group_of_tests');
+    	$run_config = rtRuntestsConfiguration::getInstance(array('run-tests.php', '-p', RT_PHP_PATH, $directory));
+    	
+        $run_config->configure(); 
+        
+        $group_config = new rtGroupConfiguration($directory);
+        $group_config->parseConfiguration();   	
+    	
+    	$phpTestGroup = new rtPhpTestGroup($run_config, $directory, $group_config);
+    	$phpTestGroup->init();  
+    	  	
+    	$this->assertTrue($phpTestGroup->isSkipGroup());
+    }
     
  
 }

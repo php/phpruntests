@@ -22,6 +22,7 @@ class rtGroupResults
     protected $runOrder;
     protected $runByProcessor = 0;
     protected $absTime;
+    protected $isSkipGroup = false;
 
     public function __construct($gn) {
     	$this->groupName = $gn;
@@ -68,6 +69,10 @@ class rtGroupResults
     public function setProc($p) {
     	$this->runByProcessor = $p;
     }
+    public function setSkip($s) {
+    	$this->isSkipGroup = $s;
+    }
+    
     public function getTime() {
     	return $this->timeToRun;
     }
@@ -81,6 +86,9 @@ class rtGroupResults
     }
 	public function getAbsTime() {
     	return $this->absTime;
+    }
+    public function isSkipGroup() {
+    	return $this->isSkipGroup;
     }
     
     

@@ -98,7 +98,7 @@ abstract class rtTestOutputWriter
      * @param  integer $processCount
      * @return string
      */
-    public function getOverview($parallelGroups = 0, $serialGroups= 0, $processCount)
+    public function getOverview($parallelGroups = 0, $serialGroups= 0, $processCount, $skippedGroups)
     {
     	// if the overview was already created retun it
     	if (!is_null($this->overview)) {
@@ -134,6 +134,12 @@ abstract class rtTestOutputWriter
     	$str = '';
     	
     	$str .= "\n\n----------------------------------------\n";
+    	$str .= "Number of skipped groups:";
+    	$blanks = 30 - strlen("Number of skipped groups:") - strlen(count($skippedGroups));
+    	$str = $this->writeBlanks($str, $blanks);
+    	$str .= count($skippedGroups);
+    	$str .= "\n----------------------------------------\n";
+    	
     	$str .= "Tests:";
     	$blanks = 30 - strlen("Tests:") - strlen($count);    	
     	$str = $this->writeBlanks($str, $blanks);
@@ -194,9 +200,9 @@ abstract class rtTestOutputWriter
     }
     
     
-    public function printOverview($parallelGroups=NULL, $serialGroups = NULL, $processCount=NULL) {
+    public function printOverview($parallelGroups=NULL, $serialGroups = NULL, $processCount=NULL, $skippedGroups=null) {
     	
-    	print $this->getOverview($parallelGroups, $serialGroups, $processCount);
+    	print $this->getOverview($parallelGroups, $serialGroups, $processCount, $skippedGroups);
     	flush();
     }
     

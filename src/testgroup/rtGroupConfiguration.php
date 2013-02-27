@@ -21,6 +21,8 @@ class rtGroupConfiguration
 	protected $isRedirect=false;
 	protected $serialGroup=false;
 	protected $redirectFromID = null;
+	protected $skipFile = "";
+	protected $hasSkipCode = false;
 	
 
     public function __construct($directory)
@@ -29,8 +31,7 @@ class rtGroupConfiguration
     }
     
     public function parseRedirect(rtPHPTest $redirectedTest) {
-    	//Going to assume that we have already parsed the SKIPIF (if it exists)
-    	//var_dump($redirectedTest->getSection('REDIRECTTEST')->getContents());    	
+    		
     	$name = $redirectedTest->getName();
     	
     	$code = implode($redirectedTest->getSection('REDIRECTTEST')->getContents(), "\n");
@@ -75,7 +76,7 @@ class rtGroupConfiguration
         //Find the key in the full name of the test contains the redirect          
         $position = strpos($name, $key); 
         
-        //Take the root strng from before the key
+        //Take the root string from before the key
         $root=substr($name, 0, $position);
         
         $title = $redirectedTest->getSection('TEST')->getContents();
@@ -94,13 +95,21 @@ class rtGroupConfiguration
     	
     }
     
-    public function parse() {
-    	//Here insert code to read a config file from the test directory that determines whether the set of tests shoudl be run
+    public function parseConfiguration() {
+    	//Here insert code to read a config file from the test directory that determines whether the set of tests should be run
     	//in parallel or not?
     	$this->serialGroup = false;
+    	
+    	
+        //Code to read the directory skipif, run it and skip the directory
+    	if(file_exists($this->testDirectory. "/skipif.inc")) {
+    		$this->hasSkipCode = true;
+    		$this->skipFile = $this->testDirectory."/skipif.inc";	
+    	}
     	return;
     	
     }
+    
     
     public function getEnvironmentVariables() {
     	return $this->environmentVariables;
@@ -116,6 +125,12 @@ class rtGroupConfiguration
     } 
     public function getRedirectFromID() {
     	return $this->redirectFromID;
-    }  
+    } 
+    public function hasSkipCode() {
+    	return $this->hasSkipCode;
+    } 
+     public function getSkipFile() {
+    	return $this->skipFile;
+    } 
 }
 

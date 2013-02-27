@@ -32,7 +32,7 @@
   </target>
 
   <target name="lint" description="Lint check all PHP files.">
-    <phplint haltonfailure="true">
+    <phplint haltonfailure="true" level="debug">
       <fileset dir="src">
         <include name="*.php"/>
         <include name="**/*.php"/>

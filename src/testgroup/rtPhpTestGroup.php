@@ -19,112 +19,136 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
     protected $runConfiguration;
     protected $groupConfiguration;
     protected $groupResults;
-    
+
+
     public function __construct(rtRuntestsConfiguration $runConfiguration, $directory, $groupConfiguration)
     {
-    	$this->runConfiguration = $runConfiguration;
+        $this->runConfiguration = $runConfiguration;
         $this->testDirectory = $directory;
-        $this->groupConfiguration = $groupConfiguration;       
+        $this->groupConfiguration = $groupConfiguration;
         $this->groupResults = new rtGroupResults($directory);
         $this->init();
     }
-    
+
     public function __destruct() {
-    	unset ($this->testCases);
-    	unset ($this->groupResults);
-    	
+        unset ($this->testCases);
+        unset ($this->groupResults);
+         
     }
-    
+
 
     public function init()
-    {     
-    	if($this->groupConfiguration->isRedirect()) {
-	    	//merge in environmental variables (this is for REDEIRRECT).
-	    	foreach($this->groupConfiguration->getEnvironmentVariables() as $key=>$value) {
-	    		$this->runConfiguration->setEnvironmentVariable($key, $value);
-	    	}
-    	}
-    	
-    	
-        $this->testFiles = rtUtil::getTestList($this->testDirectory);
-        
-        $redirectFromID = $this->groupConfiguration->getRedirectFromID();
-        
-        foreach ($this->testFiles as $testFileName) {
-        	//echo "\n" .memory_get_usage() . ", setup start". $testFileName . "\n";
-       
-            //testFiles is a list of file names relative to the current working directory
-
-            if (!file_exists($testFileName)) {
-                echo rtText::get('invalidTestFileName', array($testFileName));
-                exit();
+    {
+        if($this->groupConfiguration->isRedirect()) {
+            //merge in environmental variables (this is for REDEIRRECT).
+            foreach($this->groupConfiguration->getEnvironmentVariables() as $key=>$value) {
+                $this->runConfiguration->setEnvironmentVariable($key, $value);
             }
-
-            // Create a new test file object;
-            $testFile = new rtPhpTestFile();
-            $testFile->doRead($testFileName);
-            $testFile->normaliseLineEndings();
-            
-            //The test name is the full path to the test file name without the .phpt
-
-            $testStatus = new rtTestStatus($testFile->getTestName());
-            if ($testFile->arePreconditionsMet() ) {
-                // Create a new test case               
-                $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus, $redirectFromID);
-            } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
-            	//Redirect handler, save the test case for processing after the main groups have finished.
-            	//Check to make sure that it shouldn't be skipped, if skipped don't save it
-            	$redirectedTest= new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
-            	if($redirectedTest->hasSection('SKIPIF')) {
-            		$redirectedTest->runSkipif($this->runConfiguration);
-            		if($redirectedTest->getStatus()->getValue('skip')) {
-            			$testStatus->setTrue('skip');
-                		$testStatus->setMessage('skip', $testFile->getExitMessage(). ' and the skip condition has failed');
-                		$this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);              		
-            		} else {
-            			$testStatus->setTrue('redirected');
-                		$testStatus->setMessage('redirected', $testFile->getExitMessage());
-                		$this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);
-                		$this->groupResults->setRedirectedTestCase($redirectedTest);
-            		}
-            		
-            	}
+        }
+         
+        if($this->groupConfiguration->hasSkipCode()) {
             	
-            }else {
-                $testStatus->setTrue('bork');
-                $testStatus->setMessage('bork', $testFile->getExitMessage());
-                $this->groupResults->setTestStatus($testFile->getTestName(), $testStatus); 
-               
+            //If there is some 'skip' code run it to see if the tests should be skipped and then do nothing else
+
+            $phpCommand = $this->runConfiguration->getSetting('PhpExecutable');
+            $arguments = preg_replace('/error_reporting=32767/', 'error_reporting=0', $this->runConfiguration->getSetting('PhpCommandLineArguments'));
+
+            $phpCommand .= ' -f '.$this->groupConfiguration->getSkipFile();
+             
+            $runner = new rtPhpRunner($phpCommand);
+            $result = $runner->runphp();
+             
+
+            if (preg_match('/^\s*skip\s*(.+)\s*/i', $result, $matches)) {
+                $this->groupResults->setSkip(true);
+
             }
+        }
+        
+
+        if($this->isSkipGroup() !== true) {
+         
+            $this->testFiles = rtUtil::getTestList($this->testDirectory);
+
+            $redirectFromID = $this->groupConfiguration->getRedirectFromID();
+
+            foreach ($this->testFiles as $testFileName) {
+                //echo "\n" .memory_get_usage() . ", setup start". $testFileName . "\n";
+             
+                //testFiles is a list of file names relative to the current working directory
+
+                if (!file_exists($testFileName)) {
+                    echo rtText::get('invalidTestFileName', array($testFileName));
+                    exit();
+                }
+
+                // Create a new test file object;
+                $testFile = new rtPhpTestFile();
+                $testFile->doRead($testFileName);
+                $testFile->normaliseLineEndings();
+
+                //The test name is the full path to the test file name without the .phpt
+
+                $testStatus = new rtTestStatus($testFile->getTestName());
+                if ($testFile->arePreconditionsMet() ) {
+                    // Create a new test case
+                    $this->testCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus, $redirectFromID);
+                } elseif (in_array("REDIRECTTEST",$testFile->getSectionHeadings())){
+                    //Redirect handler, save the test case for processing after the main groups have finished.
+                    //Check to make sure that it shouldn't be skipped, if skipped don't save it
+                    $redirectedTest= new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
+                    if($redirectedTest->hasSection('SKIPIF')) {
+                        $redirectedTest->runSkipif($this->runConfiguration);
+                        if($redirectedTest->getStatus()->getValue('skip')) {
+                            $testStatus->setTrue('skip');
+                            $testStatus->setMessage('skip', $testFile->getExitMessage(). ' and the skip condition has failed');
+                            $this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);
+                        } else {
+                            $testStatus->setTrue('redirected');
+                            $testStatus->setMessage('redirected', $testFile->getExitMessage());
+                            $this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);
+                            $this->groupResults->setRedirectedTestCase($redirectedTest);
+                        }
+
+                    }
+                 
+                } else {
+                    $testStatus->setTrue('bork');
+                    $testStatus->setMessage('bork', $testFile->getExitMessage());
+                    $this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);
+                 
+                }
+                
             //echo "\n" .memory_get_usage() . ", setup complete". $testFileName . "\n";
+            }
         }
     }
 
     public function run()
     {
-    	$s=microtime(true);
-    	
+        $s=microtime(true);
+         
         if (count($this->testCases) == 0) {
             return;
         }
-        
+
         for($i=0; $i<count($this->testCases); $i++) {
-        
-        	$testCase = $this->testCases[$i];
+
+            $testCase = $this->testCases[$i];
 
             $testCase->executeTest($this->runConfiguration);
-            
-          
+
+
              
             $testResult = new rtTestResults($testCase);
             $testResult->processResults($testCase, $this->runConfiguration);
-            $this->groupResults->setTestStatus($testCase->getName(), $testResult->getStatus()); 
-            
-           
+            $this->groupResults->setTestStatus($testCase->getName(), $testResult->getStatus());
+
+             
         }
-        
+
         $e=microtime(true);
-              
+
         $this->groupResults->setTime($e-$s);
         $this->groupResults->setAbsTime($e);
     }
@@ -134,19 +158,23 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
         $testOutputWriter = rtTestOutputWriter::getInstance($this->groupResults->getTestStatusList(), $outType);
         $testOutputWriter->write($this->testDirectory, $cid);
     }
-    
-    
+
+
     public function getTestCases() {
-    	return $this->testCases;
+        return $this->testCases;
     }
-       
+     
     public function getGroupName() {
-    	return $this->testDirectory;
+        return $this->testDirectory;
     }
-    
- 	public function getGroupResults() {
-    	return $this->groupResults;
+
+    public function getGroupResults() {
+        return $this->groupResults;
     }
-    
+
+    public function isSkipGroup() {
+        return $this->groupResults->isSkipGroup();
+    }
+
 }
 ?>
