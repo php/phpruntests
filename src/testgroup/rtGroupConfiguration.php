@@ -102,9 +102,9 @@ class rtGroupConfiguration
     	
     	
         //Code to read the directory skipif, run it and skip the directory
-    	if(file_exists($this->testDirectory. "/skipif.inc")) {
+    	if(file_exists($this->testDirectory. "/skip_group_if.inc")) {
     		$this->hasSkipCode = true;
-    		$this->skipFile = $this->testDirectory."/skipif.inc";	
+    		$this->skipFile = $this->testDirectory."/skip_group_if.inc";	
     	}
     	return;
     	
@@ -130,6 +130,7 @@ class rtGroupConfiguration
     	return $this->hasSkipCode;
     } 
      public function getSkipFile() {
+        
     	return $this->skipFile;
     } 
 }
