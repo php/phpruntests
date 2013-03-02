@@ -27,6 +27,8 @@ class rtPhpTestRun
     protected $processorCount;
     protected $runStartTime;
     protected $skippedGroups = array();
+    protected $logFileName;
+    protected $groupTasks = false;
 
     public function __construct($argv)
     {
@@ -40,7 +42,7 @@ class rtPhpTestRun
 
         // check the operation-system (win/unix)
         $os = (substr(PHP_OS, 0, 3) == "WIN") ? 'Windows' : 'Unix';
-            
+
         //Configure the test environment
         $this->runConfiguration = rtRuntestsConfiguration::getInstance($this->commandLineArguments, $os);
         $this->runConfiguration->getUserEnvironment();
@@ -71,17 +73,26 @@ class rtPhpTestRun
 
         $this->processorCount = $this->requestedProcessorCount();
 
+        if($this->runConfiguration->hasCommandLineOption('log')) {
+            $this->logFileName = $this->runConfiguration->getCommandLineOption('log');
+            file_put_contents($this->logFileName, "");
+        }
+         
+        if($this->runConfiguration->hasCommandlineOption('g')) {
+            $this->groupTasks = true;
+        }
+
 
         /*
          * Main decision point. Either we start this with a directory (or set of directories, in which case tests are
          * run as a group (and in parallel if required) or......
          */
         if ($this->runConfiguration->getSetting('TestDirectories') != null) {
-                
+
             $this->doGroupRuns();
-                
+
         } else {
-                
+
             /*
              *... the input is a test file, or list of files and are just run as single tests
              * and not in parallel
@@ -97,18 +108,18 @@ class rtPhpTestRun
         if(count($this->redirectedTestCases) > 0) {
             $this->doRedirectedRuns();
         }
-      
+
         if(($this->numberOfSerialGroups != 0) || ($this->numberOfParallelGroups != 0))    {
             $this->createRunOutput();
         }
-      
+
     }
 
     public function doGroupRuns() {
 
         $subDirectories = $this->buildSubDirectoryList($this->runConfiguration->getSetting('TestDirectories'));
-        
-        //An array of group configuration objects, one for each subdirectory. 
+
+        //An array of group configuration objects, one for each subdirectory.
         $groupConfigurations = $this->buildGroupConfigurations($subDirectories);
 
 
@@ -134,11 +145,11 @@ class rtPhpTestRun
                         $parallelGroups[] = $key;
                     }
                 }
-                    
+
                 if(isset($serialGroups)) {$this->numberOfSerialGroups = count($serialGroups);}
-                    
+
                 $this->numberOfParallelGroups = count($parallelGroups);
-                    
+
                 $this->run_parallel_groups($parallelGroups, $groupConfigurations, $this->processorCount);
                 if($this->numberOfSerialGroups > 0)    {
                     $this->run_serial_groups($serialGroups, $groupConfigurations);
@@ -150,26 +161,32 @@ class rtPhpTestRun
 
     public function doRedirectedRuns() {
         foreach($this->redirectedTestCases as $testCase){
-       
+             
             $groupConfig = new rtGroupConfiguration(null);
             $groupConfig->parseRedirect($testCase);
-       
+             
             $group = $groupConfig->getTestDirectory();
-       
+             
             $this->run_serial_groups(array($group), array($group=>$groupConfig));
-       
+             
             $this->numberOfSerialGroups++;
              
         }
     }
 
     public function run_parallel_groups($testDirectories, $groupConfigurations, $processCount) {
-            
-        // create the task-list
+
+        //Create the task list to be executed in parallel. Either randomly or trying to order it.
         $taskList = array();
-        foreach($testDirectories as $testGroup) {
-            $taskList[] = new rtTaskTestGroup($this->runConfiguration, $testGroup, $groupConfigurations[$testGroup]);
+        if($this->groupTasks == false) {
+            foreach($testDirectories as $testGroup) {
+                $taskList[] = new rtTaskTestGroup($this->runConfiguration, $testGroup, $groupConfigurations[$testGroup]);
+            }
+        }else {
+            $taskList = $this->groupTasksByWeight($testDirectories, $groupConfigurations);
+
         }
+
 
         // run the task-scheduler
         $scheduler = rtTaskScheduler::getInstance();
@@ -179,24 +196,29 @@ class rtPhpTestRun
         $scheduler->run();
 
         foreach($scheduler->getResultList() as $groupResult) {
-            
-            if($groupResult->isSkipGroup()) {                
-                 $this->skippedGroups[] = $groupResult->getGroupName();
+
+            if($groupResult->isSkipGroup()) {
+                $this->skippedGroups[] = $groupResult->getGroupName();
             } else {
                 $this->resultList[] = $groupResult->getTestStatusList();
             }
 
-            // Debug - get which group was run by which processor and how long each took
-            //
+            // Logging - get which group was run by which processor and how long each took
 
-            if($this->runConfiguration->hasCommandLineOption('debug')) {
-                $time = round($groupResult->getTime(), 2);
+            if($this->runConfiguration->hasCommandLineOption('log')) {
 
-                $absTime = $groupResult->getAbsTime() - $this->runStartTime;
+                $groupTime = round($groupResult->getTime(), 2);
+                $runTime = $groupResult->getAbsTime() - $this->runStartTime;
+               
+                $runTime = round($runTime, 2);
 
-                $absTime = round($absTime, 2);
+                $string = "PARLOG," . $groupResult->getGroupName() .
+                          "," . $groupTime . 
+                          "," . $runTime .
+                          "," . $groupResult->getProcessorId() . 
+                          "," . $groupResult->getRunOrder() ."\n";
 
-                echo "\nPARDBG," . $absTime. "," . $time . "," . $groupResult->getProcessorId() . "," . $groupResult->getRunOrder() . "," . $groupResult->getGroupName();
+                file_put_contents($this->logFileName, $string, FILE_APPEND);
 
             }
 
@@ -212,68 +234,61 @@ class rtPhpTestRun
 
     public function run_serial_groups($testDirectories, $groupConfigurations) {
 
-        $count = 0;
+        $groupCount = 0;
 
-        foreach($testDirectories as $subDirectory) {             
+        foreach($testDirectories as $subDirectory) {
 
-            // Memory usage debugging
-            //$startm = memory_get_usage();
-
-          
+            // Memory usage logging
+            $startMemory = memory_get_usage();
 
             $testGroup = new rtPhpTestGroup($this->runConfiguration, $subDirectory, $groupConfigurations[$subDirectory]);
-           
-            
-            if($testGroup->isSkipGroup() == true) {
+         
+
+            if($testGroup->isSkipGroup() === true) {
                 $this->skippedGroups[] = $testGroup->getGroupName();
-            } else {
-                    
-
-                $testGroup->run();
-                    
-                    
-                // Memory usage debugging
-                //$midm = memory_get_usage();
-
-                rtTestOutputWriter::flushResult($testGroup->getGroupResults()->getTestStatusList(), $this->reportStatus);
-                $this->resultList[] = $testGroup->getGroupResults()->getTestStatusList();
-                 
-                if($this->runConfiguration->hasCommandLineOption('debug')) {
-                     
-                    $time = round($testGroup->getGroupResults()->getTime(), 2);
-
-                    $absTime = ($testGroup->getGroupResults()->getAbsTime()) - $this->runStartTime;
-                    $absTime = round($absTime, 2);
-
-
-                    echo "\nSERDBG," . $absTime . "," . $time . "," . $testGroup->getGroupResults()->getProcessorId() . "," . $count . "," . $testGroup->getGroupResults()->getGroupName();
-
-                }
-                 
-                // Memory usage debugging
-                //$midm2 = memory_get_usage();
-                 
-                $redirects = $testGroup->getGroupResults()->getRedirectedTestCases();
-                foreach($redirects as $testCase) {
-                    $this->redirectedTestCases[] = $testCase;
-                }
-                 
-                 
-                 
-                // Memory usage debugging
-                //$midm3 = memory_get_usage();
-                 
-                    
-                $testGroup->__destruct();
-                unset($testGroup);
-                 
-                // Memory usage debugging
-                //echo "\n" . $startm . ", " . $midm. ", " .$midm2. ", " .$midm3. ", " .memory_get_usage() . ", ". $subDirectory . "\n";
-                $count++;
+                continue;
             }
-        }
 
-        //xdebug_stop_trace();
+            $testGroup->run();
+
+            rtTestOutputWriter::flushResult($testGroup->getGroupResults()->getTestStatusList(), $this->reportStatus);
+            $this->resultList[] = $testGroup->getGroupResults()->getTestStatusList();
+             
+            if($this->runConfiguration->hasCommandLineOption('log')) {
+                 
+                $time = round($testGroup->getGroupResults()->getTime(), 2);
+
+                $absTime = ($testGroup->getGroupResults()->getAbsTime()) - $this->runStartTime;
+                
+                $absTime = round($absTime, 2);
+                               
+
+                $string =  "SERLOG," . $testGroup->getGroupName() . "," .
+                $time . "," .
+                $absTime . "," .
+                $testGroup->getGroupResults()->getProcessorId() . "," .
+                $groupCount . "\n";
+
+                file_put_contents($this->logFileName, $string, FILE_APPEND);
+
+            }
+             
+            $redirects = $testGroup->getGroupResults()->getRedirectedTestCases();
+            foreach($redirects as $testCase) {
+                $this->redirectedTestCases[] = $testCase;
+            }
+
+             
+            $testGroup->__destruct();
+            unset($testGroup);
+             
+            if($this->runConfiguration->hasCommandLineOption('log')) {
+                $string = "MEMLOG," . $subDirectory . ", " . $startMemory. ", " .memory_get_usage() . "\n";
+                file_put_contents($this->logFileName, $string, FILE_APPEND);
+            }
+            
+            $groupCount++;          
+        }
     }
 
     public function run_tests($testNames) {
@@ -286,19 +301,19 @@ class rtPhpTestRun
                 echo rtText::get('invalidTestFileName', array($testName));
                 exit();
             }
-                
-                
+
+
             //Read the test file
             $testFile = new rtPhpTestFile();
             $testFile->doRead($testName);
             $testFile->normaliseLineEndings();
-                
+
             $testStatus = new rtTestStatus($testFile->getTestName());
 
 
             if ($testFile->arePreconditionsMet()) {
                 $testCase = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
-                    
+
                 //Setup and set the local environment for the test case
                 $testCase->executeTest($this->runConfiguration);
 
@@ -307,12 +322,12 @@ class rtPhpTestRun
                 $summaryResults = array($testFile->getTestName() => $results->getStatus());
 
             } elseif (in_array("REDIRECTTEST", $testFile->getSectionHeadings())) {
-                    
+
                 //Redirect handler
                 //Build a list of redirected test cases
-                    
+
                 $this->redirectedTestCases[] = new rtPhpTest($testFile->getContents(), $testFile->getTestName(), $testFile->getSectionHeadings(), $this->runConfiguration, $testStatus);
-                    
+
                 $testStatus->setTrue('redirected');
                 $testStatus->setMessage('redirected', $testFile->getExitMessage());
                 $summaryResults = array($testFile->getTestName() => $testStatus);
@@ -324,7 +339,7 @@ class rtPhpTestRun
             }
              
             rtTestOutputWriter::flushResult($summaryResults, 3);
-                
+
         }
     }
 
@@ -419,6 +434,55 @@ class rtPhpTestRun
         }
         return $groupSummary;
     }
+    /*
+     * This, invoked by using the -g command line option,
+     * makes an attempt to distribute tests evenly across the processors
+     * based on 'weightings'. The weightings are actually just timings from a previous
+     * parallel run.
+     */
+    public function groupTasksByWeight($testDirectories, $groupConfigurations) {
 
+        //First set weights.
+        $weightedDirectoryList = array();
+        $processorWeightSum = array();
+        $taskListByProcessor = array();
+
+        foreach($testDirectories as $subDir) {
+            $key = rtUtil::stripPath($subDir);
+            if($this->runConfiguration->hasWeight($key)) {
+                $weightedDirectoryList[$subDir] = $this->runConfiguration->getWeight($key);
+            } else {
+                $weightedDirectoryList[$subDir] = 1;
+            }
+        }
+
+        //Order subditrectories by decreasing weight.
+        arsort($weightedDirectoryList, SORT_NUMERIC);
+
+        //Assign the first n tasks across n processors. Having ordered the tasls these will be the longest running tasks
+        for($i=0; $i<$this->processorCount; $i++) {
+            list($key, $value) = each($weightedDirectoryList);
+            $processorWeightSum[$i] =$value;
+            $task = new rtTaskTestGroup($this->runConfiguration, $key, $groupConfigurations[$key]);
+            $taskListByProcessor[$i] = array($task);
+        }
+
+        //Continue to assign tasks to processors based on an estimate of how long each one will take.
+        for ($i=$this->processorCount; $i<count($weightedDirectoryList); $i++) {
+            list($key, $value) = each($weightedDirectoryList);
+            $procID = rtUtil::getMin($processorWeightSum);
+            $processorWeightSum[$procID] += $value;
+            $task = new rtTaskTestGroup($this->runConfiguration, $key, $groupConfigurations[$key]);
+            array_push($taskListByProcessor[$procID], $task);
+        }
+
+        //Reverse the order of even numbered lists so that not all processors are runnung big tasks at the same time
+        //This seems to work better - possibly the longer running tasks are resource constrined by something other than CPU?
+        for($i=0; $i<$this->processorCount; $i+=2) {
+            $taskListByProcessor[$procID] = array_reverse($taskListByProcessor[$procID]);
+        }
+
+        return $taskListByProcessor;
+    }
 }
 ?>

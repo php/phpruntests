@@ -42,6 +42,10 @@ class rtTaskTestGroup extends rtTask implements rtTaskInterface
 		return true;
 	}
 	
+	public function getSubDirectory() {
+	    return $this->subDirectory;
+	}
+	
 
 }
 

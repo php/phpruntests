@@ -24,6 +24,8 @@ class rtGroupConfiguration
 	protected $skipFile = "";
 	protected $hasSkipCode = false;
 	
+	const SKIP_FILE_NAME = "skip_group_if.inc";
+	
 
     public function __construct($directory)
     {   	
@@ -44,7 +46,7 @@ class rtGroupConfiguration
         $this->environmentVariables = $setup['ENV'];
         
         
-        //Remove trailing white space and add a slash to teh directory name
+        //Remove trailing white space and add a slash to the directory name
         //Will need modification if we wanted to be able to give it a list of test directories.
         
         $dir = trim($setup['TESTS']);
@@ -96,15 +98,14 @@ class rtGroupConfiguration
     }
     
     public function parseConfiguration() {
-    	//Here insert code to read a config file from the test directory that determines whether the set of tests should be run
-    	//in parallel or not?
-    	$this->serialGroup = false;
-    	
-    	
+    	//TODO Could insert code to read a config file from the test directory that determines whether the set of tests should be run
+    	//in parallel or not.
+          	
         //Code to read the directory skipif, run it and skip the directory
-    	if(file_exists($this->testDirectory. "/skip_group_if.inc")) {
+        //TODO- this makes a miniscule difference to timing.
+    	if(file_exists($this->testDirectory. "/" . self::SKIP_FILE_NAME)) {
     		$this->hasSkipCode = true;
-    		$this->skipFile = $this->testDirectory."/skip_group_if.inc";	
+    		$this->skipFile = $this->testDirectory. "/" .self::SKIP_FILE_NAME;  
     	}
     	return;
     	
@@ -129,8 +130,8 @@ class rtGroupConfiguration
     public function hasSkipCode() {
     	return $this->hasSkipCode;
     } 
-     public function getSkipFile() {
-        
+     public function getSkipFile() { 
+            
     	return $this->skipFile;
     } 
 }

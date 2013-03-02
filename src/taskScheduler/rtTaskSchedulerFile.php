@@ -16,6 +16,7 @@
 class rtTaskSchedulerFile extends rtTaskScheduler
 {
 	const TMP_FILE = 'taskFile';
+	const LOG_FILE = '/tmp/parallellog.csv';
 	
 	protected $pidStore = array(); 	// stores the pids of all child-processes
 	protected $groupTasks = false;	// are the tasks already grouped by target processor
@@ -80,6 +81,9 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 	 */
 	public function run()
 	{
+	    //clears the logfile	    
+	    //file_put_contents(self::LOG_FILE, "");
+	    
 		if ($this->processCount == 0) {
 			return parent::run();
 		}
@@ -146,10 +150,8 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 
 		if ($this->groupTasks == true) { 
 
-			foreach ($this->taskList as $cid => $list) {
-				
+			foreach ($this->taskList as $cid => $list) {				
 				for ($i=0; $i<sizeof($list); $i++) {
-
 					$str = serialize($list[$i])."[END]";
 					file_put_contents(self::TMP_FILE.$cid, $str, FILE_APPEND);
 				}
@@ -158,7 +160,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		} else {
 
 			for ($i=0; $i<sizeof($this->taskList); $i++) {
-
 				$cid = $i%$this->processCount;
 				$str = serialize($this->taskList[$i])."[END]";
 				file_put_contents(self::TMP_FILE.$cid, $str, FILE_APPEND);
@@ -213,7 +214,6 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 		file_put_contents(self::TMP_FILE.$cid, '');
         $count = 0;
 		foreach ($taskList as $task) {
-
 			$s = microtime(true);
 			
 			$task = unserialize($task);
@@ -223,11 +223,16 @@ class rtTaskSchedulerFile extends rtTaskScheduler
 				continue;
 			}
 			
-			
 			$task->run();
 			
 			$e = microtime(true);
 			
+			//$t = round($e - $s, 2);
+			
+			//$logstring = $task->getSubDirectory() . ", " .$cid . ", " .   $s . ", " . $e . ", " . $t . "\n";
+			
+			//file_put_contents(self::LOG_FILE, $logstring, FILE_APPEND);
+						
 			$taskResult = $task->getResult();
 		
 			//StatusList is an array 'testname=>statusObject'

@@ -46,8 +46,7 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             }
         }
          
-        if($this->groupConfiguration->hasSkipCode()) {
-            	
+        if($this->groupConfiguration->hasSkipCode()) {            	
             //If there is some 'skip' code run it to see if the tests should be skipped and then do nothing else
 
             $phpCommand = $this->runConfiguration->getSetting('PhpExecutable');
@@ -58,9 +57,10 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             $runner = new rtPhpRunner($phpCommand);
             $result = $runner->runphp();
              
-
             if (preg_match('/^\s*skip\s*(.+)\s*/i', $result, $matches)) {
                 $this->groupResults->setSkip(true);
+                $this->groupResults->setAbsTime(microtime(true));
+                $this->groupResults->setTime(0);
 
             }
         }
@@ -73,9 +73,6 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
             $redirectFromID = $this->groupConfiguration->getRedirectFromID();
 
             foreach ($this->testFiles as $testFileName) {
-                //echo "\n" .memory_get_usage() . ", setup start". $testFileName . "\n";
-             
-                //testFiles is a list of file names relative to the current working directory
 
                 if (!file_exists($testFileName)) {
                     echo rtText::get('invalidTestFileName', array($testFileName));
@@ -118,8 +115,7 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
                     $this->groupResults->setTestStatus($testFile->getTestName(), $testStatus);
                  
                 }
-                
-            //echo "\n" .memory_get_usage() . ", setup complete". $testFileName . "\n";
+          
             }
         }
     }
@@ -129,6 +125,9 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
         $s=microtime(true);
          
         if (count($this->testCases) == 0) {
+            $e=microtime(true);
+            $this->groupResults->setTime($e-$s);
+            $this->groupResults->setAbsTime($e);            
             return;
         }
 
@@ -151,6 +150,7 @@ class rtPhpTestGroup extends rtTask implements rtTaskInterface
 
         $this->groupResults->setTime($e-$s);
         $this->groupResults->setAbsTime($e);
+     
     }
 
     public function writeGroup($outType, $cid=null)

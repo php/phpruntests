@@ -22,9 +22,11 @@ abstract class rtRuntestsConfiguration
     protected $settings;
     protected $environmentVariables;
     protected $commandLine;
-    protected $operatingSystem;
-    
+    protected $operatingSystem;    
     protected $memoryTool = null;
+    protected $taskWeightings = array();
+    const WEIGHT_FILE = "/data/task_weight_file.csv";
+    
 
     protected $settingNames = array (
     
@@ -60,6 +62,10 @@ abstract class rtRuntestsConfiguration
 
         //create object to hold environment variables
         $this->environmentVariables = rtEnvironmentVariables::getInstance($this->operatingSystem);
+        
+        if($this->commandLine->hasOption('z')) {
+            $this->setTaskWeightings();
+        }
     }
 
     /**
@@ -168,6 +174,17 @@ abstract class rtRuntestsConfiguration
         return $this->memoryTool->getCommand();
     }
     
+    public function setTaskWeightings() {      
+        $this->taskWeightings =  rtUtil::readConfigurationFile(__DIR__ .self::WEIGHT_FILE);  
+    }     
+	  
     
+    public function hasWeight($k) {
+        return array_key_exists($k, $this->taskWeightings);
+    }
+    
+    public function getWeight($k) {
+        return $this->taskWeightings[$k];
+    }
 }
 ?>

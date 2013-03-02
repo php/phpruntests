@@ -24,6 +24,7 @@ class rtCommandLineOptions
         'q', // quiet, no user interaction
         'v', // verbose-mode level 1
         'h', // help
+        'g', // attempt to group tasks for parallel run
     );
 
     /**
@@ -54,7 +55,7 @@ class rtCommandLineOptions
         'keep-out',   // keep only out files
         'keep-exp',   // keep only exp files
         'no-clean',   // do not execute clean section
-        'debug',   // do not execute clean section 
+        'debug'   // extra debug info     
     );
 
     /**
@@ -62,6 +63,7 @@ class rtCommandLineOptions
      */
     protected $longOptionsWithArgs = array(
         'mopts',	// memory-options (valgrind)
+        'log',     //log to a file name
     );
                               
     /**
